@@ -3,42 +3,143 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Terry's Site</title>
+  <title>Terryz | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
+    /* Basic reset */
+    * { margin:0; padding:0; box-sizing:border-box; }
+
     body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f5f5f5;
-      color: #111;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: #f5f5f5;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      min-height: 100vh;
+      scroll-behavior: smooth;
+    }
+
+    header {
       text-align: center;
+      margin-top: 80px;
     }
-    h1 {
+
+    header h1 {
       font-size: 3rem;
-      margin-bottom: 0.5rem;
+      font-weight: 700;
+      color: #1a73e8;
+      text-shadow: 0 0 20px rgba(26,115,232,0.5);
+      animation: fadeIn 2s ease-in-out;
     }
-    p {
-      font-size: 1.25rem;
-      margin-top: 0;
+
+    header p {
+      font-size: 1.5rem;
+      color: #ffffffaa;
+      margin-top: 10px;
+      animation: fadeIn 3s ease-in-out;
     }
+
+    section {
+      margin-top: 80px;
+      width: 90%;
+      max-width: 900px;
+    }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 20px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 30px rgba(26,115,232,0.7);
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #ffffffcc;
+    }
+
     a {
       color: #1a73e8;
       text-decoration: none;
-      margin-top: 1rem;
       font-weight: bold;
+      transition: color 0.3s;
     }
+
     a:hover {
-      text-decoration: underline;
+      color: #ffffff;
     }
+
+    footer {
+      margin: 80px 0 40px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #ffffff77;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      0% { opacity:0; transform: translateY(-20px); }
+      100% { opacity:1; transform: translateY(0); }
+    }
+
   </style>
 </head>
 <body>
-  <h1>Hello, I'm Terry 👋</h1>
-  <p>Welcome to my portfolio / tech projects site.</p>
-  <a href="#">View My Projects</a>
+  <header>
+    <h1>Terryz</h1>
+    <p>Student | Developer | Tech Explorer</p>
+  </header>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>Hi, I’m Terry. I’m passionate about coding, tech, and creating clean, modern projects. I love minimal aesthetics with a hint of hacker vibe.</p>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="projects">
+      <div class="card">
+        <h3>Project One</h3>
+        <p>Short description of what this project is about. Add links to GitHub or demo if you want.</p>
+        <a href="#">View Project</a>
+      </div>
+      <div class="card">
+        <h3>Project Two</h3>
+        <p>Short description of what this project is about. Add links to GitHub or demo if you want.</p>
+        <a href="#">View Project</a>
+      </div>
+      <div class="card">
+        <h3>Project Three</h3>
+        <p>Short description of what this project is about. Add links to GitHub or demo if you want.</p>
+        <a href="#">View Project</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Email: <a href="mailto:youremail@example.com">youremail@example.com</a></p>
+    <p>GitHub: <a href="https://github.com/tdogbg" target="_blank">github.com/tdogbg</a></p>
+  </section>
+
+  <footer>
+    © 2025 Terryz. All rights reserved.
+  </footer>
 </body>
 </html>
+
+
