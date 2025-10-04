@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terry Zheng | Portfolio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+        }
+        body::-webkit-scrollbar { display: none; }
+        body { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Falling particles */
+        .particles-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 5%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        nav .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, #fff, #8f5aff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            padding: 10px;
+        }
+        .hamburger span {
+            width: 30px;
+            height: 3px;
+            background: #fff;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(8px,8px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px,-7px); }
+        nav ul {
+            display: flex;
+            gap: 50px;
+            list-style: none;
+        }
+        nav a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #8f5aff;
+            transition: width 0.3s;
+        }
+        nav a:hover { color: #fff; }
+        nav a:hover::after { width: 100%; }
+
+        section {
+            min-height: 100vh;
+            padding: 120px 10%;
+            position: relative;
+        }
+        #hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .hero-content h1 {
+            font-size: 6rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            color: #fff;
+            letter-spacing: -2px;
+        }
+        .typing-text {
+            font-size: 2rem;
+            color: rgba(255,255,255,0.7);
+            font-family: 'Courier New', monospace;
+            min-height: 60px;
+        }
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 2rem;
+            background: rgba(255,255,255,0.7);
+            margin-left: 5px;
+            animation: blink 0.7s infinite;
+        }
+        @keyframes blink {
+            0%,50% { opacity: 1; }
+            51%,100% { opacity: 0; }
+        }
+
+        .highlights-section {
+            min-height: 80vh;
+            padding: 100px 10%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        h2 {
+            font-size: 4rem;
+            margin-bottom: 80px;
+            text-align: center;
+            color: #fff;
+            font-weight: 900;
+            letter-spacing: -2px;
+        }
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+            gap: 40px;
+            max-width: 1200px;
+            width: 100%;
+        }
+        .stat-card {
+            background: rgba(20,20,30,0.4);
+            backdrop-filter: blur(30px);
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 50px 30px;
+            text-align: center;
+            transition: all 0.5s;
+        }
+        .stat-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 70px rgba(143,90,255,0.3);
+            border-color: rgba(143,90,255,0.5);
+        }
+        .stat-number {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff, #8f5aff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 0 15px 0;
+        }
+        .stat-label {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .glass {
+            background: rgba(15,15,20,0.3);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        .about-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 80px;
+        }
+        .about-container p {
+            font-size: 1.4rem;
+            line-height: 2;
+            margin-bottom: 30px;
+        }
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 50px;
+        }
+        .skill-tag {
+            padding: 15px 30px;
+            background: rgba(143,90,255,0.1);
+            border: 2px solid rgba(143,90,255,0.3);
+            border-radius: 50px;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+        .skill-tag:hover {
+            background: rgba(143,90,255,0.3);
+            transform: translateY(-10px) scale(1.1);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px,1fr));
+            gap: 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .project-card {
+            padding: 50px;
+            transition: all 0.5s;
+            cursor: pointer;
+        }
+        .project-card:hover {
+            transform: translateY(-20px) scale(1.03);
+            box-shadow: 0 30px 80px rgba(143,90,255,0.3);
+        }
+        .project-card h3 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: #fff;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .project-icon {
+            font-size: 2.5rem;
+        }
+        .project-card p {
+            line-height: 1.8;
+            margin-bottom: 30px;
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+        }
+        .tech-stack {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .tech-badge {
+            padding: 8px 18px;
+            background: rgba(143,90,255,0.15);
+            border: 1px solid rgba(143,90,255,0.3);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px;
+            text-align: center;
+        }
+        .contact-container p {
+            font-size: 1.5rem;
+            margin-bottom: 60px;
+            line-height: 1.8;
+        }
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .contact-btn {
+            padding: 18px 45px;
+            background: rgba(143,90,255,0.1);
+            border: 2px solid rgba(143,90,255,0.4);
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .contact-btn:hover {
+            background: rgba(143,90,255,0.3);
+            transform: translateY(-10px) scale(1.05);
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+        }
+        .scroll-text {
+            writing-mode: vertical-rl;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+        .scroll-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .scroll-dot:hover {
+            background: rgba(143,90,255,0.5);
+            transform: scale(1.5);
+        }
+        .scroll-dot.active {
+            background: #8f5aff;
+            border-color: #8f5aff;
+        }
+
+        footer {
+            padding: 60px 10%;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        footer p {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 10px;
+        }
+
+        /* Hanging card */
+        .hanging-card {
+            position: fixed;
+            top: -200px;
+            right: 80px;
+            z-index: 9998;
+            animation: dropCard 1.5s cubic-bezier(0.68,-0.55,0.265,1.55) 1s forwards;
+        }
+        .rope {
+            width: 2px;
+            height: 80px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+            margin: 0 auto;
+            transform-origin: top center;
+            animation: swingRope 3s ease-in-out infinite;
+        }
+        .name-card {
+            background: linear-gradient(135deg, rgba(30,30,40,0.95), rgba(20,20,30,0.95));
+            backdrop-filter: blur(30px);
+            border: 2px solid rgba(255,255,255,0.15);
+            border-radius: 20px;
+            padding: 25px 35px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.6);
+            transform-origin: top center;
+            animation: swingCard 3s ease-in-out infinite;
+            min-width: 200px;
+            position: relative;
+        }
+        .name-card .greeting {
+            font-size: 1rem;
+            margin: 0 0 8px 0;
+            color: rgba(255,255,255,0.6);
+        }
+        .name-card .name {
+            font-size: 1.8rem;
+            margin: 0;
+            color: #fff;
+            font-family: 'Comic Sans MS', cursive;
+            font-weight: 700;
+        }
+        .close-card {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+        .close-card:hover { opacity: 1; }
+        .close-card::before, .close-card::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 15px;
+            height: 2px;
+            background: #fff;
+        }
+        .close-card::before { transform: translate(-50%,-50%) rotate(45deg); }
+        .close-card::after { transform: translate(-50%,-50%) rotate(-45deg); }
+        @keyframes dropCard {
+            0% { top: -200px; }
+            60% { top: 100px; }
+            80% { top: 80px; }
+            100% { top: 90px; }
+        }
+        @keyframes swingRope {
+            0%,100% { transform: rotate(0deg); }
+            25% { transform: rotate(3deg); }
+            75% { transform: rotate(-3deg); }
+        }
+        @keyframes swingCard {
+            0%,100% { transform: rotate(0deg); }
+            25% { transform: rotate(2deg); }
+            75% { transform: rotate(-2deg); }
+        }
+        .hanging-card.dismissed {
+            animation: flyAway 0.6s forwards;
+        }
+        @keyframes flyAway {
+            to { transform: translateY(-300px) rotate(20deg); opacity: 0; }
+        }
+
+        /* Chatbox */
+        .chatbox {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+        }
+        .chat-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(143,90,255,0.2);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(143,90,255,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .chat-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(143,90,255,0.4);
+        }
+        .chat-button svg {
+            width: 30px;
+            height: 30px;
+            stroke: #fff;
+        }
+        .chat-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 450px;
+            background: rgba(15,15,20,0.95);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+            display: none;
+            flex-direction: column;
+        }
+        .chat-window.active { display: flex; }
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-header h4 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+        .chat-close {
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+            width: 20px;
+            height: 20px;
+            position: relative;
+        }
+        .chat-close:hover { opacity: 1; }
+        .chat-close::before, .chat-close::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 15px;
+            height: 2px;
+            background: #fff;
+        }
+        .chat-close::before { transform: translate(-50%,-50%) rotate(45deg); }
+        .chat-close::after { transform: translate(-50%,-50%) rotate(-45deg); }
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .chat-message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .chat-message.bot {
+            background: rgba(143,90,255,0.2);
+            color: #fff;
+            align-self: flex-start;
+        }
+        .chat-message.user {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            align-self: flex-end;
+        }
+        .quick-questions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .quick-question {
+            background: rgba(143,90,255,0.1);
+            border: 1px solid rgba(143,90,255,0.3);
+            border-radius: 10px;
+            padding: 10px 15px;
+            color: #fff;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+        }
+        .quick-question:hover {
+            background: rgba(143,90,255,0.3);
+            transform: translateX(5px);
+        }
+        .chat-input-container {
+            padding: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 25px;
+            padding: 12px 20px;
+            color: #fff;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        .chat-input::placeholder { color: rgba(255,255,255,0.3); }
+        .chat-send {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(143,90,255,0.3);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .chat-send:hover { background: rgba(143,90,255,0.5); }
+        .chat-send svg {
+            width: 20px;
+            height: 20px;
+            stroke: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 3.5rem; }
+            h2 { font-size: 2.5rem; }
+            .hamburger { display: flex; }
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 75%;
+                max-width: 300px;
+                background: rgba(10,10,15,0.98);
+                backdrop-filter: blur(30px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transition: right 0.4s;
+                border-left: 1px solid rgba(255,255,255,0.1);
+            }
+            nav ul.active { right: 0; }
+            nav a { font-size: 1.5rem; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .about-container, .contact-container { padding: 40px; }
+            .stats-container { grid-template-columns: repeat(2, 1fr); }
+            .hanging-card { right: 10px; transform: scale(0.85); }
+            .chatbox { right: 20px; }
+            .chat-window {
+                width: 90vw;
+                max-width: 350px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Falling particles -->
+    <div class="particles-bg"></div>
+
+    <!-- Hanging card -->
+    <div class="hanging-card">
+        <div class="rope"></div>
+        <div class="name-card">
+            <div class="close-card"></div>
+            <p class="greeting">Hello!</p>
+            <h3 class="name">I'm Terry</h3>
+        </div>
+    </div>
+
+    <!-- Chatbox -->
+    <div class="chatbox">
+        <div class="chat-button">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+        </div>
+        <div class="chat-window">
+            <div class="chat-header">
+                <h4>Chat with Terry</h4>
+                <div class="chat-close"></div>
+            </div>
+            <div class="chat-messages">
+                <div class="chat-message bot">Hey! Got questions?</div>
+                <div class="quick-questions">
+                    <div class="quick-question">What projects have you worked on?</div>
+                    <div class="quick-question">What are your skills?</div>
+                    <div class="quick-question">How can I contact you?</div>
+                    <div class="quick-question">Tell me about PiFace</div>
+                </div>
+            </div>
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" placeholder="Type your question...">
+                <button class="chat-send">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-content">
+            <div class="logo">TZ</div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#highlights">Highlights</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="scroll-indicator">
+        <div class="scroll-text">SCROLL</div>
+        <div class="scroll-dot active" data-section="hero"></div>
+        <div class="scroll-dot" data-section="highlights"></div>
+        <div class="scroll-dot" data-section="about"></div>
+        <div class="scroll-dot" data-section="projects"></div>
+        <div class="scroll-dot" data-section="contact"></div>
+    </div>
+
+    <section id="hero">
+        <div class="hero-content">
+            <h1>TERRY ZHENG</h1>
+            <div class="typing-text">
+                <span id="typed-text"></span><span class="cursor"></span>
+            </div>
+        </div>
+    </section>
+
+    <section id="highlights" class="highlights-section">
+        <h2>Highlights</h2>
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3 class="stat-number">2nd</h3>
+                <p class="stat-label">UK Raspberry Pi Competition</p>
+            </div>
+            <div class="stat-card">
+                <h3 class="stat-number">10+</h3>
+                <p class="stat-label">Technologies Mastered</p>
+            </div>
+            <div class="stat-card">
+                <h3 class="stat-number">15</h3>
+                <p class="stat-label">Years Old</p>
+            </div>
+            <div class="stat-card">
+                <h3 class="stat-number">∞</h3>
+                <p class="stat-label">Ideas & Ambitions</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2>About Me</h2>
+        <div class="about-container glass">
+            <p>Hi, I'm Terry — a 15-year-old student preparing for my GCSEs. I'm passionate about technology, coding, and penetration testing through Hack The Box and enjoy tackling cybersecurity challenges.</p>
+            <p>When I'm not coding, I play badminton, play the piano, game competitively, attend RAF Air Cadets, or start planning my next project. I'm always experimenting with new programming languages, frameworks, and penetration-testing tools.</p>
+            <div class="skills">
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">HTML/CSS</span>
+                <span class="skill-tag">React</span>
+                <span class="skill-tag">Node.js</span>
+                <span class="skill-tag">Pentesting</span>
+                <span class="skill-tag">Git/GitHub</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2>Featured Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card glass">
+                <h3>Project Alpha</h3>
+                <p>A revolutionary web application featuring cutting-edge UI/UX design and real-time data processing.</p>
+                <div class="tech-stack">
+                    <span class="tech-badge">React</span>
+                    <span class="tech-badge">Node.js</span>
+                    <span class="tech-badge">MongoDB</span>
+                </div>
+            </div>
+            <div class="project-card glass">
+                <h3>PiFace</h3>
+                <p>🥈 2nd Place UK Raspberry Pi Competition - Facial recognition security system.</p>
+                <div class="tech-stack">
+                    <span class="tech-badge">Raspberry Pi</span>
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">OpenCV</span>
+                </div>
+                <a href="https://github.com/tdogbg/piface" target="_blank" style="display:inline-block;margin-top:20px;color:#8f5aff;text-decoration:none;font-weight:600;">View on GitHub →</a>
+            </div>
+            <div class="project-card glass">
+                <h3>Quote Generator</h3>
+                <p>Clean web app that generates random quotes with modern interface.</p>
+                <div class="tech-stack">
+                    <span class="tech-badge">HTML</span>
+                    <span class="tech-badge">CSS</span>
+                    <span class="tech-badge">JavaScript</span>
+                </div>
+                <a href="https://tdogbg.github.io/quote/" target="_blank" style="display:inline-block;margin-top:20px;color:#8f5aff;text-decoration:none;font-weight:600;">View Project →</a>
+            </div>
+            <div class="project-card glass">
+                <h3>Discord Bot</h3>
+                <p>Advanced bot with AI features and moderation systems.</p>
+                <div class="tech-stack">
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">Discord.py</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Connect</h2>
+        <div class="contact-container glass">
+            <p>Ready to collaborate? Let's connect.</p>
+            <div class="contact-links">
+                <a href="mailto:zhengterry99@gmail.com" class="contact-btn">Email</a>
+                <a href="https://github.com/tdogbg" class="contact-btn" target="_blank">GitHub</a>
+                <a href="https://discord.com/users/tdogbg" class="contact-btn" target="_blank">Discord</a>
+                <a href="https://www.linkedin.com/in/terry-zheng-ba5547347" class="contact-btn" target="_blank">LinkedIn</a>
+                <a href="https://www.tiktok.com/@t_zheng" class="contact-btn" target="_blank">TikTok</a>
+                <a href="https://www.instagram.com/t_zhng0" class="contact-btn" target="_blank">Instagram</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 Terry Zheng. All rights reserved.</p>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Typing
+        const texts = ['Student. Developer. Innovator.', 'Building the future with code.', 'Turning ideas into reality.'];
+        let textIndex = 0, charIndex = 0, isDeleting = false;
+        const typedTextElement = document.getElementById('typed-text');
+
+        function type() {
+            const currentText = texts[textIndex];
+            if (isDeleting) {
+                typedTextElement.textContent = currentText.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typedTextElement.textContent = currentText.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            if (!isDeleting && charIndex === currentText.length) {
+                setTimeout(() => isDeleting = true, 2000);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                textIndex = (textIndex + 1) % texts.length;
+            }
+            setTimeout(type, isDeleting ? 50 : 100);
+        }
+        type();
+
+        // GSAP Animations
+        gsap.utils.toArray('.stat-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 85%',
+                    toggleActions: 'play none none reset'
+                },
+                y: 50,
+                opacity: 0,
+                duration: 0.6,
+                delay: i * 0.15
+            });
+        });
+
+        gsap.from('.about-container', {
+            scrollTrigger: {
+                trigger: '.about-container',
+                start: 'top 80%',
+                toggleActions: 'play none none reset'
+            },
+            y: 50,
+            opacity: 0,
+            duration: 0.8
+        });
+
+        gsap.utils.toArray('.project-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 85%',
+                    toggleActions: 'play none none reset'
+                },
+                y: 50,
+                opacity: 0,
+                duration: 0.6,
+                delay: i * 0.2
+            });
+        });
+
+        gsap.from('.contact-container', {
+            scrollTrigger: {
+                trigger: '.contact-container',
+                start: 'top 80%',
+                toggleActions: 'play none none reset'
+            },
+            y: 50,
+            opacity: 0,
+            duration: 0.8
+        });
+
+        // Scroll dots
+        const scrollDots = document.querySelectorAll('.scroll-dot');
+        scrollDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const sectionId = dot.getAttribute('data-section');
+                document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            ['hero', 'highlights', 'about', 'projects', 'contact'].forEach(id => {
+                const section = document.getElementById(id);
+                if (window.pageYOffset >= section.offsetTop - 300) current = id;
+            });
+            scrollDots.forEach(dot => {
+                dot.classList.remove('active');
+                if (dot.getAttribute('data-section') === current) dot.classList.add('active');
+            });
+        });
+
+        // Hanging card
+        const hangingCard = document.querySelector('.hanging-card');
+        const closeCard = document.querySelector('.close-card');
+        closeCard.addEventListener('click', () => {
+            hangingCard.classList.add('dismissed');
+        });
+
+        let lastScrollY = window.scrollY;
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > lastScrollY && window.scrollY > 100) {
+                if (hangingCard && !hangingCard.classList.contains('dismissed')) {
+                    hangingCard.classList.add('dismissed');
+                }
+            }
+            lastScrollY = window.scrollY;
+        });
+
+        // Chatbox
+        const chatButton = document.querySelector('.chat-button');
+        const chatWindow = document.querySelector('.chat-window');
+        const chatClose = document.querySelector('.chat-close');
+        const chatInput = document.querySelector('.chat-input');
+        const chatSend = document.querySelector('.chat-send');
+        const chatMessages = document.querySelector('.chat-messages');
+
+        chatButton.addEventListener('click', () => {
+            chatWindow.classList.toggle('active');
+        });
+        chatClose.addEventListener('click', () => {
+            chatWindow.classList.remove('active');
+        });
+
+        const responses = {
+            'projects': "I've worked on PiFace (2nd place UK!), web apps with React, Discord bots, and more!",
+            'skills': "Python, JavaScript, React, Node.js, OpenCV, pentesting, and always learning!",
+            'contact': "Email me at zhengterry99@gmail.com or find me on GitHub, Discord, LinkedIn, TikTok, or Instagram!",
+            'piface': "PiFace is a facial recognition system using Raspberry Pi and OpenCV. We came 2nd in the UK competition!",
+            'default': "Check out my portfolio or ask about projects, skills, or contact info!"
+        };
+
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${isUser ? 'user' : 'bot'}`;
+            messageDiv.textContent = text;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function getResponse(question) {
+            const q = question.toLowerCase();
+            if (q.includes('project')) return responses.projects;
+            if (q.includes('skill')) return responses.skills;
+            if (q.includes('contact') || q.includes('email')) return responses.contact;
+            if (q.includes('piface')) return responses.piface;
+            return responses.default;
+        }
+
+        function handleQuestion(question) {
+            if (!question.trim()) return;
+            addMessage(question, true);
+            document.querySelector('.quick-questions')?.remove();
+            setTimeout(() => addMessage(getResponse(question)), 500);
+            chatInput.value = '';
+        }
+
+        chatSend.addEventListener('click', () => handleQuestion(chatInput.value));
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleQuestion(chatInput.value);
+        });
+
+        document.querySelectorAll('.quick-question').forEach(q => {
+            q.addEventListener('click', () => handleQuestion(q.textContent));
+        });
+
+        // Hamburger
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('nav ul');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Click outside to close menu
+        document.addEventListener('click', (e) => {
+            if (!hamburger.contains(e.target) && !navMenu.contains(e.target) && navMenu.classList.contains('active')) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+        });
+
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
