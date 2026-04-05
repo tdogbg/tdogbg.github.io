@@ -3,1094 +3,1108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terry Zheng </title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <meta name="description" content="Terry Zheng — developer, designer, builder. Portfolio and projects.">
+    <title>Terry Zheng — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+        }
+    }
+    </script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #000;
-            color: #fff;
-            overflow-x: hidden;
-            position: relative;
+        :root {
+            --bg-void: #030508;
+            --bg-panel: rgba(6, 14, 22, 0.65);
+            --cyan: #22d3ee;
+            --cyan-dim: rgba(34, 211, 238, 0.45);
+            --blue: #38bdf8;
+            --text: #e8eef4;
+            --text-muted: #8ba3b8;
+            --text-dim: #5c728a;
+            --border: rgba(56, 189, 248, 0.22);
+            --border-glow: rgba(34, 211, 238, 0.35);
+            --font-sans: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+            --radius: 14px;
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
+            --max: 72rem;
+            --focus: 2px solid var(--cyan);
         }
-        body::-webkit-scrollbar { display: none; }
-        body { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Falling particles */
-        .particles-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html {
+            scroll-behavior: smooth;
         }
-        .particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 50%;
-            animation: fall linear infinite;
-        }
-        @keyframes fall {
-            to {
-                transform: translateY(100vh);
-                opacity: 0;
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
         }
 
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: 20px 5%;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-void);
+            color: var(--text);
+            line-height: 1.6;
+            font-size: 1rem;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
-        nav .nav-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
+
+        /* Tech grid + vignette */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background:
+                linear-gradient(180deg, #050a10 0%, #030508 40%, #050c12 100%),
+                repeating-linear-gradient(0deg, transparent, transparent 47px, rgba(34, 211, 238, 0.03) 48px),
+                repeating-linear-gradient(90deg, transparent, transparent 47px, rgba(56, 189, 248, 0.025) 48px);
+            pointer-events: none;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(14, 100, 130, 0.18), transparent 55%);
+            pointer-events: none;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 1rem;
+            z-index: 10001;
+            padding: 0.65rem 1rem;
+            background: var(--cyan);
+            color: #030508;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: top 0.2s var(--ease);
+        }
+        .skip-link:focus { top: 1rem; outline: var(--focus); outline-offset: 2px; }
+
+        :focus-visible { outline: var(--focus); outline-offset: 2px; }
+        button:focus:not(:focus-visible), a:focus:not(:focus-visible) { outline: none; }
+
+        .mono { font-family: var(--font-mono); }
+
+        /* Nav */
+        .nav-wrap {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            max-width: var(--max);
             margin: 0 auto;
         }
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.75rem 1.25rem;
+            background: var(--bg-panel);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
+        }
         .logo {
-            font-size: 1.5rem;
-            font-weight: 900;
-            background: linear-gradient(90deg, #fff, #8f5aff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.12em;
+            color: var(--cyan);
+            text-transform: uppercase;
         }
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 6px;
-            cursor: pointer;
-            padding: 10px;
-        }
-        .hamburger span {
-            width: 30px;
-            height: 3px;
-            background: #fff;
-            border-radius: 3px;
-            transition: all 0.3s;
-        }
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(8px,8px); }
-        .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px,-7px); }
+        .logo span { color: var(--text-muted); font-weight: 500; }
         nav ul {
             display: flex;
-            gap: 50px;
+            gap: clamp(1rem, 3vw, 2rem);
             list-style: none;
+            align-items: center;
         }
         nav a {
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            font-size: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
             font-weight: 500;
-            transition: all 0.3s;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.25s var(--ease);
             position: relative;
         }
         nav a::after {
             content: '';
             position: absolute;
-            bottom: -5px;
             left: 0;
+            bottom: -4px;
             width: 0;
-            height: 2px;
-            background: #8f5aff;
-            transition: width 0.3s;
+            height: 1px;
+            background: var(--cyan);
+            transition: width 0.3s var(--ease);
         }
-        nav a:hover { color: #fff; }
+        nav a:hover { color: var(--text); }
         nav a:hover::after { width: 100%; }
 
-        section {
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            padding: 8px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text);
+        }
+        .hamburger span {
+            width: 22px;
+            height: 2px;
+            background: currentColor;
+            transition: transform 0.25s var(--ease), opacity 0.2s;
+        }
+        .hamburger[aria-expanded="true"] span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+        .hamburger[aria-expanded="true"] span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        main { position: relative; z-index: 1; }
+
+        /* Hero */
+        .hero {
             min-height: 100vh;
-            padding: 120px 10%;
-            position: relative;
-        }
-        #hero {
-            height: 100vh;
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             align-items: center;
-            justify-content: center;
-            text-align: center;
+            gap: 2rem;
+            padding: 6.5rem clamp(1.25rem, 4vw, 3rem) 4rem;
+            max-width: var(--max);
+            margin: 0 auto;
         }
-        .hero-content h1 {
-            font-size: 6rem;
-            font-weight: 900;
-            margin-bottom: 20px;
-            color: #fff;
-            letter-spacing: -2px;
-        }
-        .typing-text {
-            font-size: 2rem;
-            color: rgba(255,255,255,0.7);
-            font-family: 'Courier New', monospace;
-            min-height: 60px;
-        }
-        .cursor {
-            display: inline-block;
-            width: 3px;
-            height: 2rem;
-            background: rgba(255,255,255,0.7);
-            margin-left: 5px;
-            animation: blink 0.7s infinite;
-        }
-        @keyframes blink {
-            0%,50% { opacity: 1; }
-            51%,100% { opacity: 0; }
+        @media (max-width: 960px) {
+            .hero { grid-template-columns: 1fr; text-align: center; padding-top: 5.5rem; }
         }
 
-        .highlights-section {
-            min-height: 80vh;
-            padding: 100px 10%;
+        .hero-copy {
+            position: relative;
+            z-index: 2;
+        }
+        .hero-tag {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--cyan-dim);
+            margin-bottom: 1rem;
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, #a5f3fc 45%, var(--blue) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-sub {
+            font-family: var(--font-mono);
+            font-size: clamp(0.9rem, 2vw, 1.05rem);
+            color: var(--text-muted);
+            letter-spacing: 0.08em;
+            margin-bottom: 2rem;
+        }
+        .hero-sub .dot { color: var(--cyan); }
+        .hero-meta {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.75rem 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-dim);
         }
-        h2 {
-            font-size: 4rem;
-            margin-bottom: 80px;
-            text-align: center;
-            color: #fff;
-            font-weight: 900;
-            letter-spacing: -2px;
+        @media (max-width: 960px) {
+            .hero-meta { justify-content: center; }
         }
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
-            gap: 40px;
-            max-width: 1200px;
+        .hero-meta span { display: flex; align-items: center; gap: 0.4rem; }
+        .hero-meta code {
+            color: var(--cyan);
+            font-size: 0.72rem;
+            padding: 0.2rem 0.45rem;
+            background: rgba(34, 211, 238, 0.08);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        .globe-wrap {
+            position: relative;
+            height: min(56vh, 520px);
+            min-height: 280px;
+            z-index: 1;
+        }
+        #globe-canvas {
+            display: block;
             width: 100%;
+            height: 100%;
+            border-radius: var(--radius);
+        }
+        .globe-frame {
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: rgba(4, 12, 20, 0.4);
+            backdrop-filter: blur(8px);
+            pointer-events: none;
+            box-shadow:
+                inset 0 0 60px rgba(34, 211, 238, 0.06),
+                0 0 80px rgba(0, 0, 0, 0.5);
+        }
+        .globe-label {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            pointer-events: none;
+            text-align: center;
+        }
+
+        section {
+            padding: clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 4vw, 3rem);
+        }
+        .section-inner {
+            max-width: var(--max);
+            margin: 0 auto;
+        }
+        .section-head {
+            margin-bottom: 2.5rem;
+        }
+        .section-head h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+        .section-head p {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            letter-spacing: 0.04em;
+        }
+
+        /* Glass cards */
+        .glass {
+            background: rgba(8, 18, 28, 0.55);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            transition: border-color 0.35s var(--ease), box-shadow 0.35s var(--ease);
+        }
+        .glass:hover {
+            border-color: var(--border-glow);
+            box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.08), 0 20px 50px rgba(0, 0, 0, 0.35);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
         }
         .stat-card {
-            background: rgba(20,20,30,0.4);
-            backdrop-filter: blur(30px);
-            border-radius: 25px;
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 50px 30px;
+            padding: 1.5rem 1.25rem;
             text-align: center;
-            transition: all 0.5s;
         }
-        .stat-card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 25px 70px rgba(143,90,255,0.3);
-            border-color: rgba(143,90,255,0.5);
-        }
-        .stat-number {
-            font-size: 4rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #fff, #8f5aff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 0 0 15px 0;
+        .stat-val {
+            font-family: var(--font-mono);
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 700;
+            color: var(--cyan);
+            line-height: 1.1;
+            margin-bottom: 0.35rem;
         }
         .stat-label {
-            font-size: 1.1rem;
-            color: rgba(255,255,255,0.7);
+            font-size: 0.875rem;
+            color: var(--text-muted);
         }
 
-        .glass {
-            background: rgba(15,15,20,0.3);
-            backdrop-filter: blur(40px);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 30px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        .about-block {
+            padding: clamp(1.75rem, 4vw, 2.5rem);
+            max-width: 48rem;
         }
-        .about-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 80px;
+        .about-block p {
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            font-size: 1.05rem;
+            line-height: 1.75;
         }
-        .about-container p {
-            font-size: 1.4rem;
-            line-height: 2;
-            margin-bottom: 30px;
-        }
+        .about-block p:last-of-type { margin-bottom: 0; }
         .skills {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 50px;
+            gap: 0.6rem;
+            margin-top: 1.75rem;
         }
         .skill-tag {
-            padding: 15px 30px;
-            background: rgba(143,90,255,0.1);
-            border: 2px solid rgba(143,90,255,0.3);
-            border-radius: 50px;
-            color: #fff;
-            font-size: 1.1rem;
-            font-weight: 600;
-            transition: all 0.4s;
-            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.4rem 0.85rem;
+            background: rgba(34, 211, 238, 0.06);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            transition: background 0.25s var(--ease), border-color 0.25s;
         }
         .skill-tag:hover {
-            background: rgba(143,90,255,0.3);
-            transform: translateY(-10px) scale(1.1);
+            background: rgba(34, 211, 238, 0.12);
+            border-color: var(--cyan-dim);
         }
 
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px,1fr));
-            gap: 50px;
-            max-width: 1400px;
-            margin: 0 auto;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+            gap: 1.25rem;
         }
         .project-card {
-            padding: 50px;
-            transition: all 0.5s;
-            cursor: pointer;
-        }
-        .project-card:hover {
-            transform: translateY(-20px) scale(1.03);
-            box-shadow: 0 30px 80px rgba(143,90,255,0.3);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
         }
         .project-card h3 {
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-            color: #fff;
-            font-weight: 800;
+            font-family: var(--font-mono);
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 0.65rem;
+            color: var(--text);
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 0.5rem;
         }
-        .project-icon {
-            font-size: 2.5rem;
-        }
+        .project-card h3 svg { flex-shrink: 0; color: var(--cyan); }
         .project-card p {
-            line-height: 1.8;
-            margin-bottom: 30px;
-            color: rgba(255,255,255,0.9);
-            font-size: 1.1rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+            flex-grow: 1;
+            margin-bottom: 1rem;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--cyan);
+            background: rgba(34, 211, 238, 0.08);
+            border: 1px solid var(--border);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-bottom: 0.75rem;
+            width: fit-content;
         }
         .tech-stack {
             display: flex;
-            gap: 15px;
             flex-wrap: wrap;
+            gap: 0.45rem;
+            margin-bottom: 0.75rem;
         }
         .tech-badge {
-            padding: 8px 18px;
-            background: rgba(143,90,255,0.15);
-            border: 1px solid rgba(143,90,255,0.3);
-            border-radius: 20px;
-            font-size: 0.9rem;
-            color: #fff;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            padding: 0.25rem 0.55rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-muted);
         }
+        .project-link {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--cyan);
+            text-decoration: none;
+            margin-top: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: gap 0.25s var(--ease), color 0.2s;
+        }
+        .project-link:hover { gap: 0.55rem; color: var(--blue); }
 
-        .contact-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 80px;
+        .contact-box {
+            padding: clamp(2rem, 4vw, 2.75rem);
             text-align: center;
+            max-width: 44rem;
+            margin: 0 auto;
         }
-        .contact-container p {
-            font-size: 1.5rem;
-            margin-bottom: 60px;
-            line-height: 1.8;
+        .contact-box > p {
+            color: var(--text-muted);
+            margin-bottom: 1.75rem;
+            font-size: 1.05rem;
         }
         .contact-links {
             display: flex;
-            justify-content: center;
-            gap: 30px;
             flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.65rem;
         }
         .contact-btn {
-            padding: 18px 45px;
-            background: rgba(143,90,255,0.1);
-            border: 2px solid rgba(143,90,255,0.4);
-            color: #fff;
-            font-size: 1.1rem;
-            font-weight: 700;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.4s;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            padding: 0.65rem 1.15rem;
+            background: rgba(34, 211, 238, 0.06);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
             text-decoration: none;
-            display: inline-block;
+            transition: background 0.25s var(--ease), border-color 0.25s, transform 0.2s;
         }
         .contact-btn:hover {
-            background: rgba(143,90,255,0.3);
-            transform: translateY(-10px) scale(1.05);
-        }
-
-        .scroll-indicator {
-            position: fixed;
-            right: 40px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            z-index: 100;
-        }
-        .scroll-text {
-            writing-mode: vertical-rl;
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.5);
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-        }
-        .scroll-dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.3);
-            background: transparent;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .scroll-dot:hover {
-            background: rgba(143,90,255,0.5);
-            transform: scale(1.5);
-        }
-        .scroll-dot.active {
-            background: #8f5aff;
-            border-color: #8f5aff;
+            background: rgba(34, 211, 238, 0.12);
+            border-color: var(--cyan-dim);
+            transform: translateY(-2px);
         }
 
         footer {
-            padding: 60px 10%;
+            padding: 2.5rem 1.5rem;
+            border-top: 1px solid var(--border);
             text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.05);
         }
         footer p {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.4);
-            margin-bottom: 10px;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--text-dim);
         }
 
-        /* Hanging card */
-        .hanging-card {
+        /* Chat */
+        .chat-fab {
             position: fixed;
-            top: -200px;
-            right: 80px;
-            z-index: 9998;
-            animation: dropCard 1.5s cubic-bezier(0.68,-0.55,0.265,1.55) 1s forwards;
-        }
-        .rope {
-            width: 2px;
-            height: 80px;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
-            margin: 0 auto;
-            transform-origin: top center;
-            animation: swingRope 3s ease-in-out infinite;
-        }
-        .name-card {
-            background: linear-gradient(135deg, rgba(30,30,40,0.95), rgba(20,20,30,0.95));
-            backdrop-filter: blur(30px);
-            border: 2px solid rgba(255,255,255,0.15);
-            border-radius: 20px;
-            padding: 25px 35px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.6);
-            transform-origin: top center;
-            animation: swingCard 3s ease-in-out infinite;
-            min-width: 200px;
-            position: relative;
-        }
-        .name-card .greeting {
-            font-size: 1rem;
-            margin: 0 0 8px 0;
-            color: rgba(255,255,255,0.6);
-        }
-        .name-card .name {
-            font-size: 1.8rem;
-            margin: 0;
-            color: #fff;
-            font-family: 'Comic Sans MS', cursive;
-            font-weight: 700;
-        }
-        .close-card {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 25px;
-            height: 25px;
-            cursor: pointer;
-            opacity: 0.5;
-            transition: opacity 0.3s;
-        }
-        .close-card:hover { opacity: 1; }
-        .close-card::before, .close-card::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 15px;
-            height: 2px;
-            background: #fff;
-        }
-        .close-card::before { transform: translate(-50%,-50%) rotate(45deg); }
-        .close-card::after { transform: translate(-50%,-50%) rotate(-45deg); }
-        @keyframes dropCard {
-            0% { top: -200px; }
-            60% { top: 100px; }
-            80% { top: 80px; }
-            100% { top: 90px; }
-        }
-        @keyframes swingRope {
-            0%,100% { transform: rotate(0deg); }
-            25% { transform: rotate(3deg); }
-            75% { transform: rotate(-3deg); }
-        }
-        @keyframes swingCard {
-            0%,100% { transform: rotate(0deg); }
-            25% { transform: rotate(2deg); }
-            75% { transform: rotate(-2deg); }
-        }
-        .hanging-card.dismissed {
-            animation: flyAway 0.6s forwards;
-        }
-        @keyframes flyAway {
-            to { transform: translateY(-300px) rotate(20deg); opacity: 0; }
-        }
-
-        /* Chatbox */
-        .chatbox {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 1.25rem;
+            right: 1.25rem;
             z-index: 9999;
-        }
-        .chat-button {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: rgba(143,90,255,0.2);
-            backdrop-filter: blur(20px);
-            border: 2px solid rgba(143,90,255,0.4);
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: rgba(8, 20, 32, 0.85);
+            backdrop-filter: blur(12px);
+            color: var(--cyan);
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
+            transition: box-shadow 0.3s var(--ease), border-color 0.3s, transform 0.2s;
         }
-        .chat-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 10px 30px rgba(143,90,255,0.4);
+        .chat-fab:hover {
+            border-color: var(--cyan-dim);
+            box-shadow: 0 0 24px rgba(34, 211, 238, 0.15);
+            transform: translateY(-2px);
         }
-        .chat-button svg {
-            width: 30px;
-            height: 30px;
-            stroke: #fff;
-        }
-        .chat-window {
-            position: absolute;
-            bottom: 80px;
-            right: 0;
-            width: 350px;
-            height: 450px;
-            background: rgba(15,15,20,0.95);
-            backdrop-filter: blur(30px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
-            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+        .chat-panel {
+            position: fixed;
+            bottom: 5.5rem;
+            right: 1.25rem;
+            z-index: 9998;
+            width: min(100vw - 2rem, 380px);
+            height: min(70vh, 460px);
             display: none;
             flex-direction: column;
+            background: rgba(4, 12, 20, 0.92);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
         }
-        .chat-window.active { display: flex; }
-        .chat-header {
-            padding: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+        .chat-panel.open { display: flex; }
+        .chat-head {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.1rem;
+            border-bottom: 1px solid var(--border);
         }
-        .chat-header h4 {
-            margin: 0;
-            font-size: 1.1rem;
-            color: #fff;
+        .chat-head h4 {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+        }
+        .chat-status {
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            color: var(--text-dim);
+            margin-top: 0.2rem;
         }
         .chat-close {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-muted);
             cursor: pointer;
-            opacity: 0.5;
-            transition: opacity 0.3s;
-            width: 20px;
-            height: 20px;
-            position: relative;
+            font-size: 1.1rem;
+            line-height: 1;
+            transition: background 0.2s, color 0.2s;
         }
-        .chat-close:hover { opacity: 1; }
-        .chat-close::before, .chat-close::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 15px;
-            height: 2px;
-            background: #fff;
-        }
-        .chat-close::before { transform: translate(-50%,-50%) rotate(45deg); }
-        .chat-close::after { transform: translate(-50%,-50%) rotate(-45deg); }
+        .chat-close:hover { background: rgba(34, 211, 238, 0.1); color: var(--text); }
+
         .chat-messages {
             flex: 1;
-            padding: 20px;
             overflow-y: auto;
+            padding: 1rem;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 0.75rem;
         }
-        .chat-message {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 15px;
-            font-size: 0.9rem;
+        .msg {
+            max-width: 92%;
+            padding: 0.65rem 0.85rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
             line-height: 1.5;
         }
-        .chat-message.bot {
-            background: rgba(143,90,255,0.2);
-            color: #fff;
-            align-self: flex-start;
-        }
-        .chat-message.user {
-            background: rgba(255,255,255,0.2);
-            color: #fff;
+        .msg.user {
             align-self: flex-end;
+            background: rgba(34, 211, 238, 0.12);
+            border: 1px solid var(--border);
+            font-family: var(--font-sans);
         }
-        .quick-questions {
+        .msg.bot {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            font-family: var(--font-sans);
+            color: var(--text-muted);
+        }
+        .msg.err {
+            border-color: rgba(248, 113, 113, 0.4);
+            color: #fca5a5;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+        }
+        .chat-input-row {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 10px;
+            gap: 0.5rem;
+            padding: 0.85rem;
+            border-top: 1px solid var(--border);
         }
-        .quick-question {
-            background: rgba(143,90,255,0.1);
-            border: 1px solid rgba(143,90,255,0.3);
-            border-radius: 10px;
-            padding: 10px 15px;
-            color: #fff;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: left;
-        }
-        .quick-question:hover {
-            background: rgba(143,90,255,0.3);
-            transform: translateX(5px);
-        }
-        .chat-input-container {
-            padding: 15px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            gap: 10px;
-        }
-        .chat-input {
+        .chat-input-row input {
             flex: 1;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 25px;
-            padding: 12px 20px;
-            color: #fff;
-            font-size: 0.9rem;
-            outline: none;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            padding: 0.6rem 0.85rem;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
         }
-        .chat-input::placeholder { color: rgba(255,255,255,0.3); }
+        .chat-input-row input::placeholder { color: var(--text-dim); }
+        .chat-input-row input:focus { outline: none; border-color: var(--cyan-dim); }
         .chat-send {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: rgba(143,90,255,0.3);
-            border: none;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.6rem 1rem;
+            background: rgba(34, 211, 238, 0.15);
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            color: var(--cyan);
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
+            transition: background 0.2s;
         }
-        .chat-send:hover { background: rgba(143,90,255,0.5); }
-        .chat-send svg {
-            width: 20px;
-            height: 20px;
-            stroke: #fff;
+        .chat-send:hover { background: rgba(34, 211, 238, 0.25); }
+        .chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
         }
 
         @media (max-width: 768px) {
-            .hero-content h1 { font-size: 3.5rem; }
-            h2 { font-size: 2.5rem; }
             .hamburger { display: flex; }
             nav ul {
                 position: fixed;
                 top: 0;
-                right: -100%;
+                right: 0;
                 height: 100vh;
-                width: 75%;
-                max-width: 300px;
-                background: rgba(10,10,15,0.98);
-                backdrop-filter: blur(30px);
+                width: min(300px, 85vw);
+                background: rgba(3, 8, 14, 0.97);
+                border-left: 1px solid var(--border);
                 flex-direction: column;
                 justify-content: center;
-                align-items: center;
-                gap: 40px;
-                transition: right 0.4s;
-                border-left: 1px solid rgba(255,255,255,0.1);
+                padding: 2rem;
+                gap: 1.5rem;
+                transform: translateX(100%);
+                transition: transform 0.35s var(--ease);
+                z-index: 999;
             }
-            nav ul.active { right: 0; }
-            nav a { font-size: 1.5rem; }
-            .projects-grid { grid-template-columns: 1fr; }
-            .about-container, .contact-container { padding: 40px; }
-            .stats-container { grid-template-columns: repeat(2, 1fr); }
-            .hanging-card { right: 10px; transform: scale(0.85); }
-            .chatbox { right: 20px; }
-            .chat-window {
-                width: 90vw;
-                max-width: 350px;
-                right: 20px;
-            }
+            nav ul[data-open="true"] { transform: translateX(0); }
         }
     </style>
 </head>
 <body>
-    <!-- Falling particles -->
-    <div class="particles-bg"></div>
+    <a href="#main" class="skip-link">Skip to content</a>
 
-    <!-- Hanging card -->
-    <div class="hanging-card">
-        <div class="rope"></div>
-        <div class="name-card">
-            <div class="close-card"></div>
-            <p class="greeting">Hello!</p>
-            <h3 class="name">I'm Terry</h3>
-        </div>
-    </div>
-
-    <!-- Chatbox -->
-    <div class="chatbox">
-        <div class="chat-button">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
-        </div>
-        <div class="chat-window">
-            <div class="chat-header">
-                <h4>Chat with Terry</h4>
-                <div class="chat-close"></div>
-            </div>
-            <div class="chat-messages">
-                <div class="chat-message bot">Hey! Got questions?</div>
-                <div class="quick-questions">
-                    <div class="quick-question">What projects have you worked on?</div>
-                    <div class="quick-question">What are your skills?</div>
-                    <div class="quick-question">How can I contact you?</div>
-                    <div class="quick-question">Tell me about PiFace</div>
-                </div>
-            </div>
-            <div class="chat-input-container">
-                <input type="text" class="chat-input" placeholder="Type your question...">
-                <button class="chat-send">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                        <line x1="22" y1="2" x2="11" y2="13"></line>
-                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <nav>
-        <div class="nav-content">
-            <div class="logo">TZ</div>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <ul>
+    <header class="nav-wrap">
+        <nav aria-label="Primary">
+            <div class="logo">TZ <span>/ dev</span></div>
+            <button type="button" class="hamburger" id="nav-btn" aria-expanded="false" aria-controls="nav-menu" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <ul id="nav-menu">
                 <li><a href="#hero">Home</a></li>
                 <li><a href="#highlights">Highlights</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
-    <div class="scroll-indicator">
-        <div class="scroll-text">SCROLL</div>
-        <div class="scroll-dot active" data-section="hero"></div>
-        <div class="scroll-dot" data-section="highlights"></div>
-        <div class="scroll-dot" data-section="about"></div>
-        <div class="scroll-dot" data-section="projects"></div>
-        <div class="scroll-dot" data-section="contact"></div>
-    </div>
-
-    <section id="hero">
-        <div class="hero-content">
-            <h1>TERRY ZHENG</h1>
-            <div class="typing-text">
-                <span id="typed-text"></span><span class="cursor"></span>
-            </div>
-        </div>
-    </section>
-
-    <section id="highlights" class="highlights-section">
-    <h2>Highlights</h2>
-    <div class="stats-container">
-        <div class="stat-card">
-            <h3 class="stat-number">2nd</h3>
-            <p class="stat-label">UK Raspberry Pi Competition</p>
-        </div>
-        <div class="stat-card">
-            <h3 class="stat-number">10+</h3>
-            <p class="stat-label">Technologies Mastered</p>
-        </div>
-        <div class="stat-card">
-            <h3 class="stat-number">15</h3>
-            <p class="stat-label">Years Old</p>
-        </div>
-        <div class="stat-card">
-            <h3 class="stat-number">∞</h3>
-            <p class="stat-label">Ideas & Ambitions</p>
-        </div>
-    </div>
-</section>
-
-<style>
-.stats-container {
-    display: flex;              /* arrange children in a row */
-    justify-content: space-around; /* even spacing */
-    align-items: center;        /* vertically center cards */
-    flex-wrap: nowrap;          /* keep in one line */
-    gap: 20px;                  /* space between cards */
-}
-
-.stat-card {
-    flex: 1 1 0;                /* equal width for all cards */
-    text-align: center;          /* center text inside each card */
-}
-
-@media (max-width: 768px) {
-    .stats-container {
-        flex-direction: column;  /* stack vertically on small screens */
-        gap: 15px;
-    }
-}
-</style>
-
-
-    <section id="about">
-        <h2>About Me</h2>
-        <div class="about-container glass">
-            <p>Hi, I'm Terry — a 15-year-old student preparing for my GCSEs. I'm passionate about technology, coding, and penetration testing through Hack The Box and enjoy tackling cybersecurity challenges.</p>
-            <p>When I'm not coding, I play badminton, play the piano, game competitively, attend RAF Air Cadets, or start planning my next project. I'm always experimenting with new programming languages, frameworks, and penetration-testing tools.</p>
-            <div class="skills">
-                <span class="skill-tag">Python</span>
-                <span class="skill-tag">JavaScript</span>
-                <span class="skill-tag">HTML/CSS</span>
-                <span class="skill-tag">React</span>
-                <span class="skill-tag">Node.js</span>
-                <span class="skill-tag">Pentesting</span>
-                <span class="skill-tag">Git/GitHub</span>
-            </div>
-        </div>
-    </section>
-
-    <section id="projects">
-        <h2>Featured Projects</h2>
-        <div class="projects-grid">
-            <div class="project-card glass">
-                <h3>Project Alpha</h3>
-                <p>A revolutionary web application featuring cutting-edge UI/UX design and real-time data processing.</p>
-                <div class="tech-stack">
-                    <span class="tech-badge">React</span>
-                    <span class="tech-badge">Node.js</span>
-                    <span class="tech-badge">MongoDB</span>
+    <main id="main">
+        <section id="hero" class="hero" aria-labelledby="hero-title">
+            <div class="hero-copy">
+                <p class="hero-tag">// portfolio.signal</p>
+                <h1 id="hero-title">TERRY ZHENG</h1>
+                <p class="hero-sub">Developer <span class="dot">•</span> Designer <span class="dot">•</span> Builder</p>
+                <div class="hero-meta">
+                    <span><code>16</code> y/o</span>
+                    <span>GCSE track</span>
+                    <span>HTB · cadets · build</span>
                 </div>
             </div>
-            <div class="project-card glass">
-                <h3>PiFace</h3>
-                <p>🥈 2nd Place UK Raspberry Pi Competition - Facial recognition security system.</p>
-                <div class="tech-stack">
-                    <span class="tech-badge">Raspberry Pi</span>
-                    <span class="tech-badge">Python</span>
-                    <span class="tech-badge">OpenCV</span>
-                </div>
-                <a href="https://github.com/tdogbg/piface" target="_blank" style="display:inline-block;margin-top:20px;color:#8f5aff;text-decoration:none;font-weight:600;">View on GitHub →</a>
+            <div class="globe-wrap">
+                <canvas id="globe-canvas" aria-hidden="true"></canvas>
+                <div class="globe-frame" aria-hidden="true"></div>
+                <p class="globe-label">Wireframe globe · three.js</p>
             </div>
-            <div class="project-card glass">
-                <h3>Quote Generator</h3>
-                <p>Clean web app that generates random quotes with modern interface.</p>
-                <div class="tech-stack">
-                    <span class="tech-badge">HTML</span>
-                    <span class="tech-badge">CSS</span>
-                    <span class="tech-badge">JavaScript</span>
-                </div>
-                <a href="https://tdogbg.github.io/quote/" target="_blank" style="display:inline-block;margin-top:20px;color:#8f5aff;text-decoration:none;font-weight:600;">View Project →</a>
-            </div>
-            <div class="project-card glass">
-                <h3>Discord Bot</h3>
-                <p>Advanced bot with AI features and moderation systems.</p>
-                <div class="tech-stack">
-                    <span class="tech-badge">Python</span>
-                    <span class="tech-badge">Discord.py</span>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="contact">
-        <h2>Connect</h2>
-        <div class="contact-container glass">
-            <p>Ready to collaborate? Let's connect.</p>
-            <div class="contact-links">
-                <a href="mailto:zhengterry99@gmail.com" class="contact-btn">Email</a>
-                <a href="https://github.com/tdogbg" class="contact-btn" target="_blank">GitHub</a>
-                <a href="https://discord.com/users/tdogbg" class="contact-btn" target="_blank">Discord</a>
-                <a href="https://www.linkedin.com/in/terry-zheng-ba5547347" class="contact-btn" target="_blank">LinkedIn</a>
-                <a href="https://www.tiktok.com/@t_zheng" class="contact-btn" target="_blank">TikTok</a>
-                <a href="https://www.instagram.com/t_zhng0" class="contact-btn" target="_blank">Instagram</a>
+        <section id="highlights" aria-labelledby="hl-title">
+            <div class="section-inner">
+                <header class="section-head">
+                    <h2 id="hl-title">Highlights</h2>
+                    <p>Milestones · stack · trajectory</p>
+                </header>
+                <div class="stats">
+                    <div class="stat-card glass">
+                        <div class="stat-val">2nd</div>
+                        <div class="stat-label">UK Raspberry Pi Competition</div>
+                    </div>
+                    <div class="stat-card glass">
+                        <div class="stat-val">10+</div>
+                        <div class="stat-label">Technologies</div>
+                    </div>
+                    <div class="stat-card glass">
+                        <div class="stat-val">16</div>
+                        <div class="stat-label">Years old</div>
+                    </div>
+                    <div class="stat-card glass">
+                        <div class="stat-val">∞</div>
+                        <div class="stat-label">Ideas &amp; ambitions</div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <section id="about" aria-labelledby="about-title">
+            <div class="section-inner">
+                <header class="section-head">
+                    <h2 id="about-title">About</h2>
+                    <p>Background · interests · tools</p>
+                </header>
+                <div class="about-block glass">
+                    <p>Hi, I'm Terry — a 16-year-old student preparing for my GCSEs. I'm passionate about technology, coding, and penetration testing through Hack The Box and enjoy tackling cybersecurity challenges.</p>
+                    <p>When I'm not coding, I play badminton, play the piano, game competitively, attend RAF Air Cadets, or start planning my next project. I'm always experimenting with new programming languages, frameworks, and penetration-testing tools.</p>
+                    <div class="skills" role="list">
+                        <span class="skill-tag" role="listitem">Python</span>
+                        <span class="skill-tag" role="listitem">JavaScript</span>
+                        <span class="skill-tag" role="listitem">HTML/CSS</span>
+                        <span class="skill-tag" role="listitem">React</span>
+                        <span class="skill-tag" role="listitem">Node.js</span>
+                        <span class="skill-tag" role="listitem">Pentesting</span>
+                        <span class="skill-tag" role="listitem">Git/GitHub</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" aria-labelledby="proj-title">
+            <div class="section-inner">
+                <header class="section-head">
+                    <h2 id="proj-title">Featured projects</h2>
+                    <p>Builds · experiments · shipped work</p>
+                </header>
+                <div class="projects-grid">
+                    <article class="project-card glass">
+                        <h3>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                            Project Alpha
+                        </h3>
+                        <p>A revolutionary web application featuring cutting-edge UI/UX design and real-time data processing.</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge">React</span>
+                            <span class="tech-badge">Node.js</span>
+                            <span class="tech-badge">MongoDB</span>
+                        </div>
+                    </article>
+
+                    <article class="project-card glass">
+                        <span class="badge">2nd · UK</span>
+                        <h3>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
+                            PiFace
+                        </h3>
+                        <p>Facial recognition security system — 2nd place UK Raspberry Pi Competition.</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge">Raspberry Pi</span>
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">OpenCV</span>
+                        </div>
+                        <a href="https://github.com/tdogbg/piface" class="project-link" target="_blank" rel="noopener noreferrer">github / piface →</a>
+                    </article>
+
+                    <article class="project-card glass">
+                        <h3>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                            Gizmo Helper
+                        </h3>
+                        <p>Developer utility that streamlines editor workflows and gizmo interactions — built for faster iteration and cleaner scene tooling.</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge">JavaScript</span>
+                            <span class="tech-badge">Web</span>
+                            <span class="tech-badge">Tooling</span>
+                        </div>
+                    </article>
+
+                    <article class="project-card glass">
+                        <h3>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                            Quote Generator
+                        </h3>
+                        <p>Clean web app that generates random quotes with a minimal interface.</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge">HTML</span>
+                            <span class="tech-badge">CSS</span>
+                            <span class="tech-badge">JavaScript</span>
+                        </div>
+                        <a href="https://tdogbg.github.io/quote/" class="project-link" target="_blank" rel="noopener noreferrer">live demo →</a>
+                    </article>
+
+                    <article class="project-card glass">
+                        <h3>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                            Discord Bot
+                        </h3>
+                        <p>Advanced bot with AI features and moderation systems.</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">Discord.py</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" aria-labelledby="contact-title">
+            <div class="section-inner">
+                <header class="section-head">
+                    <h2 id="contact-title">Connect</h2>
+                    <p>Email · social · collabs</p>
+                </header>
+                <div class="contact-box glass">
+                    <p>Ready to collaborate? Let's connect.</p>
+                    <div class="contact-links">
+                        <a href="mailto:zhengterry99@gmail.com" class="contact-btn">Email</a>
+                        <a href="https://github.com/tdogbg" class="contact-btn" target="_blank" rel="noopener noreferrer">GitHub</a>
+                        <a href="https://discord.com/users/tdogbg" class="contact-btn" target="_blank" rel="noopener noreferrer">Discord</a>
+                        <a href="https://www.linkedin.com/in/terry-zheng-ba5547347" class="contact-btn" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                        <a href="https://www.tiktok.com/@t_zheng" class="contact-btn" target="_blank" rel="noopener noreferrer">TikTok</a>
+                        <a href="https://www.instagram.com/t_zhng0" class="contact-btn" target="_blank" rel="noopener noreferrer">Instagram</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <footer>
-        <p>© 2025 Terry Zheng. All rights reserved.</p>
-        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.3);">Don't copy this or I'll sue you (just kidding... or am I? 👀)</p>
+        <p>© 2026 Terry Zheng</p>
     </footer>
 
-    <script>
-        gsap.registerPlugin(ScrollTrigger);
+    <button type="button" class="chat-fab" id="chat-toggle" aria-expanded="false" aria-controls="chat-panel" aria-label="Open assistant chat">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    </button>
+    <div class="chat-panel" id="chat-panel" role="dialog" aria-labelledby="chat-heading" hidden>
+        <div class="chat-head">
+            <div>
+                <h4 id="chat-heading">Local LLM</h4>
+                <p class="chat-status" id="chat-status">Ollama · localhost:11434 · gemma:3b</p>
+            </div>
+            <button type="button" class="chat-close" id="chat-close" aria-label="Close chat">×</button>
+        </div>
+        <div class="chat-messages" id="chat-messages" aria-live="polite"></div>
+        <div class="chat-input-row">
+            <label for="chat-field" class="visually-hidden">Message</label>
+            <input type="text" id="chat-field" placeholder="Ask anything…" autocomplete="off" />
+            <button type="button" class="chat-send" id="chat-send">Send</button>
+        </div>
+    </div>
 
-        // Typing
-        const texts = ['Student. Developer. Innovator.', 'Building the future with code.', 'Turning ideas into reality.'];
-        let textIndex = 0, charIndex = 0, isDeleting = false;
-        const typedTextElement = document.getElementById('typed-text');
+    <script type="module">
+        import * as THREE from 'three';
 
-        function type() {
-            const currentText = texts[textIndex];
-            if (isDeleting) {
-                typedTextElement.textContent = currentText.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                typedTextElement.textContent = currentText.substring(0, charIndex + 1);
-                charIndex++;
+        const OLLAMA_URL = 'http://localhost:11434/api/chat';
+        const OLLAMA_MODEL = 'gemma:3b';
+        const SYSTEM_PROMPT = `You are a concise, friendly assistant on Terry Zheng's portfolio site. Terry is a 16-year-old student developer interested in security, Python, JS, and projects like PiFace. Keep answers short unless asked for detail.`;
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const canvas = document.getElementById('globe-canvas');
+        const wrap = canvas?.closest('.globe-wrap');
+
+        function initGlobe() {
+            if (!canvas || !wrap) return;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+            camera.position.z = 2.8;
+
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.setClearColor(0x000000, 0);
+
+            const group = new THREE.Group();
+            scene.add(group);
+
+            const sphereGeom = new THREE.SphereGeometry(1, 48, 48);
+            const wireMat = new THREE.MeshBasicMaterial({
+                color: 0x22d3ee,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.35
+            });
+            const wireSphere = new THREE.Mesh(sphereGeom, wireMat);
+            group.add(wireSphere);
+
+            const edges = new THREE.EdgesGeometry(new THREE.SphereGeometry(1.02, 32, 32));
+            const lineMat = new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.85 });
+            const wireframe = new THREE.LineSegments(edges, lineMat);
+            group.add(wireframe);
+
+            const innerGeom = new THREE.SphereGeometry(0.98, 32, 32);
+            const innerMat = new THREE.MeshBasicMaterial({
+                color: 0x0e7490,
+                transparent: true,
+                opacity: 0.06,
+                wireframe: false
+            });
+            group.add(new THREE.Mesh(innerGeom, innerMat));
+
+            const ringGeom = new THREE.TorusGeometry(1.35, 0.008, 8, 96);
+            const ringMat = new THREE.MeshBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.5 });
+            const ring = new THREE.Mesh(ringGeom, ringMat);
+            ring.rotation.x = Math.PI / 2.2;
+            group.add(ring);
+
+            function resize() {
+                const w = wrap.clientWidth;
+                const h = wrap.clientHeight;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h, false);
             }
-            if (!isDeleting && charIndex === currentText.length) {
-                setTimeout(() => isDeleting = true, 2000);
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                textIndex = (textIndex + 1) % texts.length;
+            resize();
+            window.addEventListener('resize', resize);
+
+            let raf;
+            const rotSpeed = prefersReducedMotion ? 0 : 1;
+
+            function tick() {
+                raf = requestAnimationFrame(tick);
+                if (rotSpeed) {
+                    group.rotation.y += 0.0018;
+                    group.rotation.x += 0.0004;
+                    ring.rotation.z += 0.0008;
+                }
+                renderer.render(scene, camera);
             }
-            setTimeout(type, isDeleting ? 50 : 100);
+            tick();
+
+            return () => {
+                cancelAnimationFrame(raf);
+                window.removeEventListener('resize', resize);
+                renderer.dispose();
+                sphereGeom.dispose();
+                wireMat.dispose();
+                edges.dispose();
+                lineMat.dispose();
+                innerGeom.dispose();
+                innerMat.dispose();
+                ringGeom.dispose();
+                ringMat.dispose();
+            };
         }
-        type();
 
-        // Create falling particles
-        const particlesBg = document.querySelector('.particles-bg');
-        for (let i = 0; i < 50; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            particle.style.animationDelay = Math.random() * 5 + 's';
-            particlesBg.appendChild(particle);
-        }
+        initGlobe();
 
-        // GSAP Animations
-        gsap.utils.toArray('.stat-card').forEach((card, i) => {
-            gsap.from(card, {
-                scrollTrigger: {
-                    trigger: card,
-                    start: 'top 85%',
-                    toggleActions: 'play none none reset'
-                },
-                y: 50,
-                opacity: 0,
-                duration: 0.6,
-                delay: i * 0.15
-            });
-        });
+        /* —— Chat (Ollama) —— */
+        const chatPanel = document.getElementById('chat-panel');
+        const chatToggle = document.getElementById('chat-toggle');
+        const chatClose = document.getElementById('chat-close');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatField = document.getElementById('chat-field');
+        const chatSend = document.getElementById('chat-send');
+        const chatStatus = document.getElementById('chat-status');
 
-        gsap.from('.about-container', {
-            scrollTrigger: {
-                trigger: '.about-container',
-                start: 'top 80%',
-                toggleActions: 'play none none reset'
-            },
-            y: 80,
-            opacity: 0,
-            duration: 1,
-            ease: 'power3.out'
-        });
+        const chatHistory = [];
 
-        gsap.from('.about-container p', {
-            scrollTrigger: {
-                trigger: '.about-container',
-                start: 'top 75%',
-                toggleActions: 'play none none reset'
-            },
-            y: 50,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.2,
-            ease: 'power2.out'
-        });
-
-        gsap.from('.skill-tag', {
-            scrollTrigger: {
-                trigger: '.skills',
-                start: 'top 85%',
-                end: 'bottom 20%',
-                toggleActions: 'play none none reset'
-            },
-            scale: 0.8,
-            y: 30,
-            opacity: 0,
-            duration: 0.6,
-            stagger: 0.08,
-            ease: 'power2.out'
-        });
-
-        gsap.utils.toArray('.project-card').forEach((card, i) => {
-            gsap.from(card, {
-                scrollTrigger: {
-                    trigger: card,
-                    start: 'top 85%',
-                    toggleActions: 'play none none reset'
-                },
-                y: 50,
-                opacity: 0,
-                duration: 0.6,
-                delay: i * 0.2
-            });
-        });
-
-        gsap.from('.contact-container', {
-            scrollTrigger: {
-                trigger: '.contact-container',
-                start: 'top 80%',
-                toggleActions: 'play none none reset'
-            },
-            y: 50,
-            opacity: 0,
-            duration: 0.8
-        });
-
-        // Scroll dots
-        const scrollDots = document.querySelectorAll('.scroll-dot');
-        scrollDots.forEach(dot => {
-            dot.addEventListener('click', () => {
-                const sectionId = dot.getAttribute('data-section');
-                document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
-            });
-        });
-
-        window.addEventListener('scroll', () => {
-            let current = '';
-            ['hero', 'highlights', 'about', 'projects', 'contact'].forEach(id => {
-                const section = document.getElementById(id);
-                if (window.pageYOffset >= section.offsetTop - 300) current = id;
-            });
-            scrollDots.forEach(dot => {
-                dot.classList.remove('active');
-                if (dot.getAttribute('data-section') === current) dot.classList.add('active');
-            });
-        });
-
-        // Hanging card
-        const hangingCard = document.querySelector('.hanging-card');
-        const closeCard = document.querySelector('.close-card');
-        closeCard.addEventListener('click', () => {
-            hangingCard.classList.add('dismissed');
-        });
-
-        let lastScrollY = window.scrollY;
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > lastScrollY && window.scrollY > 100) {
-                if (hangingCard && !hangingCard.classList.contains('dismissed')) {
-                    hangingCard.classList.add('dismissed');
+        function setChatOpen(open) {
+            chatPanel.classList.toggle('open', open);
+            chatPanel.hidden = !open;
+            chatToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            chatToggle.setAttribute('aria-label', open ? 'Close assistant chat' : 'Open assistant chat');
+            if (open) {
+                chatField.focus();
+                if (chatMessages.children.length === 0) {
+                    addBotMsg('Ask me about Terry, projects, or tech. Replies come from your local Ollama (' + OLLAMA_MODEL + ').');
                 }
             }
-            lastScrollY = window.scrollY;
-        });
+        }
 
-        // Chatbox
-        const chatButton = document.querySelector('.chat-button');
-        const chatWindow = document.querySelector('.chat-window');
-        const chatClose = document.querySelector('.chat-close');
-        const chatInput = document.querySelector('.chat-input');
-        const chatSend = document.querySelector('.chat-send');
-        const chatMessages = document.querySelector('.chat-messages');
-
-        chatButton.addEventListener('click', () => {
-            chatWindow.classList.toggle('active');
-        });
-        chatClose.addEventListener('click', () => {
-            chatWindow.classList.remove('active');
-        });
-
-        const responses = {
-            'projects': "I've worked on PiFace (2nd place UK!), web apps with React, Discord bots, and more!",
-            'skills': "Python, JavaScript, React, Node.js, OpenCV, pentesting, and always learning!",
-            'contact': "Email me at zhengterry99@gmail.com or find me on GitHub, Discord, LinkedIn, TikTok, or Instagram!",
-            'piface': "PiFace is a facial recognition system using Raspberry Pi and OpenCV. We came 2nd in the UK competition!",
-            'default': "Check out my portfolio or ask about projects, skills, or contact info!"
-        };
-
-        function addMessage(text, isUser = false) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `chat-message ${isUser ? 'user' : 'bot'}`;
-            messageDiv.textContent = text;
-            chatMessages.appendChild(messageDiv);
+        function addUserMsg(text) {
+            const el = document.createElement('div');
+            el.className = 'msg user';
+            el.textContent = text;
+            chatMessages.appendChild(el);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        function getResponse(question) {
-            const q = question.toLowerCase();
-            if (q.includes('project')) return responses.projects;
-            if (q.includes('skill')) return responses.skills;
-            if (q.includes('contact') || q.includes('email')) return responses.contact;
-            if (q.includes('piface')) return responses.piface;
-            return responses.default;
+        function addBotMsg(text) {
+            const el = document.createElement('div');
+            el.className = 'msg bot';
+            el.textContent = text;
+            chatMessages.appendChild(el);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        function handleQuestion(question) {
-            if (!question.trim()) return;
-            addMessage(question, true);
-            document.querySelector('.quick-questions')?.remove();
-            setTimeout(() => addMessage(getResponse(question)), 500);
-            chatInput.value = '';
+        function addErr(text) {
+            const el = document.createElement('div');
+            el.className = 'msg err';
+            el.textContent = text;
+            chatMessages.appendChild(el);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        chatSend.addEventListener('click', () => handleQuestion(chatInput.value));
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleQuestion(chatInput.value);
-        });
+        async function sendOllama() {
+            const text = chatField.value.trim();
+            if (!text) return;
 
-        document.querySelectorAll('.quick-question').forEach(q => {
-            q.addEventListener('click', () => handleQuestion(q.textContent));
-        });
+            chatField.value = '';
+            addUserMsg(text);
+            chatHistory.push({ role: 'user', content: text });
 
-        // Hamburger
-        const hamburger = document.querySelector('.hamburger');
-        const navMenu = document.querySelector('nav ul');
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navMenu.classList.toggle('active');
-        });
+            const body = {
+                model: OLLAMA_MODEL,
+                messages: [
+                    { role: 'system', content: SYSTEM_PROMPT },
+                    ...chatHistory
+                ],
+                stream: false
+            };
 
-        // Click outside to close menu
-        document.addEventListener('click', (e) => {
-            if (!hamburger.contains(e.target) && !navMenu.contains(e.target) && navMenu.classList.contains('active')) {
-                hamburger.classList.remove('active');
-                navMenu.classList.remove('active');
+            chatSend.disabled = true;
+            try {
+                const res = await fetch(OLLAMA_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                if (!res.ok) {
+                    const errText = await res.text();
+                    throw new Error(errText || res.statusText);
+                }
+                const data = await res.json();
+                const reply = data.message?.content?.trim() || data.response?.trim?.() || '(empty response)';
+                addBotMsg(reply);
+                chatHistory.push({ role: 'assistant', content: reply });
+            } catch (e) {
+                addErr(
+                    'Could not reach Ollama. Run `ollama serve`, pull the model (`ollama pull ' + OLLAMA_MODEL + '`), and open this page via http://localhost (not file://). CORS may require OLLAMA_ORIGINS.'
+                );
+                console.error(e);
+            } finally {
+                chatSend.disabled = false;
             }
+        }
+
+        chatToggle.addEventListener('click', () => setChatOpen(!chatPanel.classList.contains('open')));
+        chatClose.addEventListener('click', () => setChatOpen(false));
+        chatSend.addEventListener('click', sendOllama);
+        chatField.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') sendOllama();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && chatPanel.classList.contains('open')) setChatOpen(false);
         });
 
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+        /* Nav */
+        const navBtn = document.getElementById('nav-btn');
+        const navMenu = document.getElementById('nav-menu');
+        navBtn.addEventListener('click', () => {
+            const open = navMenu.getAttribute('data-open') === 'true';
+            navMenu.setAttribute('data-open', open ? 'false' : 'true');
+            navBtn.setAttribute('aria-expanded', (!open).toString());
+        });
+        document.querySelectorAll('#nav-menu a').forEach((a) => {
+            a.addEventListener('click', (e) => {
                 e.preventDefault();
-                navMenu.classList.remove('active');
-                hamburger.classList.remove('active');
-                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+                navMenu.setAttribute('data-open', 'false');
+                navBtn.setAttribute('aria-expanded', 'false');
+                const id = a.getAttribute('href').slice(1);
+                document.getElementById(id)?.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
             });
+        });
+        document.addEventListener('click', (e) => {
+            if (!navMenu.contains(e.target) && !navBtn.contains(e.target) && navMenu.getAttribute('data-open') === 'true') {
+                navMenu.setAttribute('data-open', 'false');
+                navBtn.setAttribute('aria-expanded', 'false');
+            }
         });
     </script>
 </body>
