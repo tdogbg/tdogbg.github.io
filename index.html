@@ -216,15 +216,13 @@
             margin-bottom: 1rem;
         }
         .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            font-weight: 700;
-            letter-spacing: -0.03em;
+            font-size: clamp(2.8rem, 7vw, 5rem);
+            font-weight: 800;
+            letter-spacing: 0.06em;
             line-height: 1.05;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, #fff 0%, #a5f3fc 45%, var(--blue) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #e8f8ff;
+            text-shadow: 0 0 60px rgba(34, 211, 238, 0.45), 0 0 120px rgba(56, 189, 248, 0.2);
         }
         .hero-sub {
             font-family: var(--font-mono);
@@ -276,6 +274,8 @@
         .section-inner {
             max-width: var(--max);
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
         .section-head {
             margin-bottom: 2.5rem;
@@ -995,108 +995,107 @@
            LIGHT MODE
         ———————————————————————————————— */
         [data-theme="light"] {
-            --bg-void: #f0f5fa;
-            --bg-panel: rgba(255, 255, 255, 0.75);
-            --text: #0f172a;
-            --text-muted: #334155;
-            --text-dim: #64748b;
-            --border: rgba(6, 182, 212, 0.22);
-            --border-glow: rgba(8, 145, 178, 0.42);
+            --bg-void: #bfcedd;
+            --bg-panel: rgba(188, 208, 225, 0.85);
+            --text: #0c1929;
+            --text-muted: #1b3550;
+            --text-dim: #3c5870;
+            --border: rgba(6, 150, 195, 0.28);
+            --border-glow: rgba(6, 150, 195, 0.52);
+            --cyan-dim: rgba(6, 150, 195, 0.48);
         }
         [data-theme="light"] body {
             background: var(--bg-void);
         }
         [data-theme="light"] body::before {
             background:
-                linear-gradient(180deg, #e8f4fb 0%, #f0f5fa 40%, #e6f3f8 100%),
-                repeating-linear-gradient(0deg, transparent, transparent 47px, rgba(6, 182, 212, 0.04) 48px),
+                linear-gradient(180deg, #b3c5d5 0%, #bfcedd 40%, #b8cad8 100%),
+                repeating-linear-gradient(0deg, transparent, transparent 47px, rgba(6, 150, 195, 0.04) 48px),
                 repeating-linear-gradient(90deg, transparent, transparent 47px, rgba(56, 189, 248, 0.03) 48px);
         }
         [data-theme="light"] body::after {
-            background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(186, 230, 253, 0.55), transparent 55%);
+            background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(80, 170, 220, 0.45), transparent 55%);
         }
         [data-theme="light"] nav {
-            background: rgba(255, 255, 255, 0.82);
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+            background: rgba(175, 198, 218, 0.9);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
         }
         @media (max-width: 768px) {
             [data-theme="light"] nav ul {
-                background: rgba(240, 248, 255, 0.97);
-                border-left-color: rgba(6, 182, 212, 0.22);
+                background: rgba(165, 190, 212, 0.98);
+                border-left-color: rgba(6, 150, 195, 0.28);
             }
         }
         [data-theme="light"] .hero h1 {
-            background: linear-gradient(135deg, #0f172a 0%, #0e7490 45%, #0369a1 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #0c2040;
+            text-shadow: 0 0 60px rgba(6, 150, 195, 0.35), 0 2px 4px rgba(0,0,0,0.15);
         }
         [data-theme="light"] .hero-tag { color: rgba(8, 145, 178, 0.7); }
         [data-theme="light"] .hero-sub { color: var(--text-muted); }
         [data-theme="light"] .hero-meta { color: var(--text-dim); }
         [data-theme="light"] .glass {
-            background: rgba(255, 255, 255, 0.65);
+            background: rgba(175, 198, 218, 0.60);
         }
         [data-theme="light"] .glass:hover {
-            box-shadow: 0 0 0 1px rgba(6, 182, 212, 0.15), 0 20px 50px rgba(0, 0, 0, 0.08), 0 0 30px rgba(6, 182, 212, 0.07);
+            box-shadow: 0 0 0 1px rgba(6, 150, 195, 0.18), 0 20px 50px rgba(0, 0, 0, 0.1), 0 0 30px rgba(6, 150, 195, 0.08);
         }
-        [data-theme="light"] .stat-val { color: #0891b2; }
+        [data-theme="light"] .stat-val { color: #0678a0; }
         [data-theme="light"] .section-head h2 { color: var(--text); }
         [data-theme="light"] .project-card h3 { color: var(--text); }
         [data-theme="light"] .cal-node {
-            background: rgba(240, 248, 255, 0.85);
+            background: rgba(165, 192, 215, 0.82);
             color: var(--text-muted);
         }
         [data-theme="light"] .cal-hub {
-            background: radial-gradient(circle at center, rgba(6, 182, 212, 0.14), rgba(6, 182, 212, 0.02));
+            background: radial-gradient(circle at center, rgba(6, 150, 195, 0.18), rgba(6, 150, 195, 0.03));
         }
         [data-theme="light"] .contact-btn {
-            background: rgba(6, 182, 212, 0.07);
+            background: rgba(6, 150, 195, 0.10);
             color: var(--text);
         }
         [data-theme="light"] .contact-btn:hover {
-            background: rgba(6, 182, 212, 0.14);
+            background: rgba(6, 150, 195, 0.20);
         }
         [data-theme="light"] .chat-fab {
-            background: rgba(240, 248, 255, 0.88);
+            background: rgba(165, 192, 215, 0.90);
         }
         [data-theme="light"] .chat-panel {
-            background: rgba(240, 248, 255, 0.97);
+            background: rgba(162, 188, 210, 0.97);
         }
         [data-theme="light"] .chat-input-row input {
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(175, 200, 220, 0.75);
             color: var(--text);
         }
         [data-theme="light"] .msg.user {
-            background: rgba(6, 182, 212, 0.1);
+            background: rgba(6, 150, 195, 0.14);
         }
         [data-theme="light"] .msg.bot {
-            background: rgba(0, 0, 0, 0.04);
+            background: rgba(0, 0, 0, 0.06);
             color: var(--text-muted);
         }
         [data-theme="light"] .cal-modal-overlay {
-            background: rgba(224, 240, 248, 0.92);
+            background: rgba(175, 200, 220, 0.94);
         }
         [data-theme="light"] .skill-tag {
-            background: rgba(6, 182, 212, 0.07);
+            background: rgba(6, 150, 195, 0.10);
             color: var(--text);
         }
         [data-theme="light"] .skill-tag:hover {
-            background: rgba(6, 182, 212, 0.14);
+            background: rgba(6, 150, 195, 0.20);
         }
         [data-theme="light"] .tech-badge { color: var(--text-muted); }
         [data-theme="light"] footer { border-top-color: var(--border); }
         [data-theme="light"] .hero-orb-1 {
-            background: radial-gradient(circle, rgba(6, 182, 212, 0.07) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(6, 150, 195, 0.10) 0%, transparent 70%);
         }
         [data-theme="light"] .hero-orb-2 {
-            background: radial-gradient(circle, rgba(56, 189, 248, 0.07) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, transparent 70%);
         }
         [data-theme="light"] .hero-orb-3 {
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.06) 0%, transparent 70%);
         }
         [data-theme="light"] .hero-particle {
-            background: #0891b2;
+            background: #0678a0;
         }
 
         /* ————————————————————————————————
@@ -1197,6 +1196,100 @@
         footer {
             transition: border-color 0.45s var(--ease);
         }
+
+        /* ————————————————————————————————
+           SECTION TITLE ENHANCEMENTS
+        ———————————————————————————————— */
+        .section-head {
+            text-align: center;
+            position: relative;
+            overflow: visible;
+        }
+        .section-head h2, .section-head p {
+            position: relative;
+            z-index: 1;
+        }
+        .section-head-ghost {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(3.5rem, 12vw, 9rem);
+            font-weight: 900;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--cyan);
+            opacity: 0.048;
+            pointer-events: none;
+            white-space: nowrap;
+            user-select: none;
+            z-index: 0;
+            font-family: var(--font-sans);
+        }
+        [data-theme="light"] .section-head-ghost { opacity: 0.07; }
+        .subtitle-word { display: inline-block; }
+
+        /* ————————————————————————————————
+           MAC WINDOW BARS ON PROJECT CARDS
+        ———————————————————————————————— */
+        .project-card { overflow: hidden; }
+        .mac-bar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0.5rem 1rem;
+            background: rgba(90, 110, 130, 0.22);
+            margin: -1.5rem -1.5rem 1.25rem -1.5rem;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.12);
+            flex-shrink: 0;
+        }
+        .mac-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .mac-red    { background: #ff5f57; box-shadow: 0 0 5px rgba(255, 95, 87, 0.5); }
+        .mac-yellow { background: #febc2e; box-shadow: 0 0 5px rgba(254, 188, 46, 0.5); }
+        .mac-green  { background: #28c840; box-shadow: 0 0 5px rgba(40, 200, 64, 0.5); }
+        @media (max-width: 768px) {
+            .mac-bar { margin-left: -1.25rem; margin-right: -1.25rem; }
+        }
+        [data-theme="light"] .mac-bar { background: rgba(70, 95, 120, 0.15); }
+
+        /* ————————————————————————————————
+           MOUSE TRAIL CANVAS
+        ———————————————————————————————— */
+        #trail-canvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9997;
+        }
+
+        /* ————————————————————————————————
+           SECTION BACKGROUND ENHANCEMENTS
+        ———————————————————————————————— */
+        #highlights, #about, #projects, #calisthenics, #contact {
+            position: relative;
+        }
+        .section-bg {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.032;
+            filter: blur(70px);
+        }
+        .bg-orb-1 { width: 420px; height: 420px; background: var(--cyan); top: -80px; right: -60px; }
+        .bg-orb-2 { width: 320px; height: 320px; background: #a855f7; bottom: -80px; left: -60px; }
+        .bg-orb-3 { width: 260px; height: 260px; background: var(--blue); top: 40%; right: 8%; }
+        [data-theme="light"] .bg-orb { opacity: 0.1; }
     </style>
 </head>
 <body>
@@ -1249,6 +1342,7 @@
         </section>
 
         <section id="highlights" aria-labelledby="hl-title">
+            <div class="section-bg" aria-hidden="true"><div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-2"></div></div>
             <div class="section-inner">
                 <header class="section-head reveal">
                     <h2 id="hl-title">Highlights</h2>
@@ -1276,6 +1370,7 @@
         </section>
 
         <section id="about" aria-labelledby="about-title">
+            <div class="section-bg" aria-hidden="true"><div class="bg-orb bg-orb-2"></div><div class="bg-orb bg-orb-3"></div></div>
             <div class="section-inner">
                 <header class="section-head reveal">
                     <h2 id="about-title">About</h2>
@@ -1299,6 +1394,7 @@
         </section>
 
         <section id="projects" aria-labelledby="proj-title">
+            <div class="section-bg" aria-hidden="true"><div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-2"></div><div class="bg-orb bg-orb-3"></div></div>
             <div class="section-inner">
                 <header class="section-head reveal">
                     <h2 id="proj-title">Featured projects</h2>
@@ -1306,6 +1402,7 @@
                 </header>
                 <div class="projects-grid">
                     <article class="project-card glass reveal" data-delay="1">
+                        <div class="mac-bar" aria-hidden="true"><span class="mac-dot mac-red"></span><span class="mac-dot mac-yellow"></span><span class="mac-dot mac-green"></span></div>
                         <span class="badge">2nd · UK</span>
                         <h3>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
@@ -1321,6 +1418,7 @@
                     </article>
 
                     <article class="project-card glass reveal" data-delay="2">
+                        <div class="mac-bar" aria-hidden="true"><span class="mac-dot mac-red"></span><span class="mac-dot mac-yellow"></span><span class="mac-dot mac-green"></span></div>
                         <h3>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 11V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h1"/><path d="M14 18a4 4 0 0 0-8 0"/><circle cx="10" cy="14" r="2"/><path d="M22 22l-3-3"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
                             Hand Gesture Gaming
@@ -1335,6 +1433,7 @@
                     </article>
 
                     <article class="project-card glass reveal" data-delay="3">
+                        <div class="mac-bar" aria-hidden="true"><span class="mac-dot mac-red"></span><span class="mac-dot mac-yellow"></span><span class="mac-dot mac-green"></span></div>
                         <h3>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2a5 5 0 1 0 0 10A5 5 0 0 0 12 2z"/><path d="M12 12v10"/><path d="M8 16l4-4 4 4"/></svg>
                             Gizmo Helper
@@ -1349,6 +1448,7 @@
                     </article>
 
                     <article class="project-card glass reveal" data-delay="4">
+                        <div class="mac-bar" aria-hidden="true"><span class="mac-dot mac-red"></span><span class="mac-dot mac-yellow"></span><span class="mac-dot mac-green"></span></div>
                         <h3>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                             Quote Generator
@@ -1363,6 +1463,7 @@
                     </article>
 
                     <article class="project-card glass reveal" data-delay="5">
+                        <div class="mac-bar" aria-hidden="true"><span class="mac-dot mac-red"></span><span class="mac-dot mac-yellow"></span><span class="mac-dot mac-green"></span></div>
                         <h3>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
                             Discord Bot
@@ -1375,6 +1476,7 @@
                     </article>
 
                     <article class="project-card glass reveal" data-delay="6">
+                        <div class="mac-bar" aria-hidden="true"><span class="mac-dot mac-red"></span><span class="mac-dot mac-yellow"></span><span class="mac-dot mac-green"></span></div>
                         <span class="badge" style="color:#a855f7;background:rgba(168,85,247,0.08);border-color:rgba(168,85,247,0.3);">⬡ WIP</span>
                         <h3>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -1390,6 +1492,7 @@
         </section>
 
         <section id="calisthenics" aria-labelledby="cal-title">
+            <div class="section-bg" aria-hidden="true"><div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-3"></div></div>
             <div class="section-inner">
                 <header class="section-head reveal">
                     <h2 id="cal-title">Calisthenics Journey</h2>
@@ -1411,6 +1514,7 @@
         </section>
 
         <section id="contact" aria-labelledby="contact-title">
+            <div class="section-bg" aria-hidden="true"><div class="bg-orb bg-orb-2"></div><div class="bg-orb bg-orb-3"></div></div>
             <div class="section-inner">
                 <header class="section-head reveal">
                     <h2 id="contact-title">Connect</h2>
@@ -1471,6 +1575,8 @@
             <button type="button" class="chat-send" id="chat-send">Send</button>
         </div>
     </div>
+
+    <canvas id="trail-canvas" aria-hidden="true"></canvas>
 
     <script type="module">
         import * as THREE from 'three';
@@ -1556,6 +1662,44 @@
             const partMat = new THREE.PointsMaterial({ color: 0x22d3ee, size: 0.022, transparent: true, opacity: 0.7 });
             group.add(new THREE.Points(partGeom, partMat));
 
+            // Globe landmark markers
+            function latLonToVec3(lat, lon, r) {
+                const phi = (90 - lat) * (Math.PI / 180);
+                const theta = (lon + 180) * (Math.PI / 180);
+                return new THREE.Vector3(
+                    -r * Math.sin(phi) * Math.cos(theta),
+                    r * Math.cos(phi),
+                    r * Math.sin(phi) * Math.sin(theta)
+                );
+            }
+            const landmarks = [
+                { lat: 51.5,  lon: -0.1,  color: 0x22d3ee, label: 'UK' },
+                { lat: 35.0,  lon: 105.0, color: 0xa855f7, label: 'China' },
+                { lat: 38.0,  lon: -97.0, color: 0x38bdf8, label: 'USA' },
+                { lat: 36.0,  lon: 138.0, color: 0xf59e0b, label: 'Japan' },
+                { lat: -25.0, lon: 133.0, color: 0x22d3ee, label: 'AU' },
+                { lat: 48.8,  lon: 2.35,  color: 0xfb7185, label: 'France' },
+            ];
+            const pulseRings = [];
+            landmarks.forEach(lm => {
+                const pos = latLonToVec3(lm.lat, lm.lon, 1.03);
+                // Dot
+                const dotGeom = new THREE.SphereGeometry(0.022, 8, 8);
+                const dotMat = new THREE.MeshBasicMaterial({ color: lm.color, transparent: true, opacity: 0.9 });
+                const dot = new THREE.Mesh(dotGeom, dotMat);
+                dot.position.copy(pos);
+                group.add(dot);
+                // Halo ring
+                const ringGeom = new THREE.RingGeometry(0.036, 0.048, 16);
+                const ringMat = new THREE.MeshBasicMaterial({ color: lm.color, transparent: true, opacity: 0.5, side: THREE.DoubleSide });
+                const ring = new THREE.Mesh(ringGeom, ringMat);
+                ring.position.copy(pos);
+                const normal = pos.clone().normalize();
+                ring.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal);
+                group.add(ring);
+                pulseRings.push({ ring, mat: ringMat, baseOpacity: 0.5 });
+            });
+
             function resize() {
                 const w = wrap.clientWidth;
                 const h = wrap.clientHeight;
@@ -1567,16 +1711,22 @@
             window.addEventListener('resize', resize);
 
             let raf;
+            let tickTime = 0;
             const rotSpeed = prefersReducedMotionGlobe ? 0 : 1;
 
             function tick() {
                 raf = requestAnimationFrame(tick);
+                tickTime += 0.02;
                 if (rotSpeed) {
                     group.rotation.y += 0.0016;
                     group.rotation.x += 0.0003;
                     ring1.rotation.z += 0.0009;
                     ring2.rotation.z -= 0.0006;
                     ring3.rotation.y += 0.0005;
+                    // Pulse landmark rings
+                    pulseRings.forEach((p, i) => {
+                        p.mat.opacity = p.baseOpacity * (0.5 + 0.5 * Math.sin(tickTime + i * 1.1));
+                    });
                 }
                 renderer.render(scene, camera);
             }
@@ -1989,11 +2139,30 @@
 
                 gsap.registerPlugin(ScrollTrigger);
 
+                // Inject ghost overlay text for section titles
+                document.querySelectorAll('.section-head').forEach(head => {
+                    const h2 = head.querySelector('h2');
+                    if (!h2) return;
+                    const ghost = document.createElement('div');
+                    ghost.className = 'section-head-ghost';
+                    ghost.setAttribute('aria-hidden', 'true');
+                    ghost.textContent = h2.textContent.toUpperCase();
+                    head.insertBefore(ghost, head.firstChild);
+                });
+
+                // Split subtitle words for per-word animation
+                document.querySelectorAll('.section-head p').forEach(p => {
+                    const parts = p.textContent.split('·');
+                    p.innerHTML = parts.map((w, i) =>
+                        `<span class="subtitle-word" style="opacity:0;transform:translateY(10px)">${w.trim()}</span>${i < parts.length - 1 ? ' <span style="color:var(--cyan-dim);opacity:0"> · </span> ' : ''}`
+                    ).join('');
+                });
+
                 // Hero parallax — copy drifts up as user scrolls
                 const heroCopy = document.querySelector('.hero-copy');
                 if (heroCopy) {
                     gsap.to(heroCopy, {
-                        y: -60,
+                        y: -110,
                         ease: 'none',
                         scrollTrigger: {
                             trigger: '#hero',
@@ -2008,7 +2177,7 @@
                 const globeWrap = document.querySelector('.globe-wrap');
                 if (globeWrap) {
                     gsap.to(globeWrap, {
-                        scale: 1.5,
+                        scale: 2.0,
                         opacity: 0,
                         ease: 'none',
                         scrollTrigger: {
@@ -2025,13 +2194,13 @@
                 const orb2 = document.querySelector('.hero-orb-2');
                 const orb3 = document.querySelector('.hero-orb-3');
                 if (orb1) {
-                    gsap.to(orb1, { y: -140, x: -50, scale: 1.3, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 2.5 } });
+                    gsap.to(orb1, { y: -220, x: -80, scale: 1.5, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 2.5 } });
                 }
                 if (orb2) {
-                    gsap.to(orb2, { y: -90, x: 35, scale: 1.2, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 1.8 } });
+                    gsap.to(orb2, { y: -150, x: 60, scale: 1.35, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 1.8 } });
                 }
                 if (orb3) {
-                    gsap.to(orb3, { y: -70, scale: 1.1, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 1.2 } });
+                    gsap.to(orb3, { y: -110, scale: 1.25, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 1.2 } });
                 }
 
                 // Hero title letter scatter — text breaks apart as you scroll
@@ -2049,25 +2218,28 @@
                     });
 
                     const heroLetters = heroTitleEl.querySelectorAll('.hero-letter');
+                    // Ensure letters are visible at scroll=0
+                    gsap.set(heroLetters, { opacity: 1, x: 0, y: 0, rotation: 0, scale: 1 });
+
                     const total = heroLetters.length;
                     heroLetters.forEach((letter, i) => {
                         // Spread letters outward from center in a fan pattern
                         const t = total > 1 ? (i / (total - 1)) * 2 - 1 : 0; // -1 to 1
-                        const xEnd = t * 280 + (i % 2 === 0 ? -1 : 1) * 40;
-                        const yEnd = -(90 + Math.abs(t) * 160 + 40);
-                        const rotEnd = t * 400;
+                        const xEnd = t * 420 + (i % 2 === 0 ? -1 : 1) * 55;
+                        const yEnd = -(130 + Math.abs(t) * 240 + 60);
+                        const rotEnd = t * 540;
                         gsap.to(letter, {
                             x: xEnd,
                             y: yEnd,
                             rotation: rotEnd,
                             opacity: 0,
-                            scale: 0.15,
+                            scale: 0.1,
                             ease: 'none',
                             scrollTrigger: {
                                 trigger: '#hero',
                                 start: 'top top',
-                                end: '62% top',
-                                scrub: 1.2
+                                end: '60% top',
+                                scrub: 1.0
                             }
                         });
                     });
@@ -2120,13 +2292,18 @@
                     }
                 }
 
-                // Section headers — fade up with slight rotation
+                // Section headers — fade up with slight rotation + animate ghost & subtitle words
                 document.querySelectorAll('.section-head').forEach(el => {
-                    gsap.fromTo(el,
-                        { opacity: 0, y: 44, rotationX: 8 },
+                    const h2 = el.querySelector('h2');
+                    const ghost = el.querySelector('.section-head-ghost');
+                    const subtitleWords = el.querySelectorAll('.subtitle-word');
+
+                    // Animate h2 (title)
+                    gsap.fromTo(h2 || el,
+                        { opacity: 0, y: 50, rotationX: 12 },
                         {
                             opacity: 1, y: 0, rotationX: 0,
-                            duration: 0.9,
+                            duration: 1.0,
                             ease: 'power3.out',
                             scrollTrigger: {
                                 trigger: el,
@@ -2135,18 +2312,60 @@
                             }
                         }
                     );
+
+                    // Animate ghost overlay — scales up from 0.8
+                    if (ghost) {
+                        gsap.fromTo(ghost,
+                            { opacity: 0, scale: 0.8 },
+                            {
+                                opacity: 0.048, scale: 1,
+                                duration: 1.2,
+                                ease: 'power2.out',
+                                scrollTrigger: {
+                                    trigger: el,
+                                    start: 'top 88%',
+                                    toggleActions: 'play none none none'
+                                }
+                            }
+                        );
+                    }
+
+                    // Animate subtitle words with stagger
+                    if (subtitleWords.length) {
+                        gsap.fromTo(subtitleWords,
+                            { opacity: 0, y: 14 },
+                            {
+                                opacity: 1, y: 0,
+                                duration: 0.6,
+                                ease: 'power2.out',
+                                stagger: 0.14,
+                                delay: 0.25,
+                                scrollTrigger: {
+                                    trigger: el,
+                                    start: 'top 88%',
+                                    toggleActions: 'play none none reverse'
+                                }
+                            }
+                        );
+                        // Also animate the separator dots
+                        el.querySelectorAll('p > span:not(.subtitle-word)').forEach(dot => {
+                            gsap.fromTo(dot, { opacity: 0 }, { opacity: 1, duration: 0.5, delay: 0.6,
+                                scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none reverse' }
+                            });
+                        });
+                    }
                 });
 
-                // Stat cards — staggered with scale bounce
+                // Stat cards — staggered with scale bounce + increased depth
                 const statCards = document.querySelectorAll('.stat-card');
                 if (statCards.length) {
                     gsap.fromTo(statCards,
-                        { opacity: 0, y: 50, scale: 0.9 },
+                        { opacity: 0, y: 70, scale: 0.85 },
                         {
                             opacity: 1, y: 0, scale: 1,
-                            duration: 0.7,
-                            ease: 'back.out(1.4)',
-                            stagger: 0.12,
+                            duration: 0.8,
+                            ease: 'back.out(1.6)',
+                            stagger: 0.14,
                             scrollTrigger: {
                                 trigger: statCards[0].closest('.stats') || statCards[0],
                                 start: 'top 88%',
@@ -2160,10 +2379,10 @@
                 const aboutBlock = document.querySelector('.about-block');
                 if (aboutBlock) {
                     gsap.fromTo(aboutBlock,
-                        { opacity: 0, x: -40, y: 20 },
+                        { opacity: 0, x: -60, y: 30 },
                         {
                             opacity: 1, x: 0, y: 0,
-                            duration: 0.95,
+                            duration: 1.0,
                             ease: 'power3.out',
                             scrollTrigger: {
                                 trigger: aboutBlock,
@@ -2174,16 +2393,16 @@
                     );
                 }
 
-                // Project cards — staggered with alternating directions
+                // Project cards — staggered with alternating directions + more dramatic
                 const projectCards = document.querySelectorAll('.project-card');
                 if (projectCards.length) {
                     projectCards.forEach((card, i) => {
-                        const xDir = i % 2 === 0 ? -30 : 30;
+                        const xDir = i % 2 === 0 ? -45 : 45;
                         gsap.fromTo(card,
-                            { opacity: 0, y: 40, x: xDir, scale: 0.96 },
+                            { opacity: 0, y: 55, x: xDir, scale: 0.93 },
                             {
                                 opacity: 1, y: 0, x: 0, scale: 1,
-                                duration: 0.75,
+                                duration: 0.8,
                                 ease: 'power3.out',
                                 delay: i * 0.08,
                                 scrollTrigger: {
@@ -2512,6 +2731,69 @@
                 navBtn.setAttribute('aria-expanded', 'false');
             }
         });
+
+        /* —— Smoky Mouse Trail —— */
+        (function() {
+            if (prefersReducedMotion) return;
+            const tc = document.getElementById('trail-canvas');
+            if (!tc) return;
+            const ctx = tc.getContext('2d');
+            let W = window.innerWidth, H = window.innerHeight;
+            tc.width = W; tc.height = H;
+            window.addEventListener('resize', () => {
+                W = window.innerWidth; H = window.innerHeight;
+                tc.width = W; tc.height = H;
+            });
+
+            const particles = [];
+            let lastX = -999, lastY = -999;
+
+            document.addEventListener('mousemove', e => {
+                const mx = e.clientX, my = e.clientY;
+                const dx = mx - lastX, dy = my - lastY;
+                const speed = Math.sqrt(dx * dx + dy * dy);
+                if (speed > 1.5) {
+                    const count = Math.min(Math.floor(speed / 3) + 1, 6);
+                    for (let i = 0; i < count; i++) {
+                        particles.push({
+                            x: mx + (Math.random() - 0.5) * 6,
+                            y: my + (Math.random() - 0.5) * 6,
+                            size: Math.random() * 5 + 2,
+                            opacity: Math.random() * 0.55 + 0.3,
+                            vx: (Math.random() - 0.5) * 1.5 - dx * 0.04,
+                            vy: (Math.random() - 0.5) * 1.5 - dy * 0.04,
+                            life: 1.0,
+                            decay: Math.random() * 0.028 + 0.018
+                        });
+                    }
+                }
+                lastX = mx; lastY = my;
+            });
+
+            function animTrail() {
+                requestAnimationFrame(animTrail);
+                ctx.clearRect(0, 0, W, H);
+                const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+                const r = isLight ? 6 : 34, g = isLight ? 148 : 211, b = isLight ? 195 : 238;
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    p.life -= p.decay;
+                    if (p.life <= 0) { particles.splice(i, 1); continue; }
+                    p.x += p.vx; p.y += p.vy;
+                    p.vx *= 0.95; p.vy *= 0.95;
+                    const a = p.opacity * p.life;
+                    const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 2.5);
+                    grad.addColorStop(0, `rgba(${r},${g},${b},${a})`);
+                    grad.addColorStop(0.5, `rgba(${r},${g},${b},${a * 0.4})`);
+                    grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size * 2.5, 0, Math.PI * 2);
+                    ctx.fillStyle = grad;
+                    ctx.fill();
+                }
+            }
+            animTrail();
+        })();
     </script>
 </body>
 </html>
