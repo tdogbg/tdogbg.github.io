@@ -990,6 +990,213 @@
         .reveal[data-delay="6"] { transition-delay: 0.42s; }
         /* GSAP-managed elements start hidden */
         .gsap-reveal { opacity: 0; }
+
+        /* ————————————————————————————————
+           LIGHT MODE
+        ———————————————————————————————— */
+        [data-theme="light"] {
+            --bg-void: #f0f5fa;
+            --bg-panel: rgba(255, 255, 255, 0.75);
+            --text: #0f172a;
+            --text-muted: #334155;
+            --text-dim: #64748b;
+            --border: rgba(6, 182, 212, 0.22);
+            --border-glow: rgba(8, 145, 178, 0.42);
+        }
+        [data-theme="light"] body {
+            background: var(--bg-void);
+        }
+        [data-theme="light"] body::before {
+            background:
+                linear-gradient(180deg, #e8f4fb 0%, #f0f5fa 40%, #e6f3f8 100%),
+                repeating-linear-gradient(0deg, transparent, transparent 47px, rgba(6, 182, 212, 0.04) 48px),
+                repeating-linear-gradient(90deg, transparent, transparent 47px, rgba(56, 189, 248, 0.03) 48px);
+        }
+        [data-theme="light"] body::after {
+            background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(186, 230, 253, 0.55), transparent 55%);
+        }
+        [data-theme="light"] nav {
+            background: rgba(255, 255, 255, 0.82);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+        }
+        @media (max-width: 768px) {
+            [data-theme="light"] nav ul {
+                background: rgba(240, 248, 255, 0.97);
+                border-left-color: rgba(6, 182, 212, 0.22);
+            }
+        }
+        [data-theme="light"] .hero h1 {
+            background: linear-gradient(135deg, #0f172a 0%, #0e7490 45%, #0369a1 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        [data-theme="light"] .hero-tag { color: rgba(8, 145, 178, 0.7); }
+        [data-theme="light"] .hero-sub { color: var(--text-muted); }
+        [data-theme="light"] .hero-meta { color: var(--text-dim); }
+        [data-theme="light"] .glass {
+            background: rgba(255, 255, 255, 0.65);
+        }
+        [data-theme="light"] .glass:hover {
+            box-shadow: 0 0 0 1px rgba(6, 182, 212, 0.15), 0 20px 50px rgba(0, 0, 0, 0.08), 0 0 30px rgba(6, 182, 212, 0.07);
+        }
+        [data-theme="light"] .stat-val { color: #0891b2; }
+        [data-theme="light"] .section-head h2 { color: var(--text); }
+        [data-theme="light"] .project-card h3 { color: var(--text); }
+        [data-theme="light"] .cal-node {
+            background: rgba(240, 248, 255, 0.85);
+            color: var(--text-muted);
+        }
+        [data-theme="light"] .cal-hub {
+            background: radial-gradient(circle at center, rgba(6, 182, 212, 0.14), rgba(6, 182, 212, 0.02));
+        }
+        [data-theme="light"] .contact-btn {
+            background: rgba(6, 182, 212, 0.07);
+            color: var(--text);
+        }
+        [data-theme="light"] .contact-btn:hover {
+            background: rgba(6, 182, 212, 0.14);
+        }
+        [data-theme="light"] .chat-fab {
+            background: rgba(240, 248, 255, 0.88);
+        }
+        [data-theme="light"] .chat-panel {
+            background: rgba(240, 248, 255, 0.97);
+        }
+        [data-theme="light"] .chat-input-row input {
+            background: rgba(255, 255, 255, 0.7);
+            color: var(--text);
+        }
+        [data-theme="light"] .msg.user {
+            background: rgba(6, 182, 212, 0.1);
+        }
+        [data-theme="light"] .msg.bot {
+            background: rgba(0, 0, 0, 0.04);
+            color: var(--text-muted);
+        }
+        [data-theme="light"] .cal-modal-overlay {
+            background: rgba(224, 240, 248, 0.92);
+        }
+        [data-theme="light"] .skill-tag {
+            background: rgba(6, 182, 212, 0.07);
+            color: var(--text);
+        }
+        [data-theme="light"] .skill-tag:hover {
+            background: rgba(6, 182, 212, 0.14);
+        }
+        [data-theme="light"] .tech-badge { color: var(--text-muted); }
+        [data-theme="light"] footer { border-top-color: var(--border); }
+        [data-theme="light"] .hero-orb-1 {
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.07) 0%, transparent 70%);
+        }
+        [data-theme="light"] .hero-orb-2 {
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.07) 0%, transparent 70%);
+        }
+        [data-theme="light"] .hero-orb-3 {
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+        }
+        [data-theme="light"] .hero-particle {
+            background: #0891b2;
+        }
+
+        /* ————————————————————————————————
+           THEME TOGGLE BUTTON
+        ———————————————————————————————— */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+        .theme-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: background 0.25s var(--ease), border-color 0.25s, color 0.25s, transform 0.35s var(--ease);
+        }
+        .theme-btn:hover {
+            background: rgba(34, 211, 238, 0.1);
+            border-color: var(--cyan-dim);
+            color: var(--cyan);
+            transform: rotate(25deg);
+        }
+        .theme-btn .icon-sun { display: none; }
+        .theme-btn .icon-moon { display: block; }
+        [data-theme="light"] .theme-btn .icon-sun { display: block; }
+        [data-theme="light"] .theme-btn .icon-moon { display: none; }
+
+        /* ————————————————————————————————
+           HERO IMMERSIVE EFFECTS
+        ———————————————————————————————— */
+        /* Hero title letter split */
+        .hero-letter {
+            display: inline-block;
+            will-change: transform, opacity;
+        }
+        /* Floating particles container */
+        .hero-particles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        /* Individual floating particles */
+        .hero-particle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--cyan);
+            will-change: transform, opacity;
+        }
+        /* Background depth orbs */
+        .hero-orb {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            will-change: transform;
+        }
+        .hero-orb-1 {
+            width: clamp(220px, 32vw, 440px);
+            height: clamp(220px, 32vw, 440px);
+            background: radial-gradient(circle, rgba(34, 211, 238, 0.055) 0%, transparent 70%);
+            top: 12%;
+            left: 4%;
+        }
+        .hero-orb-2 {
+            width: clamp(160px, 24vw, 340px);
+            height: clamp(160px, 24vw, 340px);
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.05) 0%, transparent 70%);
+            bottom: 18%;
+            right: 7%;
+        }
+        .hero-orb-3 {
+            width: clamp(110px, 16vw, 220px);
+            height: clamp(110px, 16vw, 220px);
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.04) 0%, transparent 70%);
+            top: 58%;
+            left: 2%;
+        }
+
+        /* ————————————————————————————————
+           SMOOTH THEME TRANSITIONS
+        ———————————————————————————————— */
+        body {
+            transition: background-color 0.45s var(--ease), color 0.45s var(--ease);
+        }
+        nav {
+            transition: background-color 0.45s var(--ease), box-shadow 0.45s;
+        }
+        footer {
+            transition: border-color 0.45s var(--ease);
+        }
     </style>
 </head>
 <body>
@@ -998,9 +1205,6 @@
     <header class="nav-wrap">
         <nav aria-label="Primary">
             <div class="logo">TZ</div>
-            <button type="button" class="hamburger" id="nav-btn" aria-expanded="false" aria-controls="nav-menu" aria-label="Menu">
-                <span></span><span></span><span></span>
-            </button>
             <ul id="nav-menu">
                 <li><a href="#hero">Home</a></li>
                 <li><a href="#highlights">Highlights</a></li>
@@ -1009,6 +1213,15 @@
                 <li><a href="#calisthenics">Calisthenics</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
+            <div class="nav-actions">
+                <button type="button" class="theme-btn" id="theme-toggle" aria-label="Toggle dark/light mode">
+                    <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                </button>
+                <button type="button" class="hamburger" id="nav-btn" aria-expanded="false" aria-controls="nav-menu" aria-label="Menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
         </nav>
     </header>
 
@@ -1017,6 +1230,11 @@
             <div class="globe-wrap" aria-hidden="true">
                 <canvas id="globe-canvas"></canvas>
                 <div class="globe-frame"></div>
+            </div>
+            <div class="hero-particles" aria-hidden="true">
+                <div class="hero-orb hero-orb-1"></div>
+                <div class="hero-orb hero-orb-2"></div>
+                <div class="hero-orb hero-orb-3"></div>
             </div>
             <div class="hero-copy">
                 <p class="hero-tag">// portfolio.signal</p>
@@ -1373,6 +1591,26 @@
         const OLLAMA_URL = 'http://localhost:11434/api/chat';
         const OLLAMA_MODEL = 'gemma:3b';
         const SYSTEM_PROMPT = `You are a concise, friendly assistant on Terry Zheng's portfolio site. Terry is a 16-year-old student developer interested in security, Python, JS, and projects like PiFace. Keep answers short unless asked for detail.`;
+
+        /* —— Theme Toggle —— */
+        (function() {
+            const html = document.documentElement;
+            const saved = localStorage.getItem('portfolio-theme');
+            if (saved === 'light') html.setAttribute('data-theme', 'light');
+
+            const btn = document.getElementById('theme-toggle');
+            if (!btn) return;
+            btn.addEventListener('click', () => {
+                const isLight = html.getAttribute('data-theme') === 'light';
+                if (isLight) {
+                    html.removeAttribute('data-theme');
+                    localStorage.removeItem('portfolio-theme');
+                } else {
+                    html.setAttribute('data-theme', 'light');
+                    localStorage.setItem('portfolio-theme', 'light');
+                }
+            });
+        })();
 
         /* —— Calisthenics Skill Tree —— */
         const LEVELS = ['locked', 'beginner', 'intermediate', 'advanced', 'mastered'];
@@ -1764,6 +2002,122 @@
                             scrub: 1.2
                         }
                     });
+                }
+
+                // Globe zoom + fade on scroll — creates "leaving Earth" depth effect
+                const globeWrap = document.querySelector('.globe-wrap');
+                if (globeWrap) {
+                    gsap.to(globeWrap, {
+                        scale: 1.5,
+                        opacity: 0,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: '#hero',
+                            start: 'top top',
+                            end: 'bottom top',
+                            scrub: 1.5
+                        }
+                    });
+                }
+
+                // Parallax depth orbs — each layer moves at a different speed
+                const orb1 = document.querySelector('.hero-orb-1');
+                const orb2 = document.querySelector('.hero-orb-2');
+                const orb3 = document.querySelector('.hero-orb-3');
+                if (orb1) {
+                    gsap.to(orb1, { y: -140, x: -50, scale: 1.3, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 2.5 } });
+                }
+                if (orb2) {
+                    gsap.to(orb2, { y: -90, x: 35, scale: 1.2, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 1.8 } });
+                }
+                if (orb3) {
+                    gsap.to(orb3, { y: -70, scale: 1.1, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 1.2 } });
+                }
+
+                // Hero title letter scatter — text breaks apart as you scroll
+                const heroTitleEl = document.getElementById('hero-title');
+                if (heroTitleEl) {
+                    const originalText = heroTitleEl.textContent;
+                    heroTitleEl.setAttribute('aria-label', originalText);
+                    heroTitleEl.textContent = '';
+                    [...originalText].forEach(char => {
+                        const span = document.createElement('span');
+                        span.className = 'hero-letter';
+                        span.setAttribute('aria-hidden', 'true');
+                        span.textContent = char === ' ' ? '\u00a0' : char;
+                        heroTitleEl.appendChild(span);
+                    });
+
+                    const heroLetters = heroTitleEl.querySelectorAll('.hero-letter');
+                    const total = heroLetters.length;
+                    heroLetters.forEach((letter, i) => {
+                        // Spread letters outward from center in a fan pattern
+                        const t = total > 1 ? (i / (total - 1)) * 2 - 1 : 0; // -1 to 1
+                        const xEnd = t * 280 + (i % 2 === 0 ? -1 : 1) * 40;
+                        const yEnd = -(90 + Math.abs(t) * 160 + 40);
+                        const rotEnd = t * 400;
+                        gsap.to(letter, {
+                            x: xEnd,
+                            y: yEnd,
+                            rotation: rotEnd,
+                            opacity: 0,
+                            scale: 0.15,
+                            ease: 'none',
+                            scrollTrigger: {
+                                trigger: '#hero',
+                                start: 'top top',
+                                end: '62% top',
+                                scrub: 1.2
+                            }
+                        });
+                    });
+                }
+
+                // Spawn floating particles that zoom away like stars in warp speed
+                const heroParticlesEl = document.querySelector('.hero-particles');
+                if (heroParticlesEl) {
+                    const particleCount = 20;
+                    // Deterministic positions for consistent feel (no true random per load)
+                    const positions = [
+                        [15, 20], [75, 15], [30, 65], [85, 40], [10, 75],
+                        [60, 80], [45, 10], [90, 70], [20, 50], [70, 35],
+                        [5, 40], [50, 90], [80, 10], [25, 85], [95, 55],
+                        [40, 30], [65, 60], [12, 55], [55, 25], [88, 85]
+                    ];
+                    const sizes = [2, 3, 2, 4, 2, 3, 2, 3, 4, 2, 3, 2, 3, 2, 4, 3, 2, 3, 2, 3];
+                    const scrubVals = [1.2, 1.8, 1.0, 1.5, 2.0, 1.3, 1.7, 1.1, 1.6, 1.9, 1.4, 1.2, 1.8, 1.0, 1.5, 1.3, 1.7, 1.1, 1.6, 1.4];
+
+                    for (let i = 0; i < particleCount; i++) {
+                        const p = document.createElement('div');
+                        p.className = 'hero-particle';
+                        const sz = sizes[i];
+                        p.style.cssText = `width:${sz}px;height:${sz}px;left:${positions[i][0]}%;top:${positions[i][1]}%;opacity:0.45;`;
+                        heroParticlesEl.appendChild(p);
+
+                        // Direction: particles fly away from center
+                        const cx = positions[i][0] - 50; // relative to center
+                        const cy = positions[i][1] - 50;
+                        const mag = Math.sqrt(cx * cx + cy * cy) || 1;
+                        const xDest = (cx / mag) * (200 + i * 10);
+                        const yDest = (cy / mag) * (200 + i * 8);
+
+                        gsap.fromTo(p,
+                            { scale: 1, opacity: 0.45 },
+                            {
+                                scale: 5 + i % 5,
+                                x: xDest,
+                                y: yDest,
+                                opacity: 0,
+                                ease: 'none',
+                                scrollTrigger: {
+                                    trigger: '#hero',
+                                    start: 'top top',
+                                    end: 'bottom top',
+                                    scrub: scrubVals[i]
+                                }
+                            }
+                        );
+                    }
                 }
 
                 // Section headers — fade up with slight rotation
