@@ -191,21 +191,19 @@
         /* Hero */
         .hero {
             min-height: 100vh;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            position: relative;
+            display: flex;
             align-items: center;
-            gap: 2rem;
+            justify-content: center;
             padding: 6.5rem clamp(1.25rem, 4vw, 3rem) 4rem;
-            max-width: var(--max);
-            margin: 0 auto;
-        }
-        @media (max-width: 960px) {
-            .hero { grid-template-columns: 1fr; text-align: center; padding-top: 5.5rem; }
+            overflow: hidden;
+            text-align: center;
         }
 
         .hero-copy {
             position: relative;
             z-index: 2;
+            text-align: center;
         }
         .hero-tag {
             font-family: var(--font-mono);
@@ -241,9 +239,7 @@
             font-family: var(--font-mono);
             font-size: 0.75rem;
             color: var(--text-dim);
-        }
-        @media (max-width: 960px) {
-            .hero-meta { justify-content: center; }
+            justify-content: center;
         }
         .hero-meta span { display: flex; align-items: center; gap: 0.4rem; }
         .hero-meta code {
@@ -256,41 +252,20 @@
         }
 
         .globe-wrap {
-            position: relative;
-            height: min(56vh, 520px);
-            min-height: 280px;
+            position: absolute;
+            inset: 0;
             z-index: 1;
         }
         #globe-canvas {
             display: block;
             width: 100%;
             height: 100%;
-            border-radius: var(--radius);
         }
         .globe-frame {
             position: absolute;
             inset: 0;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            background: rgba(4, 12, 20, 0.4);
-            backdrop-filter: blur(8px);
             pointer-events: none;
-            box-shadow:
-                inset 0 0 60px rgba(34, 211, 238, 0.06),
-                0 0 80px rgba(0, 0, 0, 0.5);
-        }
-        .globe-label {
-            position: absolute;
-            bottom: 1rem;
-            left: 1rem;
-            right: 1rem;
-            font-family: var(--font-mono);
-            font-size: 0.65rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--text-dim);
-            pointer-events: none;
-            text-align: center;
+            background: radial-gradient(ellipse 75% 75% at 50% 50%, transparent 35%, rgba(3, 5, 8, 0.65) 100%);
         }
 
         section {
@@ -677,6 +652,294 @@
             }
             nav ul[data-open="true"] { transform: translateX(0); }
         }
+
+        /* Calisthenics skill tree */
+        .cal-tree {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 2rem;
+            min-height: 700px;
+            padding: 2.5rem 0;
+        }
+        .cal-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: visible;
+        }
+        .cal-col {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            position: relative;
+            z-index: 2;
+        }
+        .cal-col-left { align-items: flex-end; }
+        .cal-col-right { align-items: flex-start; }
+        .cal-hub {
+            position: relative;
+            z-index: 2;
+            width: 148px;
+            height: 148px;
+            border-radius: 50%;
+            border: 2px solid var(--cyan);
+            background: radial-gradient(circle at center, rgba(34, 211, 238, 0.15), rgba(34, 211, 238, 0.03));
+            box-shadow: 0 0 30px rgba(34, 211, 238, 0.25), 0 0 60px rgba(34, 211, 238, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--cyan);
+            flex-shrink: 0;
+            line-height: 1.5;
+            animation: hub-pulse 3s ease-in-out infinite;
+        }
+        @keyframes hub-pulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(34, 211, 238, 0.25), 0 0 60px rgba(34, 211, 238, 0.08); }
+            50% { box-shadow: 0 0 45px rgba(34, 211, 238, 0.45), 0 0 90px rgba(34, 211, 238, 0.18); }
+        }
+        .cal-node {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 1.1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: rgba(8, 18, 28, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            cursor: pointer;
+            transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease), transform 0.2s var(--ease), color 0.2s;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+            user-select: none;
+            background: rgba(8, 18, 28, 0.65);
+            border: 1px solid var(--border);
+        }
+        .cal-node:hover {
+            border-color: var(--border-glow);
+            box-shadow: 0 0 18px rgba(34, 211, 238, 0.2);
+            color: var(--text);
+        }
+        .cal-col-left .cal-node:hover { transform: translateX(-3px) scale(1.03); }
+        .cal-col-right .cal-node:hover { transform: translateX(3px) scale(1.03); }
+        .cal-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            transition: box-shadow 0.25s;
+        }
+        .cal-node:hover .cal-dot { box-shadow: 0 0 6px currentColor; }
+        .level-locked { background: #1e293b; }
+        .level-beginner { background: #475569; }
+        .level-intermediate { background: #f59e0b; box-shadow: 0 0 5px rgba(245, 158, 11, 0.4); }
+        .level-advanced { background: var(--cyan); box-shadow: 0 0 5px rgba(34, 211, 238, 0.45); }
+        .level-mastered { background: linear-gradient(135deg, var(--cyan), #a855f7); box-shadow: 0 0 6px rgba(168, 85, 247, 0.5); }
+        .cal-edit-wrap {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+        .cal-edit-btn {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.6rem 1.5rem;
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            background: rgba(34, 211, 238, 0.08);
+            color: var(--cyan);
+            cursor: pointer;
+            transition: all 0.25s var(--ease);
+        }
+        .cal-edit-btn:hover {
+            background: rgba(34, 211, 238, 0.15);
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
+        .cal-edit-btn[aria-pressed="true"] {
+            background: rgba(251, 191, 36, 0.08);
+            border-color: rgba(251, 191, 36, 0.4);
+            color: #fbbf24;
+        }
+        .cal-edit-btn[aria-pressed="true"]:hover {
+            background: rgba(251, 191, 36, 0.14);
+            border-color: rgba(251, 191, 36, 0.6);
+        }
+        @media (max-width: 640px) {
+            .cal-tree {
+                grid-template-columns: 1fr;
+                min-height: auto;
+                gap: 1rem;
+            }
+            .cal-hub { margin: 0.5rem auto; order: 1; }
+            .cal-col-left { align-items: stretch; order: 2; }
+            .cal-col-right { align-items: stretch; order: 3; }
+            .cal-svg { display: none; }
+            .cal-node { white-space: normal; justify-content: flex-start; }
+            .cal-col-left .cal-node:hover,
+            .cal-col-right .cal-node:hover { transform: scale(1.02); }
+        }
+
+        /* Skill modal */
+        .cal-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            background: rgba(3, 5, 8, 0.88);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .cal-modal-overlay[hidden] { display: none; }
+        .cal-modal-box {
+            max-width: 380px;
+            width: 100%;
+            padding: 2rem;
+            position: relative;
+            animation: modal-up 0.3s var(--ease);
+        }
+        @keyframes modal-up {
+            from { opacity: 0; transform: translateY(24px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .cal-modal-close {
+            position: absolute;
+            top: 0.85rem;
+            right: 0.85rem;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.2rem;
+            line-height: 1;
+            transition: background 0.2s, color 0.2s;
+        }
+        .cal-modal-close:hover { background: rgba(34, 211, 238, 0.1); color: var(--text); }
+        .cal-figure {
+            width: 145px;
+            height: 145px;
+            margin: 0 auto 1.25rem;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(34, 211, 238, 0.04);
+            overflow: hidden;
+        }
+        .cal-modal-title {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--cyan);
+            text-align: center;
+            margin-bottom: 0.65rem;
+            letter-spacing: 0.04em;
+        }
+        .cal-modal-desc {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            text-align: center;
+            line-height: 1.65;
+            margin-bottom: 1.25rem;
+        }
+        .cal-level-track {
+            display: flex;
+            gap: 0.35rem;
+            justify-content: center;
+            margin-bottom: 0.45rem;
+        }
+        .cal-pip {
+            height: 5px;
+            flex: 1;
+            max-width: 48px;
+            border-radius: 3px;
+            background: rgba(56, 189, 248, 0.1);
+            transition: background 0.3s;
+        }
+        .cal-pip.active { background: var(--cyan); }
+        .cal-pip.active.pip-mastered { background: linear-gradient(90deg, var(--cyan), #a855f7); }
+        .cal-level-text {
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 1.25rem;
+        }
+        .cal-level-text.locked { color: #2a3a4a; }
+        .cal-level-text.beginner { color: #64748b; }
+        .cal-level-text.intermediate { color: #f59e0b; }
+        .cal-level-text.advanced { color: var(--cyan); }
+        .cal-level-text.mastered { color: #a855f7; }
+        .cal-edit-btns {
+            display: none;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+            justify-content: center;
+        }
+        .cal-edit-btns.visible { display: flex; }
+        .cal-lvl-btn {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            transition: all 0.2s;
+        }
+        .cal-lvl-btn:hover, .cal-lvl-btn[aria-pressed="true"] {
+            background: rgba(34, 211, 238, 0.1);
+            border-color: var(--cyan-dim);
+            color: var(--cyan);
+        }
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
+        }
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal[data-delay="1"] { transition-delay: 0.07s; }
+        .reveal[data-delay="2"] { transition-delay: 0.14s; }
+        .reveal[data-delay="3"] { transition-delay: 0.21s; }
+        .reveal[data-delay="4"] { transition-delay: 0.28s; }
+        .reveal[data-delay="5"] { transition-delay: 0.35s; }
+        .reveal[data-delay="6"] { transition-delay: 0.42s; }
     </style>
 </head>
 <body>
@@ -684,7 +947,7 @@
 
     <header class="nav-wrap">
         <nav aria-label="Primary">
-            <div class="logo">TZ <span>/ dev</span></div>
+            <div class="logo">TZ</div>
             <button type="button" class="hamburger" id="nav-btn" aria-expanded="false" aria-controls="nav-menu" aria-label="Menu">
                 <span></span><span></span><span></span>
             </button>
@@ -693,6 +956,7 @@
                 <li><a href="#highlights">Highlights</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#projects">Projects</a></li>
+                <li><a href="#calisthenics">Calisthenics</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
@@ -700,6 +964,10 @@
 
     <main id="main">
         <section id="hero" class="hero" aria-labelledby="hero-title">
+            <div class="globe-wrap" aria-hidden="true">
+                <canvas id="globe-canvas"></canvas>
+                <div class="globe-frame"></div>
+            </div>
             <div class="hero-copy">
                 <p class="hero-tag">// portfolio.signal</p>
                 <h1 id="hero-title">TERRY ZHENG</h1>
@@ -710,35 +978,30 @@
                     <span>HTB · cadets · build</span>
                 </div>
             </div>
-            <div class="globe-wrap">
-                <canvas id="globe-canvas" aria-hidden="true"></canvas>
-                <div class="globe-frame" aria-hidden="true"></div>
-                <p class="globe-label">Wireframe globe · three.js</p>
-            </div>
         </section>
 
         <section id="highlights" aria-labelledby="hl-title">
             <div class="section-inner">
-                <header class="section-head">
+                <header class="section-head reveal">
                     <h2 id="hl-title">Highlights</h2>
                     <p>Milestones · stack · trajectory</p>
                 </header>
                 <div class="stats">
-                    <div class="stat-card glass">
-                        <div class="stat-val">2nd</div>
-                        <div class="stat-label">UK Raspberry Pi Competition</div>
+                    <div class="stat-card glass reveal" data-delay="1">
+                        <div class="stat-val">5+</div>
+                        <div class="stat-label">Projects Built</div>
                     </div>
-                    <div class="stat-card glass">
-                        <div class="stat-val">10+</div>
-                        <div class="stat-label">Technologies</div>
-                    </div>
-                    <div class="stat-card glass">
+                    <div class="stat-card glass reveal" data-delay="2">
                         <div class="stat-val">16</div>
                         <div class="stat-label">Years old</div>
                     </div>
-                    <div class="stat-card glass">
+                    <div class="stat-card glass reveal" data-delay="3">
+                        <div class="stat-val">2nd</div>
+                        <div class="stat-label">Place UK Raspberry Pi</div>
+                    </div>
+                    <div class="stat-card glass reveal" data-delay="4">
                         <div class="stat-val">∞</div>
-                        <div class="stat-label">Ideas &amp; ambitions</div>
+                        <div class="stat-label">Bowls of Ramen</div>
                     </div>
                 </div>
             </div>
@@ -746,13 +1009,14 @@
 
         <section id="about" aria-labelledby="about-title">
             <div class="section-inner">
-                <header class="section-head">
+                <header class="section-head reveal">
                     <h2 id="about-title">About</h2>
                     <p>Background · interests · tools</p>
                 </header>
-                <div class="about-block glass">
-                    <p>Hi, I'm Terry — a 16-year-old student preparing for my GCSEs. I'm passionate about technology, coding, and penetration testing through Hack The Box and enjoy tackling cybersecurity challenges.</p>
-                    <p>When I'm not coding, I play badminton, play the piano, game competitively, attend RAF Air Cadets, or start planning my next project. I'm always experimenting with new programming languages, frameworks, and penetration-testing tools.</p>
+                <div class="about-block glass reveal" data-delay="1">
+                    <p>I'm Terry — 16, based in the UK, building things with code since I was curious enough to break stuff. Right now I'm focused on Python, web dev, and dabbling in cybersecurity through Hack The Box.</p>
+                    <p>Away from the screen I train calisthenics, play badminton, and mess around on the piano — keeps things varied.</p>
+                    <p>Currently juggling GCSEs, RAF Air Cadets, and whatever project I've convinced myself I need to build next.</p>
                     <div class="skills" role="list">
                         <span class="skill-tag" role="listitem">Python</span>
                         <span class="skill-tag" role="listitem">JavaScript</span>
@@ -768,31 +1032,18 @@
 
         <section id="projects" aria-labelledby="proj-title">
             <div class="section-inner">
-                <header class="section-head">
+                <header class="section-head reveal">
                     <h2 id="proj-title">Featured projects</h2>
                     <p>Builds · experiments · shipped work</p>
                 </header>
                 <div class="projects-grid">
-                    <article class="project-card glass">
-                        <h3>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                            Project Alpha
-                        </h3>
-                        <p>A revolutionary web application featuring cutting-edge UI/UX design and real-time data processing.</p>
-                        <div class="tech-stack">
-                            <span class="tech-badge">React</span>
-                            <span class="tech-badge">Node.js</span>
-                            <span class="tech-badge">MongoDB</span>
-                        </div>
-                    </article>
-
-                    <article class="project-card glass">
+                    <article class="project-card glass reveal" data-delay="1">
                         <span class="badge">2nd · UK</span>
                         <h3>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
                             PiFace
                         </h3>
-                        <p>Facial recognition security system — 2nd place UK Raspberry Pi Competition.</p>
+                        <p>Facial recognition security system built on a Raspberry Pi — won 2nd place in the UK Raspberry Pi Competition.</p>
                         <div class="tech-stack">
                             <span class="tech-badge">Raspberry Pi</span>
                             <span class="tech-badge">Python</span>
@@ -801,20 +1052,34 @@
                         <a href="https://github.com/tdogbg/piface" class="project-link" target="_blank" rel="noopener noreferrer">github / piface →</a>
                     </article>
 
-                    <article class="project-card glass">
+                    <article class="project-card glass reveal" data-delay="2">
                         <h3>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 11V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h1"/><path d="M14 18a4 4 0 0 0-8 0"/><circle cx="10" cy="14" r="2"/><path d="M22 22l-3-3"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                            Hand Gesture Gaming
+                        </h3>
+                        <p>Real-time gesture recognition system for gaming — swipe detection, pinch gestures, fully playable Subway Surfers via hand movements.</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">MediaPipe</span>
+                            <span class="tech-badge">OpenCV</span>
+                        </div>
+                        <a href="https://github.com/tdogbg/hand-gesture-gaming" class="project-link" target="_blank" rel="noopener noreferrer">github / hand-gesture-gaming →</a>
+                    </article>
+
+                    <article class="project-card glass reveal" data-delay="3">
+                        <h3>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2a5 5 0 1 0 0 10A5 5 0 0 0 12 2z"/><path d="M12 12v10"/><path d="M8 16l4-4 4 4"/></svg>
                             Gizmo Helper
                         </h3>
-                        <p>Developer utility that streamlines editor workflows and gizmo interactions — built for faster iteration and cleaner scene tooling.</p>
+                        <p>AI-powered desktop assistant that answers questions about anything using the Groq API — fast responses, clean interface, runs locally.</p>
                         <div class="tech-stack">
-                            <span class="tech-badge">JavaScript</span>
-                            <span class="tech-badge">Web</span>
-                            <span class="tech-badge">Tooling</span>
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">Groq API</span>
+                            <span class="tech-badge">Desktop App</span>
                         </div>
                     </article>
 
-                    <article class="project-card glass">
+                    <article class="project-card glass reveal" data-delay="4">
                         <h3>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                             Quote Generator
@@ -828,7 +1093,7 @@
                         <a href="https://tdogbg.github.io/quote/" class="project-link" target="_blank" rel="noopener noreferrer">live demo →</a>
                     </article>
 
-                    <article class="project-card glass">
+                    <article class="project-card glass reveal" data-delay="5">
                         <h3>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
                             Discord Bot
@@ -839,17 +1104,50 @@
                             <span class="tech-badge">Discord.py</span>
                         </div>
                     </article>
+
+                    <article class="project-card glass reveal" data-delay="6">
+                        <span class="badge" style="color:#a855f7;background:rgba(168,85,247,0.08);border-color:rgba(168,85,247,0.3);">⬡ WIP</span>
+                        <h3>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            Project Alpha
+                        </h3>
+                        <p>Something is in the works. Details locked until launch.</p>
+                        <div class="tech-stack">
+                            <span class="tech-badge">???</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="calisthenics" aria-labelledby="cal-title">
+            <div class="section-inner">
+                <header class="section-head reveal">
+                    <h2 id="cal-title">Calisthenics Journey</h2>
+                    <p>Skills · progression · movement</p>
+                </header>
+                <div class="cal-tree reveal" data-delay="1" id="cal-tree">
+                    <svg class="cal-svg" id="cal-svg" aria-hidden="true"></svg>
+                    <div class="cal-col cal-col-left" id="cal-col-left"></div>
+                    <div class="cal-hub" aria-hidden="true">
+                        <span>Calisthenics</span>
+                        <span>Journey</span>
+                    </div>
+                    <div class="cal-col cal-col-right" id="cal-col-right"></div>
+                </div>
+                <div class="cal-edit-wrap">
+                    <button class="cal-edit-btn" id="cal-edit-btn" aria-pressed="false">✦ Edit Progress</button>
                 </div>
             </div>
         </section>
 
         <section id="contact" aria-labelledby="contact-title">
             <div class="section-inner">
-                <header class="section-head">
+                <header class="section-head reveal">
                     <h2 id="contact-title">Connect</h2>
                     <p>Email · social · collabs</p>
                 </header>
-                <div class="contact-box glass">
+                <div class="contact-box glass reveal" data-delay="1">
                     <p>Ready to collaborate? Let's connect.</p>
                     <div class="contact-links">
                         <a href="mailto:zhengterry99@gmail.com" class="contact-btn">Email</a>
@@ -867,6 +1165,24 @@
     <footer>
         <p>© 2026 Terry Zheng</p>
     </footer>
+
+    <!-- Calisthenics skill modal -->
+    <div class="cal-modal-overlay" id="cal-modal" hidden role="dialog" aria-modal="true" aria-labelledby="cal-modal-title">
+        <div class="cal-modal-box glass">
+            <button class="cal-modal-close" id="cal-modal-close" aria-label="Close">×</button>
+            <div class="cal-figure" id="cal-modal-figure" aria-hidden="true"></div>
+            <h3 class="cal-modal-title" id="cal-modal-title"></h3>
+            <p class="cal-modal-desc" id="cal-modal-desc"></p>
+            <div class="cal-level-track" id="cal-modal-pips">
+                <div class="cal-pip"></div>
+                <div class="cal-pip"></div>
+                <div class="cal-pip"></div>
+                <div class="cal-pip"></div>
+            </div>
+            <p class="cal-level-text" id="cal-modal-level"></p>
+            <div class="cal-edit-btns" id="cal-modal-edit-btns"></div>
+        </div>
+    </div>
 
     <button type="button" class="chat-fab" id="chat-toggle" aria-expanded="false" aria-controls="chat-panel" aria-label="Open assistant chat">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -890,11 +1206,7 @@
     <script type="module">
         import * as THREE from 'three';
 
-        const OLLAMA_URL = 'http://localhost:11434/api/chat';
-        const OLLAMA_MODEL = 'gemma:3b';
-        const SYSTEM_PROMPT = `You are a concise, friendly assistant on Terry Zheng's portfolio site. Terry is a 16-year-old student developer interested in security, Python, JS, and projects like PiFace. Keep answers short unless asked for detail.`;
-
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const prefersReducedMotionGlobe = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const canvas = document.getElementById('globe-canvas');
         const wrap = canvas?.closest('.globe-wrap');
 
@@ -917,13 +1229,13 @@
                 color: 0x22d3ee,
                 wireframe: true,
                 transparent: true,
-                opacity: 0.35
+                opacity: 0.28
             });
             const wireSphere = new THREE.Mesh(sphereGeom, wireMat);
             group.add(wireSphere);
 
             const edges = new THREE.EdgesGeometry(new THREE.SphereGeometry(1.02, 32, 32));
-            const lineMat = new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.85 });
+            const lineMat = new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.7 });
             const wireframe = new THREE.LineSegments(edges, lineMat);
             group.add(wireframe);
 
@@ -931,16 +1243,49 @@
             const innerMat = new THREE.MeshBasicMaterial({
                 color: 0x0e7490,
                 transparent: true,
-                opacity: 0.06,
+                opacity: 0.05,
                 wireframe: false
             });
             group.add(new THREE.Mesh(innerGeom, innerMat));
 
-            const ringGeom = new THREE.TorusGeometry(1.35, 0.008, 8, 96);
-            const ringMat = new THREE.MeshBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.5 });
-            const ring = new THREE.Mesh(ringGeom, ringMat);
-            ring.rotation.x = Math.PI / 2.2;
-            group.add(ring);
+            // Ring 1 — cyan
+            const ring1Geom = new THREE.TorusGeometry(1.35, 0.007, 8, 96);
+            const ring1Mat = new THREE.MeshBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.55 });
+            const ring1 = new THREE.Mesh(ring1Geom, ring1Mat);
+            ring1.rotation.x = Math.PI / 2.2;
+            group.add(ring1);
+
+            // Ring 2 — purple
+            const ring2Geom = new THREE.TorusGeometry(1.5, 0.006, 8, 96);
+            const ring2Mat = new THREE.MeshBasicMaterial({ color: 0xa855f7, transparent: true, opacity: 0.4 });
+            const ring2 = new THREE.Mesh(ring2Geom, ring2Mat);
+            ring2.rotation.x = Math.PI / 3;
+            ring2.rotation.z = Math.PI / 5;
+            group.add(ring2);
+
+            // Ring 3 — electric blue
+            const ring3Geom = new THREE.TorusGeometry(1.62, 0.005, 8, 96);
+            const ring3Mat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.35 });
+            const ring3 = new THREE.Mesh(ring3Geom, ring3Mat);
+            ring3.rotation.y = Math.PI / 4;
+            ring3.rotation.z = Math.PI / 6;
+            group.add(ring3);
+
+            // Particles
+            const particleCount = 180;
+            const positions = new Float32Array(particleCount * 3);
+            for (let i = 0; i < particleCount; i++) {
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                const r = 1.0 + Math.random() * 0.55;
+                positions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
+                positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+                positions[i * 3 + 2] = r * Math.cos(phi);
+            }
+            const partGeom = new THREE.BufferGeometry();
+            partGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            const partMat = new THREE.PointsMaterial({ color: 0x22d3ee, size: 0.022, transparent: true, opacity: 0.7 });
+            group.add(new THREE.Points(partGeom, partMat));
 
             function resize() {
                 const w = wrap.clientWidth;
@@ -953,35 +1298,377 @@
             window.addEventListener('resize', resize);
 
             let raf;
-            const rotSpeed = prefersReducedMotion ? 0 : 1;
+            const rotSpeed = prefersReducedMotionGlobe ? 0 : 1;
 
             function tick() {
                 raf = requestAnimationFrame(tick);
                 if (rotSpeed) {
-                    group.rotation.y += 0.0018;
-                    group.rotation.x += 0.0004;
-                    ring.rotation.z += 0.0008;
+                    group.rotation.y += 0.0016;
+                    group.rotation.x += 0.0003;
+                    ring1.rotation.z += 0.0009;
+                    ring2.rotation.z -= 0.0006;
+                    ring3.rotation.y += 0.0005;
                 }
                 renderer.render(scene, camera);
             }
             tick();
-
-            return () => {
-                cancelAnimationFrame(raf);
-                window.removeEventListener('resize', resize);
-                renderer.dispose();
-                sphereGeom.dispose();
-                wireMat.dispose();
-                edges.dispose();
-                lineMat.dispose();
-                innerGeom.dispose();
-                innerMat.dispose();
-                ringGeom.dispose();
-                ringMat.dispose();
-            };
         }
 
         initGlobe();
+    </script>
+
+    <script>
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const OLLAMA_URL = 'http://localhost:11434/api/chat';
+        const OLLAMA_MODEL = 'gemma:3b';
+        const SYSTEM_PROMPT = `You are a concise, friendly assistant on Terry Zheng's portfolio site. Terry is a 16-year-old student developer interested in security, Python, JS, and projects like PiFace. Keep answers short unless asked for detail.`;
+
+        /* —— Calisthenics Skill Tree —— */
+        const LEVELS = ['locked', 'beginner', 'intermediate', 'advanced', 'mastered'];
+        const LEVEL_PIPS = { locked: 0, beginner: 1, intermediate: 2, advanced: 3, mastered: 4 };
+
+        function createSVGWrapper(body) {
+            return `<svg viewBox="0 0 100 120" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">${body}</svg>`;
+        }
+
+        const SKILLS = [
+            {
+                id: 'muscle-ups', name: 'Muscle Ups', side: 'left', level: 'intermediate',
+                desc: 'Pull-up + dip combined into one explosive rep. Go from dead hang below the bar to locked out above it.',
+                svg: createSVGWrapper(`<line x1="15" y1="58" x2="85" y2="58" stroke="#38bdf8" stroke-width="3"/>
+                    <g style="animation:muscleUpMotion 1.8s ease-in-out infinite alternate;transform-origin:50px 52px">
+                        <circle cx="50" cy="22" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
+                        <line x1="50" y1="29" x2="50" y2="60" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="44" y1="40" x2="32" y2="58" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="56" y1="40" x2="68" y2="58" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="60" x2="43" y2="92" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="60" x2="57" y2="92" stroke="#22d3ee" stroke-width="2.2"/>
+                    </g>
+                    <style>@keyframes muscleUpMotion{from{transform:translateY(30px)}to{transform:translateY(0px)}}</style>`)
+            },
+            {
+                id: 'handstand', name: 'Handstand', side: 'left', level: 'beginner',
+                desc: 'Full inversion balancing on your hands. Requires wrist strength, shoulder stability, and serious core tension.',
+                svg: createSVGWrapper(`<line x1="15" y1="108" x2="85" y2="108" stroke="#38bdf8" stroke-width="2" opacity="0.5"/>
+                    <g style="animation:hstandSway 3s ease-in-out infinite alternate;transform-origin:50px 58px">
+                        <line x1="47" y1="8" x2="50" y2="44" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="53" y1="8" x2="50" y2="44" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="44" x2="50" y2="84" stroke="#22d3ee" stroke-width="2.2"/>
+                        <circle cx="50" cy="93" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
+                        <line x1="44" y1="82" x2="36" y2="108" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="56" y1="82" x2="64" y2="108" stroke="#22d3ee" stroke-width="2.2"/>
+                    </g>
+                    <style>@keyframes hstandSway{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}</style>`)
+            },
+            {
+                id: 'handstand-pushup', name: 'Handstand Push Up', side: 'left', level: 'locked',
+                desc: 'A push-up while in a full handstand. Combines vertical pressing strength with perfect balance.',
+                svg: createSVGWrapper(`<line x1="15" y1="108" x2="85" y2="108" stroke="#38bdf8" stroke-width="2" opacity="0.5"/>
+                    <g style="animation:hspuMotion 1.8s ease-in-out infinite alternate;transform-origin:50px 58px">
+                        <line x1="47" y1="8" x2="50" y2="44" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="53" y1="8" x2="50" y2="44" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="44" x2="50" y2="82" stroke="#22d3ee" stroke-width="2.2"/>
+                        <circle cx="50" cy="91" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
+                        <line x1="44" y1="80" x2="34" y2="94" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="34" y1="94" x2="34" y2="108" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="56" y1="80" x2="66" y2="94" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="66" y1="94" x2="66" y2="108" stroke="#22d3ee" stroke-width="2.2"/>
+                    </g>
+                    <style>@keyframes hspuMotion{from{transform:translateY(0px)}to{transform:translateY(-20px)}}</style>`)
+            },
+            {
+                id: 'planche', name: 'Planche', side: 'left', level: 'locked',
+                desc: 'Body held horizontal off the ground, arms straight. Pure scapular depression and straight-arm strength.',
+                svg: createSVGWrapper(`<line x1="15" y1="88" x2="85" y2="88" stroke="#38bdf8" stroke-width="2" opacity="0.4"/>
+                    <g style="animation:plancheHold 2.5s ease-in-out infinite alternate;transform-origin:50px 62px">
+                        <line x1="14" y1="58" x2="76" y2="58" stroke="#22d3ee" stroke-width="2.5"/>
+                        <circle cx="83" cy="55" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
+                        <line x1="36" y1="58" x2="36" y2="88" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="54" y1="58" x2="54" y2="88" stroke="#22d3ee" stroke-width="2.2"/>
+                    </g>
+                    <style>@keyframes plancheHold{from{transform:translateY(-3px)}to{transform:translateY(3px)}}</style>`)
+            },
+            {
+                id: 'front-lever', name: 'Front Lever', side: 'left', level: 'locked',
+                desc: 'Body held perfectly horizontal while hanging from a bar, arms straight up. Insane lat and core demand.',
+                svg: createSVGWrapper(`<line x1="15" y1="20" x2="85" y2="20" stroke="#38bdf8" stroke-width="3"/>
+                    <g style="animation:frontLevHold 2.5s ease-in-out infinite alternate;transform-origin:50px 52px">
+                        <line x1="44" y1="20" x2="44" y2="42" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="56" y1="20" x2="56" y2="42" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="12" y1="52" x2="76" y2="52" stroke="#22d3ee" stroke-width="2.5"/>
+                        <line x1="44" y1="42" x2="46" y2="52" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="56" y1="42" x2="54" y2="52" stroke="#22d3ee" stroke-width="2.2"/>
+                        <circle cx="83" cy="49" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
+                    </g>
+                    <style>@keyframes frontLevHold{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}</style>`)
+            },
+            {
+                id: 'elbow-lever', name: 'Elbow Lever', side: 'left', level: 'locked',
+                desc: 'Balance your entire body horizontally on one or two elbows pressed into your abs. A flex of balance and core stiffness.',
+                svg: createSVGWrapper(`<line x1="15" y1="95" x2="85" y2="95" stroke="#38bdf8" stroke-width="2" opacity="0.5"/>
+                    <g style="animation:elbowLevBal 3s ease-in-out infinite alternate;transform-origin:50px 65px">
+                        <line x1="36" y1="95" x2="42" y2="74" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="60" y1="95" x2="54" y2="74" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="14" y1="63" x2="76" y2="63" stroke="#22d3ee" stroke-width="2.5"/>
+                        <line x1="42" y1="74" x2="44" y2="63" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="54" y1="74" x2="52" y2="63" stroke="#22d3ee" stroke-width="2.2"/>
+                        <circle cx="83" cy="60" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
+                    </g>
+                    <style>@keyframes elbowLevBal{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}</style>`)
+            },
+            {
+                id: 'pull-ups', name: 'Pull Ups', side: 'right', level: 'advanced',
+                desc: 'The foundation of bar work. Full dead hang to chin above bar. Builds the lats and biceps for everything else.',
+                svg: createSVGWrapper(`<line x1="15" y1="20" x2="85" y2="20" stroke="#38bdf8" stroke-width="3"/>
+                    <g style="animation:pullUpMotion 2s ease-in-out infinite alternate;transform-origin:50px 65px">
+                        <circle cx="50" cy="35" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
+                        <line x1="44" y1="32" x2="36" y2="20" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="56" y1="32" x2="64" y2="20" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="42" x2="50" y2="76" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="56" x2="38" y2="68" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="56" x2="62" y2="68" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="76" x2="44" y2="105" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="76" x2="56" y2="105" stroke="#22d3ee" stroke-width="2.2"/>
+                    </g>
+                    <style>@keyframes pullUpMotion{from{transform:translateY(18px)}to{transform:translateY(-4px)}}</style>`)
+            },
+            {
+                id: 'dips', name: 'Dips', side: 'right', level: 'advanced',
+                desc: 'Between parallel bars, lower and press. The go-to pushing movement for chest and triceps in calisthenics.',
+                svg: createSVGWrapper(`<line x1="25" y1="28" x2="25" y2="92" stroke="#38bdf8" stroke-width="3"/>
+                    <line x1="75" y1="28" x2="75" y2="92" stroke="#38bdf8" stroke-width="3"/>
+                    <g style="animation:dipMotion 2s ease-in-out infinite alternate;transform-origin:50px 56px">
+                        <circle cx="50" cy="30" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
+                        <line x1="50" y1="37" x2="50" y2="72" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="44" y1="48" x2="34" y2="56" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="34" y1="56" x2="25" y2="48" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="56" y1="48" x2="66" y2="56" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="66" y1="56" x2="75" y2="48" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="72" x2="44" y2="102" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="72" x2="56" y2="102" stroke="#22d3ee" stroke-width="2.2"/>
+                    </g>
+                    <style>@keyframes dipMotion{from{transform:translateY(16px)}to{transform:translateY(-6px)}}</style>`)
+            },
+            {
+                id: 'l-sits', name: 'L Sits', side: 'right', level: 'intermediate',
+                desc: 'Legs held parallel to the ground while suspended between bars or on parallettes. Hip flexors and core on fire.',
+                svg: createSVGWrapper(`<line x1="35" y1="68" x2="35" y2="90" stroke="#38bdf8" stroke-width="3"/>
+                    <line x1="65" y1="68" x2="65" y2="90" stroke="#38bdf8" stroke-width="3"/>
+                    <g style="animation:lSitHold 3s ease-in-out infinite alternate;transform-origin:50px 50px">
+                        <circle cx="50" cy="20" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
+                        <line x1="50" y1="27" x2="50" y2="64" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="45" y1="42" x2="35" y2="68" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="55" y1="42" x2="65" y2="68" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="64" x2="10" y2="64" stroke="#22d3ee" stroke-width="2.5"/>
+                    </g>
+                    <style>@keyframes lSitHold{from{transform:translateY(-2px)}to{transform:translateY(2px)}}</style>`)
+            },
+            {
+                id: 'human-flag', name: 'Human Flag', side: 'right', level: 'locked',
+                desc: 'Body held horizontally from a vertical pole, arms gripping above and below. The most visually insane move in calisthenics.',
+                svg: createSVGWrapper(`<line x1="28" y1="10" x2="28" y2="110" stroke="#38bdf8" stroke-width="3"/>
+                    <g style="animation:humanFlagSway 3s ease-in-out infinite alternate;transform-origin:28px 52px">
+                        <line x1="28" y1="32" x2="44" y2="38" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="28" y1="66" x2="44" y2="60" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="44" y1="38" x2="44" y2="60" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="44" y1="49" x2="82" y2="49" stroke="#22d3ee" stroke-width="2.5"/>
+                        <circle cx="88" cy="46" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
+                    </g>
+                    <style>@keyframes humanFlagSway{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}</style>`)
+            },
+            {
+                id: 'archer-push-ups', name: 'Archer Push Ups', side: 'right', level: 'beginner',
+                desc: 'Wide push-up where one arm extends fully to the side while the other does the work. Unilateral chest and tricep builder.',
+                svg: createSVGWrapper(`<line x1="10" y1="90" x2="90" y2="90" stroke="#38bdf8" stroke-width="2" opacity="0.4"/>
+                    <g style="animation:archerPU 2s ease-in-out infinite alternate;transform-origin:38px 64px">
+                        <circle cx="48" cy="44" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
+                        <line x1="48" y1="51" x2="48" y2="74" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="44" y1="58" x2="30" y2="70" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="30" y1="70" x2="26" y2="90" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="52" y1="58" x2="88" y2="60" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="88" y1="60" x2="88" y2="90" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="48" y1="74" x2="42" y2="90" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="48" y1="74" x2="54" y2="90" stroke="#22d3ee" stroke-width="2.2"/>
+                    </g>
+                    <style>@keyframes archerPU{from{transform:translateY(0px)}to{transform:translateY(12px)}}</style>`)
+            },
+            {
+                id: 'l-sit-to-handstand', name: 'L Sit to Handstand', side: 'right', level: 'locked',
+                desc: 'Pressing from an L-sit directly into a full handstand — one of the hardest presses in calisthenics skill work.',
+                svg: createSVGWrapper(`<line x1="15" y1="105" x2="85" y2="105" stroke="#38bdf8" stroke-width="2" opacity="0.5"/>
+                    <g style="animation:lSitToHSMotion 2.5s ease-in-out infinite alternate;transform-origin:50px 68px">
+                        <line x1="14" y1="55" x2="50" y2="72" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="86" y1="55" x2="50" y2="72" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="72" x2="50" y2="90" stroke="#22d3ee" stroke-width="2.2"/>
+                        <circle cx="50" cy="98" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
+                        <line x1="44" y1="88" x2="36" y2="105" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="56" y1="88" x2="64" y2="105" stroke="#22d3ee" stroke-width="2.2"/>
+                    </g>
+                    <style>@keyframes lSitToHSMotion{from{transform:translateY(-8px)}to{transform:translateY(6px)}}</style>`)
+            }
+        ];
+
+        // Load persisted levels from localStorage
+        const savedLevels = JSON.parse(localStorage.getItem('cal-levels') || '{}');
+        SKILLS.forEach(s => { if (savedLevels[s.id]) s.level = savedLevels[s.id]; });
+
+        function saveLevels() {
+            const data = {};
+            SKILLS.forEach(s => { data[s.id] = s.level; });
+            localStorage.setItem('cal-levels', JSON.stringify(data));
+        }
+
+        // Build skill nodes
+        const calTree = document.getElementById('cal-tree');
+        const calSvgEl = document.getElementById('cal-svg');
+        const calLeft = document.getElementById('cal-col-left');
+        const calRight = document.getElementById('cal-col-right');
+        const calHub = calTree.querySelector('.cal-hub');
+
+        function createNode(skill) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'cal-node';
+            btn.dataset.skillId = skill.id;
+            btn.setAttribute('aria-label', `${skill.name} — ${skill.level}`);
+            const dot = document.createElement('span');
+            dot.className = `cal-dot level-${skill.level}`;
+            const lbl = document.createElement('span');
+            lbl.textContent = skill.name;
+            btn.append(dot, lbl);
+            btn.addEventListener('click', () => openSkillModal(skill));
+            return btn;
+        }
+
+        SKILLS.filter(s => s.side === 'left').forEach(s => calLeft.appendChild(createNode(s)));
+        SKILLS.filter(s => s.side === 'right').forEach(s => calRight.appendChild(createNode(s)));
+
+        // Draw connecting SVG lines from hub to each node
+        function drawCalLines() {
+            calSvgEl.innerHTML = '';
+            const treeRect = calTree.getBoundingClientRect();
+            const hubRect = calHub.getBoundingClientRect();
+            const hx = hubRect.left + hubRect.width / 2 - treeRect.left;
+            const hy = hubRect.top + hubRect.height / 2 - treeRect.top;
+            calTree.querySelectorAll('.cal-node').forEach(node => {
+                const nr = node.getBoundingClientRect();
+                const nx = nr.left + nr.width / 2 - treeRect.left;
+                const ny = nr.top + nr.height / 2 - treeRect.top;
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', hx); line.setAttribute('y1', hy);
+                line.setAttribute('x2', nx); line.setAttribute('y2', ny);
+                line.setAttribute('stroke', 'rgba(34,211,238,0.18)');
+                line.setAttribute('stroke-width', '1');
+                line.setAttribute('stroke-dasharray', '5 4');
+                calSvgEl.appendChild(line);
+            });
+        }
+        requestAnimationFrame(() => requestAnimationFrame(drawCalLines));
+        window.addEventListener('resize', drawCalLines);
+
+        /* —— Scroll Reveal —— */
+        (function() {
+            const revealEls = document.querySelectorAll('.reveal');
+            if (prefersReducedMotion) {
+                revealEls.forEach(el => el.classList.add('is-visible'));
+                return;
+            }
+            if ('IntersectionObserver' in window) {
+                const io = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            io.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+                revealEls.forEach(el => io.observe(el));
+            } else {
+                revealEls.forEach(el => el.classList.add('is-visible'));
+            }
+        })();
+
+        // Modal
+        let calEditMode = false;
+        let activeSkill = null;
+        const calModal = document.getElementById('cal-modal');
+        const calModalClose = document.getElementById('cal-modal-close');
+        const calModalFigure = document.getElementById('cal-modal-figure');
+        const calModalTitle = document.getElementById('cal-modal-title');
+        const calModalDesc = document.getElementById('cal-modal-desc');
+        const calModalPips = document.getElementById('cal-modal-pips');
+        const calModalLevel = document.getElementById('cal-modal-level');
+        const calModalEditBtns = document.getElementById('cal-modal-edit-btns');
+
+        // Build level edit buttons
+        LEVELS.forEach(lvl => {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'cal-lvl-btn';
+            b.textContent = lvl.charAt(0).toUpperCase() + lvl.slice(1);
+            b.dataset.level = lvl;
+            b.setAttribute('aria-pressed', 'false');
+            b.addEventListener('click', () => {
+                if (!activeSkill) return;
+                activeSkill.level = lvl;
+                updateModalLevel(activeSkill);
+                saveLevels();
+            });
+            calModalEditBtns.appendChild(b);
+        });
+
+        function updateModalLevel(skill) {
+            const pips = LEVEL_PIPS[skill.level];
+            const isMastered = skill.level === 'mastered';
+            Array.from(calModalPips.children).forEach((pip, i) => {
+                pip.classList.toggle('active', i < pips);
+                pip.classList.toggle('pip-mastered', isMastered && i < pips);
+            });
+            calModalLevel.className = `cal-level-text ${skill.level}`;
+            calModalLevel.textContent = skill.level.charAt(0).toUpperCase() + skill.level.slice(1);
+            Array.from(calModalEditBtns.children).forEach(b => {
+                b.setAttribute('aria-pressed', b.dataset.level === skill.level ? 'true' : 'false');
+            });
+            // Update node dot in tree
+            const node = calTree.querySelector(`[data-skill-id="${skill.id}"]`);
+            if (node) {
+                node.querySelector('.cal-dot').className = `cal-dot level-${skill.level}`;
+                node.setAttribute('aria-label', `${skill.name} — ${skill.level}`);
+            }
+        }
+
+        function openSkillModal(skill) {
+            activeSkill = skill;
+            calModalFigure.innerHTML = skill.svg;
+            calModalTitle.textContent = skill.name;
+            calModalDesc.textContent = skill.desc;
+            updateModalLevel(skill);
+            calModalEditBtns.classList.toggle('visible', calEditMode);
+            calModal.removeAttribute('hidden');
+            calModalClose.focus();
+        }
+
+        function closeSkillModal() {
+            calModal.setAttribute('hidden', '');
+            activeSkill = null;
+        }
+
+        calModalClose.addEventListener('click', closeSkillModal);
+        calModal.addEventListener('click', e => { if (e.target === calModal) closeSkillModal(); });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && !calModal.hasAttribute('hidden')) closeSkillModal();
+        });
+
+        // Edit mode toggle
+        const calEditBtn = document.getElementById('cal-edit-btn');
+        calEditBtn.addEventListener('click', () => {
+            calEditMode = !calEditMode;
+            calEditBtn.setAttribute('aria-pressed', calEditMode ? 'true' : 'false');
+            calEditBtn.textContent = calEditMode ? '✓ Done Editing' : '✦ Edit Progress';
+            if (!calModal.hasAttribute('hidden') && activeSkill) {
+                calModalEditBtns.classList.toggle('visible', calEditMode);
+            }
+        });
 
         /* —— Chat (Ollama) —— */
         const chatPanel = document.getElementById('chat-panel');
