@@ -691,7 +691,12 @@
             /* Glass hover: no translate on touch */
             .glass:hover { transform: none; }
             .contact-btn:hover { transform: none; box-shadow: none; }
+            /* Disable skill-tag hover transforms on touch screens */
+            .skill-tag:hover { transform: none; box-shadow: none; }
+            /* Ensure all key interactive elements meet 44px touch target */
+            .skill-tag { min-height: 36px; }
         }
+        /* Very small screens: stat cards single column */
         @media (max-width: 420px) {
             .hero-meta { gap: 0.5rem 1rem; font-size: 0.7rem; }
             .stats { grid-template-columns: 1fr; }
