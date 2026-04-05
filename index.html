@@ -22,12 +22,16 @@
             --bg-panel: rgba(6, 14, 22, 0.65);
             --cyan: #22d3ee;
             --cyan-dim: rgba(34, 211, 238, 0.45);
+            --purple: #a855f7;
+            --purple-dim: rgba(168, 85, 247, 0.45);
+            --electric: #6366f1;
             --blue: #38bdf8;
+            --accent-grad: linear-gradient(135deg, #22d3ee 0%, #a855f7 50%, #6366f1 100%);
             --text: #e8eef4;
             --text-muted: #8ba3b8;
             --text-dim: #5c728a;
             --border: rgba(56, 189, 248, 0.22);
-            --border-glow: rgba(34, 211, 238, 0.35);
+            --border-glow: rgba(168, 85, 247, 0.4);
             --font-sans: 'Inter', system-ui, sans-serif;
             --font-mono: 'JetBrains Mono', ui-monospace, monospace;
             --radius: 14px;
@@ -67,9 +71,9 @@
             inset: 0;
             z-index: -1;
             background:
-                linear-gradient(180deg, #050a10 0%, #030508 40%, #050c12 100%),
-                repeating-linear-gradient(0deg, transparent, transparent 47px, rgba(34, 211, 238, 0.03) 48px),
-                repeating-linear-gradient(90deg, transparent, transparent 47px, rgba(56, 189, 248, 0.025) 48px);
+                linear-gradient(180deg, #04080f 0%, #030508 35%, #060410 70%, #030508 100%),
+                repeating-linear-gradient(0deg, transparent, transparent 47px, rgba(34, 211, 238, 0.025) 48px),
+                repeating-linear-gradient(90deg, transparent, transparent 47px, rgba(168, 85, 247, 0.02) 48px);
             pointer-events: none;
         }
         body::after {
@@ -77,7 +81,10 @@
             position: fixed;
             inset: 0;
             z-index: -1;
-            background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(14, 100, 130, 0.18), transparent 55%);
+            background:
+                radial-gradient(ellipse 70% 50% at 20% 10%, rgba(34, 211, 238, 0.08), transparent 55%),
+                radial-gradient(ellipse 60% 50% at 80% 5%, rgba(168, 85, 247, 0.1), transparent 50%),
+                radial-gradient(ellipse 50% 40% at 50% 100%, rgba(99, 102, 241, 0.07), transparent 55%);
             pointer-events: none;
         }
 
@@ -159,7 +166,7 @@
             bottom: -4px;
             width: 0;
             height: 1px;
-            background: var(--cyan);
+            background: var(--accent-grad);
             transition: width 0.3s var(--ease);
         }
         nav a:hover { color: var(--text); }
@@ -191,21 +198,22 @@
         /* Hero */
         .hero {
             min-height: 100vh;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            position: relative;
+            display: flex;
             align-items: center;
-            gap: 2rem;
             padding: 6.5rem clamp(1.25rem, 4vw, 3rem) 4rem;
             max-width: var(--max);
             margin: 0 auto;
+            overflow: hidden;
         }
         @media (max-width: 960px) {
-            .hero { grid-template-columns: 1fr; text-align: center; padding-top: 5.5rem; }
+            .hero { text-align: center; padding-top: 5.5rem; }
         }
 
         .hero-copy {
             position: relative;
             z-index: 2;
+            max-width: 42rem;
         }
         .hero-tag {
             font-family: var(--font-mono);
@@ -221,7 +229,7 @@
             letter-spacing: -0.03em;
             line-height: 1.05;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, #fff 0%, #a5f3fc 45%, var(--blue) 100%);
+            background: linear-gradient(135deg, #fff 0%, #a5f3fc 30%, var(--purple) 70%, var(--electric) 100%);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -255,42 +263,46 @@
             border-radius: 4px;
         }
 
+        /* Globe as immersive background element */
         .globe-wrap {
-            position: relative;
-            height: min(56vh, 520px);
-            min-height: 280px;
+            position: absolute;
+            top: 50%;
+            right: -8%;
+            transform: translateY(-50%);
+            width: min(90vh, 85vw);
+            height: min(90vh, 85vw);
             z-index: 1;
+            pointer-events: none;
+        }
+        @media (max-width: 960px) {
+            .globe-wrap {
+                right: 50%;
+                transform: translate(50%, -50%);
+                width: min(80vh, 90vw);
+                height: min(80vh, 90vw);
+                opacity: 0.5;
+            }
         }
         #globe-canvas {
             display: block;
             width: 100%;
             height: 100%;
-            border-radius: var(--radius);
         }
-        .globe-frame {
+        .globe-glow {
             position: absolute;
-            inset: 0;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            background: rgba(4, 12, 20, 0.4);
-            backdrop-filter: blur(8px);
+            inset: -10%;
+            border-radius: 50%;
+            background: radial-gradient(ellipse at center,
+                rgba(168, 85, 247, 0.12) 0%,
+                rgba(34, 211, 238, 0.08) 35%,
+                rgba(99, 102, 241, 0.05) 60%,
+                transparent 75%);
             pointer-events: none;
-            box-shadow:
-                inset 0 0 60px rgba(34, 211, 238, 0.06),
-                0 0 80px rgba(0, 0, 0, 0.5);
+            animation: globe-pulse 6s ease-in-out infinite;
         }
-        .globe-label {
-            position: absolute;
-            bottom: 1rem;
-            left: 1rem;
-            right: 1rem;
-            font-family: var(--font-mono);
-            font-size: 0.65rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--text-dim);
-            pointer-events: none;
-            text-align: center;
+        @keyframes globe-pulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.04); }
         }
 
         section {
@@ -327,7 +339,7 @@
         }
         .glass:hover {
             border-color: var(--border-glow);
-            box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.08), 0 20px 50px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.1), 0 20px 50px rgba(0, 0, 0, 0.35);
         }
 
         .stats {
@@ -343,7 +355,10 @@
             font-family: var(--font-mono);
             font-size: clamp(2rem, 4vw, 2.75rem);
             font-weight: 700;
-            color: var(--cyan);
+            background: var(--accent-grad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
             line-height: 1.1;
             margin-bottom: 0.35rem;
         }
@@ -423,9 +438,11 @@
             font-weight: 600;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: var(--cyan);
-            background: rgba(34, 211, 238, 0.08);
-            border: 1px solid var(--border);
+            background: var(--accent-grad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border: 1px solid rgba(168, 85, 247, 0.3);
             padding: 0.25rem 0.5rem;
             border-radius: 4px;
             margin-bottom: 0.75rem;
@@ -449,15 +466,18 @@
             font-family: var(--font-mono);
             font-size: 0.8rem;
             font-weight: 500;
-            color: var(--cyan);
+            background: var(--accent-grad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
             text-decoration: none;
             margin-top: auto;
             display: inline-flex;
             align-items: center;
             gap: 0.35rem;
-            transition: gap 0.25s var(--ease), color 0.2s;
+            transition: gap 0.25s var(--ease), filter 0.2s;
         }
-        .project-link:hover { gap: 0.55rem; color: var(--blue); }
+        .project-link:hover { gap: 0.55rem; filter: brightness(1.3); }
 
         .contact-box {
             padding: clamp(2rem, 4vw, 2.75rem);
@@ -490,8 +510,8 @@
             transition: background 0.25s var(--ease), border-color 0.25s, transform 0.2s;
         }
         .contact-btn:hover {
-            background: rgba(34, 211, 238, 0.12);
-            border-color: var(--cyan-dim);
+            background: rgba(168, 85, 247, 0.12);
+            border-color: var(--purple-dim);
             transform: translateY(-2px);
         }
 
@@ -700,6 +720,10 @@
 
     <main id="main">
         <section id="hero" class="hero" aria-labelledby="hero-title">
+            <div class="globe-wrap" aria-hidden="true">
+                <canvas id="globe-canvas"></canvas>
+                <div class="globe-glow"></div>
+            </div>
             <div class="hero-copy">
                 <p class="hero-tag">// portfolio.signal</p>
                 <h1 id="hero-title">TERRY ZHENG</h1>
@@ -709,11 +733,6 @@
                     <span>GCSE track</span>
                     <span>HTB · cadets · build</span>
                 </div>
-            </div>
-            <div class="globe-wrap">
-                <canvas id="globe-canvas" aria-hidden="true"></canvas>
-                <div class="globe-frame" aria-hidden="true"></div>
-                <p class="globe-label">Wireframe globe · three.js</p>
             </div>
         </section>
 
@@ -812,6 +831,7 @@
                             <span class="tech-badge">Web</span>
                             <span class="tech-badge">Tooling</span>
                         </div>
+                        <a href="https://github.com/tdogbg/gizmohelper" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="View Gizmo Helper on GitHub (opens in new tab)">View on GitHub →</a>
                     </article>
 
                     <article class="project-card glass">
@@ -903,7 +923,7 @@
 
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-            camera.position.z = 2.8;
+            camera.position.z = 2.5;
 
             const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -912,35 +932,69 @@
             const group = new THREE.Group();
             scene.add(group);
 
+            // Outer wireframe sphere — cyan tint, semi-transparent
             const sphereGeom = new THREE.SphereGeometry(1, 48, 48);
             const wireMat = new THREE.MeshBasicMaterial({
                 color: 0x22d3ee,
                 wireframe: true,
                 transparent: true,
-                opacity: 0.35
+                opacity: 0.18
             });
-            const wireSphere = new THREE.Mesh(sphereGeom, wireMat);
-            group.add(wireSphere);
+            group.add(new THREE.Mesh(sphereGeom, wireMat));
 
-            const edges = new THREE.EdgesGeometry(new THREE.SphereGeometry(1.02, 32, 32));
-            const lineMat = new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.85 });
-            const wireframe = new THREE.LineSegments(edges, lineMat);
-            group.add(wireframe);
+            // Edge lines — purple tint
+            const edges = new THREE.EdgesGeometry(new THREE.SphereGeometry(1.01, 32, 32));
+            const lineMat = new THREE.LineBasicMaterial({ color: 0xa855f7, transparent: true, opacity: 0.55 });
+            group.add(new THREE.LineSegments(edges, lineMat));
 
-            const innerGeom = new THREE.SphereGeometry(0.98, 32, 32);
+            // Inner subtle fill
+            const innerGeom = new THREE.SphereGeometry(0.97, 32, 32);
             const innerMat = new THREE.MeshBasicMaterial({
-                color: 0x0e7490,
+                color: 0x4c1d95,
                 transparent: true,
-                opacity: 0.06,
+                opacity: 0.07,
                 wireframe: false
             });
             group.add(new THREE.Mesh(innerGeom, innerMat));
 
-            const ringGeom = new THREE.TorusGeometry(1.35, 0.008, 8, 96);
-            const ringMat = new THREE.MeshBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.5 });
-            const ring = new THREE.Mesh(ringGeom, ringMat);
-            ring.rotation.x = Math.PI / 2.2;
-            group.add(ring);
+            // Ring 1 — cyan equatorial
+            const ring1Geom = new THREE.TorusGeometry(1.4, 0.007, 8, 120);
+            const ring1Mat = new THREE.MeshBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.55 });
+            const ring1 = new THREE.Mesh(ring1Geom, ring1Mat);
+            ring1.rotation.x = Math.PI / 2;
+            group.add(ring1);
+
+            // Ring 2 — purple tilted
+            const ring2Geom = new THREE.TorusGeometry(1.55, 0.005, 8, 100);
+            const ring2Mat = new THREE.MeshBasicMaterial({ color: 0xa855f7, transparent: true, opacity: 0.4 });
+            const ring2 = new THREE.Mesh(ring2Geom, ring2Mat);
+            ring2.rotation.x = Math.PI / 2.5;
+            ring2.rotation.y = 0.4;
+            group.add(ring2);
+
+            // Ring 3 — electric blue polar
+            const ring3Geom = new THREE.TorusGeometry(1.25, 0.004, 8, 80);
+            const ring3Mat = new THREE.MeshBasicMaterial({ color: 0x6366f1, transparent: true, opacity: 0.35 });
+            const ring3 = new THREE.Mesh(ring3Geom, ring3Mat);
+            ring3.rotation.z = Math.PI / 4;
+            group.add(ring3);
+
+            // Particle points scattered around the globe
+            const particleCount = 180;
+            const particlePositions = new Float32Array(particleCount * 3);
+            for (let i = 0; i < particleCount; i++) {
+                const radius = 1.1 + Math.random() * 0.6;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                particlePositions[i * 3]     = radius * Math.sin(phi) * Math.cos(theta);
+                particlePositions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+                particlePositions[i * 3 + 2] = radius * Math.cos(phi);
+            }
+            const particleGeom = new THREE.BufferGeometry();
+            particleGeom.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+            const particleMat = new THREE.PointsMaterial({ color: 0x22d3ee, size: 0.022, transparent: true, opacity: 0.65 });
+            const particles = new THREE.Points(particleGeom, particleMat);
+            group.add(particles);
 
             function resize() {
                 const w = wrap.clientWidth;
@@ -958,9 +1012,12 @@
             function tick() {
                 raf = requestAnimationFrame(tick);
                 if (rotSpeed) {
-                    group.rotation.y += 0.0018;
-                    group.rotation.x += 0.0004;
-                    ring.rotation.z += 0.0008;
+                    group.rotation.y += 0.0016;
+                    group.rotation.x += 0.0003;
+                    ring1.rotation.z += 0.0006;
+                    ring2.rotation.z -= 0.0009;
+                    ring3.rotation.x += 0.0005;
+                    particles.rotation.y -= 0.0004;
                 }
                 renderer.render(scene, camera);
             }
@@ -970,14 +1027,13 @@
                 cancelAnimationFrame(raf);
                 window.removeEventListener('resize', resize);
                 renderer.dispose();
-                sphereGeom.dispose();
-                wireMat.dispose();
-                edges.dispose();
-                lineMat.dispose();
-                innerGeom.dispose();
-                innerMat.dispose();
-                ringGeom.dispose();
-                ringMat.dispose();
+                sphereGeom.dispose(); wireMat.dispose();
+                edges.dispose(); lineMat.dispose();
+                innerGeom.dispose(); innerMat.dispose();
+                ring1Geom.dispose(); ring1Mat.dispose();
+                ring2Geom.dispose(); ring2Mat.dispose();
+                ring3Geom.dispose(); ring3Mat.dispose();
+                particleGeom.dispose(); particleMat.dispose();
             };
         }
 
