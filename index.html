@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
     <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
     <script type="importmap">
     {
@@ -651,6 +653,23 @@
                 z-index: 999;
             }
             nav ul[data-open="true"] { transform: translateX(0); }
+            nav a { font-size: 1rem; }
+            .hero h1 { font-size: clamp(2rem, 8vw, 3rem); }
+            .hero-sub { font-size: 0.9rem; }
+            section { padding: clamp(2.5rem, 6vw, 4rem) clamp(1rem, 4vw, 2rem); }
+            .stats { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+            .stat-card { padding: 1.25rem 1rem; }
+            .stat-val { font-size: clamp(1.75rem, 5vw, 2.5rem); }
+            .projects-grid { grid-template-columns: 1fr; }
+            .project-card { padding: 1.25rem; }
+            .contact-box { padding: 1.5rem; }
+            .contact-btn { padding: 0.75rem 1rem; min-height: 44px; }
+            .contact-links { gap: 0.5rem; }
+            .cal-modal-box { padding: 1.5rem; margin: 0.5rem; }
+            .cal-figure { width: 120px; height: 120px; }
+        }
+        @media (max-width: 420px) {
+            .hero-meta { gap: 0.5rem 1rem; font-size: 0.7rem; }
         }
 
         /* Calisthenics skill tree */
@@ -659,9 +678,9 @@
             display: grid;
             grid-template-columns: 1fr auto 1fr;
             align-items: center;
-            gap: 2rem;
-            min-height: 700px;
-            padding: 2.5rem 0;
+            gap: 2.5rem;
+            min-height: 820px;
+            padding: 3rem 0;
         }
         .cal-svg {
             position: absolute;
@@ -675,7 +694,7 @@
         .cal-col {
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
+            gap: 1rem;
             position: relative;
             z-index: 2;
         }
@@ -684,8 +703,8 @@
         .cal-hub {
             position: relative;
             z-index: 2;
-            width: 148px;
-            height: 148px;
+            width: 185px;
+            height: 185px;
             border-radius: 50%;
             border: 2px solid var(--cyan);
             background: radial-gradient(circle at center, rgba(34, 211, 238, 0.15), rgba(34, 211, 238, 0.03));
@@ -696,7 +715,7 @@
             justify-content: center;
             text-align: center;
             font-family: var(--font-mono);
-            font-size: 0.72rem;
+            font-size: 0.82rem;
             font-weight: 700;
             letter-spacing: 0.1em;
             text-transform: uppercase;
@@ -712,8 +731,8 @@
         .cal-node {
             display: flex;
             align-items: center;
-            gap: 0.6rem;
-            padding: 0.6rem 1.1rem;
+            gap: 0.7rem;
+            padding: 0.75rem 1.25rem;
             border: 1px solid var(--border);
             border-radius: 8px;
             background: rgba(8, 18, 28, 0.65);
@@ -722,7 +741,7 @@
             cursor: pointer;
             transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease), transform 0.2s var(--ease), color 0.2s;
             font-family: var(--font-mono);
-            font-size: 0.82rem;
+            font-size: 0.88rem;
             font-weight: 500;
             color: var(--text-muted);
             white-space: nowrap;
@@ -789,11 +808,11 @@
                 min-height: auto;
                 gap: 1rem;
             }
-            .cal-hub { margin: 0.5rem auto; order: 1; }
+            .cal-hub { margin: 0.5rem auto; order: 1; width: 130px; height: 130px; font-size: 0.7rem; }
             .cal-col-left { align-items: stretch; order: 2; }
             .cal-col-right { align-items: stretch; order: 3; }
             .cal-svg { display: none; }
-            .cal-node { white-space: normal; justify-content: flex-start; }
+            .cal-node { white-space: normal; justify-content: flex-start; font-size: 0.85rem; padding: 0.8rem 1rem; }
             .cal-col-left .cal-node:hover,
             .cal-col-right .cal-node:hover { transform: scale(1.02); }
         }
@@ -924,11 +943,11 @@
             border-color: var(--cyan-dim);
             color: var(--cyan);
         }
-        /* Scroll reveal */
+        /* Scroll reveal — CSS fallback (GSAP overrides when loaded) */
         .reveal {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
+            transform: translateY(32px);
+            transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
         }
         .reveal.is-visible {
             opacity: 1;
@@ -940,6 +959,8 @@
         .reveal[data-delay="4"] { transition-delay: 0.28s; }
         .reveal[data-delay="5"] { transition-delay: 0.35s; }
         .reveal[data-delay="6"] { transition-delay: 0.42s; }
+        /* GSAP-managed elements start hidden */
+        .gsap-reveal { opacity: 0; }
     </style>
 </head>
 <body>
@@ -1077,6 +1098,7 @@
                             <span class="tech-badge">Groq API</span>
                             <span class="tech-badge">Desktop App</span>
                         </div>
+                        <a href="https://github.com/tdogbg/gizmohelper" class="project-link" target="_blank" rel="noopener noreferrer">github / gizmohelper →</a>
                     </article>
 
                     <article class="project-card glass reveal" data-delay="4">
@@ -1335,22 +1357,24 @@
             {
                 id: 'muscle-ups', name: 'Muscle Ups', side: 'left', level: 'intermediate',
                 desc: 'Pull-up + dip combined into one explosive rep. Go from dead hang below the bar to locked out above it.',
-                svg: createSVGWrapper(`<line x1="15" y1="58" x2="85" y2="58" stroke="#38bdf8" stroke-width="3"/>
-                    <g style="animation:muscleUpMotion 1.8s ease-in-out infinite alternate;transform-origin:50px 52px">
-                        <circle cx="50" cy="22" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
-                        <line x1="50" y1="29" x2="50" y2="60" stroke="#22d3ee" stroke-width="2.2"/>
-                        <line x1="44" y1="40" x2="32" y2="58" stroke="#22d3ee" stroke-width="2.2"/>
-                        <line x1="56" y1="40" x2="68" y2="58" stroke="#22d3ee" stroke-width="2.2"/>
-                        <line x1="50" y1="60" x2="43" y2="92" stroke="#22d3ee" stroke-width="2.2"/>
-                        <line x1="50" y1="60" x2="57" y2="92" stroke="#22d3ee" stroke-width="2.2"/>
+                svg: createSVGWrapper(`<line x1="15" y1="20" x2="85" y2="20" stroke="#38bdf8" stroke-width="3"/>
+                    <g style="animation:muscleUpMotion 2s cubic-bezier(0.45,0.05,0.55,0.95) infinite alternate;transform-origin:50px 55px">
+                        <circle cx="50" cy="35" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
+                        <line x1="44" y1="32" x2="36" y2="20" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="56" y1="32" x2="64" y2="20" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="42" x2="50" y2="76" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="56" x2="36" y2="68" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="56" x2="64" y2="68" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="76" x2="44" y2="100" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="76" x2="56" y2="100" stroke="#22d3ee" stroke-width="2.2"/>
                     </g>
-                    <style>@keyframes muscleUpMotion{from{transform:translateY(30px)}to{transform:translateY(0px)}}</style>`)
+                    <style>@keyframes muscleUpMotion{from{transform:translateY(24px)}to{transform:translateY(0px)}}</style>`)
             },
             {
                 id: 'handstand', name: 'Handstand', side: 'left', level: 'beginner',
                 desc: 'Full inversion balancing on your hands. Requires wrist strength, shoulder stability, and serious core tension.',
                 svg: createSVGWrapper(`<line x1="15" y1="108" x2="85" y2="108" stroke="#38bdf8" stroke-width="2" opacity="0.5"/>
-                    <g style="animation:hstandSway 3s ease-in-out infinite alternate;transform-origin:50px 58px">
+                    <g style="animation:hstandSway 3s cubic-bezier(0.37,0,0.63,1) infinite alternate;transform-origin:50px 58px">
                         <line x1="47" y1="8" x2="50" y2="44" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="53" y1="8" x2="50" y2="44" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="50" y1="44" x2="50" y2="84" stroke="#22d3ee" stroke-width="2.2"/>
@@ -1358,13 +1382,13 @@
                         <line x1="44" y1="82" x2="36" y2="108" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="56" y1="82" x2="64" y2="108" stroke="#22d3ee" stroke-width="2.2"/>
                     </g>
-                    <style>@keyframes hstandSway{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}</style>`)
+                    <style>@keyframes hstandSway{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}</style>`)
             },
             {
                 id: 'handstand-pushup', name: 'Handstand Push Up', side: 'left', level: 'locked',
                 desc: 'A push-up while in a full handstand. Combines vertical pressing strength with perfect balance.',
                 svg: createSVGWrapper(`<line x1="15" y1="108" x2="85" y2="108" stroke="#38bdf8" stroke-width="2" opacity="0.5"/>
-                    <g style="animation:hspuMotion 1.8s ease-in-out infinite alternate;transform-origin:50px 58px">
+                    <g style="animation:hspuMotion 2s cubic-bezier(0.45,0.05,0.55,0.95) infinite alternate;transform-origin:50px 58px">
                         <line x1="47" y1="8" x2="50" y2="44" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="53" y1="8" x2="50" y2="44" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="50" y1="44" x2="50" y2="82" stroke="#22d3ee" stroke-width="2.2"/>
@@ -1374,25 +1398,25 @@
                         <line x1="56" y1="80" x2="66" y2="94" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="66" y1="94" x2="66" y2="108" stroke="#22d3ee" stroke-width="2.2"/>
                     </g>
-                    <style>@keyframes hspuMotion{from{transform:translateY(0px)}to{transform:translateY(-20px)}}</style>`)
+                    <style>@keyframes hspuMotion{from{transform:translateY(0px)}to{transform:translateY(-18px)}}</style>`)
             },
             {
                 id: 'planche', name: 'Planche', side: 'left', level: 'locked',
                 desc: 'Body held horizontal off the ground, arms straight. Pure scapular depression and straight-arm strength.',
                 svg: createSVGWrapper(`<line x1="15" y1="88" x2="85" y2="88" stroke="#38bdf8" stroke-width="2" opacity="0.4"/>
-                    <g style="animation:plancheHold 2.5s ease-in-out infinite alternate;transform-origin:50px 62px">
+                    <g style="animation:plancheHold 3s cubic-bezier(0.37,0,0.63,1) infinite alternate;transform-origin:50px 62px">
                         <line x1="14" y1="58" x2="76" y2="58" stroke="#22d3ee" stroke-width="2.5"/>
                         <circle cx="83" cy="55" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
                         <line x1="36" y1="58" x2="36" y2="88" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="54" y1="58" x2="54" y2="88" stroke="#22d3ee" stroke-width="2.2"/>
                     </g>
-                    <style>@keyframes plancheHold{from{transform:translateY(-3px)}to{transform:translateY(3px)}}</style>`)
+                    <style>@keyframes plancheHold{from{transform:translateY(-4px) rotate(-1deg)}to{transform:translateY(4px) rotate(1deg)}}</style>`)
             },
             {
                 id: 'front-lever', name: 'Front Lever', side: 'left', level: 'locked',
                 desc: 'Body held perfectly horizontal while hanging from a bar, arms straight up. Insane lat and core demand.',
                 svg: createSVGWrapper(`<line x1="15" y1="20" x2="85" y2="20" stroke="#38bdf8" stroke-width="3"/>
-                    <g style="animation:frontLevHold 2.5s ease-in-out infinite alternate;transform-origin:50px 52px">
+                    <g style="animation:frontLevHold 3s cubic-bezier(0.37,0,0.63,1) infinite alternate;transform-origin:50px 46px">
                         <line x1="44" y1="20" x2="44" y2="42" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="56" y1="20" x2="56" y2="42" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="12" y1="52" x2="76" y2="52" stroke="#22d3ee" stroke-width="2.5"/>
@@ -1400,13 +1424,13 @@
                         <line x1="56" y1="42" x2="54" y2="52" stroke="#22d3ee" stroke-width="2.2"/>
                         <circle cx="83" cy="49" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
                     </g>
-                    <style>@keyframes frontLevHold{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}</style>`)
+                    <style>@keyframes frontLevHold{from{transform:rotate(-2deg)}to{transform:rotate(2deg)}}</style>`)
             },
             {
                 id: 'elbow-lever', name: 'Elbow Lever', side: 'left', level: 'locked',
                 desc: 'Balance your entire body horizontally on one or two elbows pressed into your abs. A flex of balance and core stiffness.',
                 svg: createSVGWrapper(`<line x1="15" y1="95" x2="85" y2="95" stroke="#38bdf8" stroke-width="2" opacity="0.5"/>
-                    <g style="animation:elbowLevBal 3s ease-in-out infinite alternate;transform-origin:50px 65px">
+                    <g style="animation:elbowLevBal 3.5s cubic-bezier(0.37,0,0.63,1) infinite alternate;transform-origin:50px 65px">
                         <line x1="36" y1="95" x2="42" y2="74" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="60" y1="95" x2="54" y2="74" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="14" y1="63" x2="76" y2="63" stroke="#22d3ee" stroke-width="2.5"/>
@@ -1414,89 +1438,89 @@
                         <line x1="54" y1="74" x2="52" y2="63" stroke="#22d3ee" stroke-width="2.2"/>
                         <circle cx="83" cy="60" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
                     </g>
-                    <style>@keyframes elbowLevBal{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}</style>`)
+                    <style>@keyframes elbowLevBal{from{transform:rotate(-2.5deg)}to{transform:rotate(2.5deg)}}</style>`)
             },
             {
                 id: 'pull-ups', name: 'Pull Ups', side: 'right', level: 'advanced',
                 desc: 'The foundation of bar work. Full dead hang to chin above bar. Builds the lats and biceps for everything else.',
                 svg: createSVGWrapper(`<line x1="15" y1="20" x2="85" y2="20" stroke="#38bdf8" stroke-width="3"/>
-                    <g style="animation:pullUpMotion 2s ease-in-out infinite alternate;transform-origin:50px 65px">
+                    <g style="animation:pullUpMotion 2.2s cubic-bezier(0.45,0.05,0.55,0.95) infinite alternate;transform-origin:50px 62px">
                         <circle cx="50" cy="35" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
                         <line x1="44" y1="32" x2="36" y2="20" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="56" y1="32" x2="64" y2="20" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="50" y1="42" x2="50" y2="76" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="50" y1="56" x2="38" y2="68" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="50" y1="56" x2="62" y2="68" stroke="#22d3ee" stroke-width="2.2"/>
-                        <line x1="50" y1="76" x2="44" y2="105" stroke="#22d3ee" stroke-width="2.2"/>
-                        <line x1="50" y1="76" x2="56" y2="105" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="76" x2="44" y2="100" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="76" x2="56" y2="100" stroke="#22d3ee" stroke-width="2.2"/>
                     </g>
-                    <style>@keyframes pullUpMotion{from{transform:translateY(18px)}to{transform:translateY(-4px)}}</style>`)
+                    <style>@keyframes pullUpMotion{from{transform:translateY(20px)}to{transform:translateY(-2px)}}</style>`)
             },
             {
                 id: 'dips', name: 'Dips', side: 'right', level: 'advanced',
                 desc: 'Between parallel bars, lower and press. The go-to pushing movement for chest and triceps in calisthenics.',
                 svg: createSVGWrapper(`<line x1="25" y1="28" x2="25" y2="92" stroke="#38bdf8" stroke-width="3"/>
                     <line x1="75" y1="28" x2="75" y2="92" stroke="#38bdf8" stroke-width="3"/>
-                    <g style="animation:dipMotion 2s ease-in-out infinite alternate;transform-origin:50px 56px">
+                    <g style="animation:dipMotion 2.2s cubic-bezier(0.45,0.05,0.55,0.95) infinite alternate;transform-origin:50px 56px">
                         <circle cx="50" cy="30" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
                         <line x1="50" y1="37" x2="50" y2="72" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="44" y1="48" x2="34" y2="56" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="34" y1="56" x2="25" y2="48" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="56" y1="48" x2="66" y2="56" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="66" y1="56" x2="75" y2="48" stroke="#22d3ee" stroke-width="2.2"/>
-                        <line x1="50" y1="72" x2="44" y2="102" stroke="#22d3ee" stroke-width="2.2"/>
-                        <line x1="50" y1="72" x2="56" y2="102" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="72" x2="44" y2="100" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="50" y1="72" x2="56" y2="100" stroke="#22d3ee" stroke-width="2.2"/>
                     </g>
-                    <style>@keyframes dipMotion{from{transform:translateY(16px)}to{transform:translateY(-6px)}}</style>`)
+                    <style>@keyframes dipMotion{from{transform:translateY(18px)}to{transform:translateY(-4px)}}</style>`)
             },
             {
                 id: 'l-sits', name: 'L Sits', side: 'right', level: 'intermediate',
                 desc: 'Legs held parallel to the ground while suspended between bars or on parallettes. Hip flexors and core on fire.',
                 svg: createSVGWrapper(`<line x1="35" y1="68" x2="35" y2="90" stroke="#38bdf8" stroke-width="3"/>
                     <line x1="65" y1="68" x2="65" y2="90" stroke="#38bdf8" stroke-width="3"/>
-                    <g style="animation:lSitHold 3s ease-in-out infinite alternate;transform-origin:50px 50px">
+                    <g style="animation:lSitHold 3.5s cubic-bezier(0.37,0,0.63,1) infinite alternate;transform-origin:50px 50px">
                         <circle cx="50" cy="20" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
                         <line x1="50" y1="27" x2="50" y2="64" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="45" y1="42" x2="35" y2="68" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="55" y1="42" x2="65" y2="68" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="50" y1="64" x2="10" y2="64" stroke="#22d3ee" stroke-width="2.5"/>
                     </g>
-                    <style>@keyframes lSitHold{from{transform:translateY(-2px)}to{transform:translateY(2px)}}</style>`)
+                    <style>@keyframes lSitHold{from{transform:translateY(-3px)}to{transform:translateY(3px)}}</style>`)
             },
             {
                 id: 'human-flag', name: 'Human Flag', side: 'right', level: 'locked',
                 desc: 'Body held horizontally from a vertical pole, arms gripping above and below. The most visually insane move in calisthenics.',
                 svg: createSVGWrapper(`<line x1="28" y1="10" x2="28" y2="110" stroke="#38bdf8" stroke-width="3"/>
-                    <g style="animation:humanFlagSway 3s ease-in-out infinite alternate;transform-origin:28px 52px">
+                    <g style="animation:humanFlagSway 3.5s cubic-bezier(0.37,0,0.63,1) infinite alternate;transform-origin:28px 52px">
                         <line x1="28" y1="32" x2="44" y2="38" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="28" y1="66" x2="44" y2="60" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="44" y1="38" x2="44" y2="60" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="44" y1="49" x2="82" y2="49" stroke="#22d3ee" stroke-width="2.5"/>
                         <circle cx="88" cy="46" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
                     </g>
-                    <style>@keyframes humanFlagSway{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}</style>`)
+                    <style>@keyframes humanFlagSway{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}</style>`)
             },
             {
                 id: 'archer-push-ups', name: 'Archer Push Ups', side: 'right', level: 'beginner',
                 desc: 'Wide push-up where one arm extends fully to the side while the other does the work. Unilateral chest and tricep builder.',
                 svg: createSVGWrapper(`<line x1="10" y1="90" x2="90" y2="90" stroke="#38bdf8" stroke-width="2" opacity="0.4"/>
-                    <g style="animation:archerPU 2s ease-in-out infinite alternate;transform-origin:38px 64px">
-                        <circle cx="48" cy="44" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
-                        <line x1="48" y1="51" x2="48" y2="74" stroke="#22d3ee" stroke-width="2.2"/>
-                        <line x1="44" y1="58" x2="30" y2="70" stroke="#22d3ee" stroke-width="2.2"/>
-                        <line x1="30" y1="70" x2="26" y2="90" stroke="#22d3ee" stroke-width="2.2"/>
-                        <line x1="52" y1="58" x2="88" y2="60" stroke="#22d3ee" stroke-width="2.2"/>
-                        <line x1="88" y1="60" x2="88" y2="90" stroke="#22d3ee" stroke-width="2.2"/>
-                        <line x1="48" y1="74" x2="42" y2="90" stroke="#22d3ee" stroke-width="2.2"/>
-                        <line x1="48" y1="74" x2="54" y2="90" stroke="#22d3ee" stroke-width="2.2"/>
+                    <g style="animation:archerPU 2.2s cubic-bezier(0.45,0.05,0.55,0.95) infinite alternate;transform-origin:48px 70px">
+                        <circle cx="48" cy="40" r="7" stroke="#a855f7" stroke-width="2.2" fill="none"/>
+                        <line x1="48" y1="47" x2="48" y2="70" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="44" y1="55" x2="28" y2="66" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="28" y1="66" x2="24" y2="90" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="52" y1="55" x2="84" y2="57" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="84" y1="57" x2="84" y2="90" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="48" y1="70" x2="42" y2="90" stroke="#22d3ee" stroke-width="2.2"/>
+                        <line x1="48" y1="70" x2="54" y2="90" stroke="#22d3ee" stroke-width="2.2"/>
                     </g>
-                    <style>@keyframes archerPU{from{transform:translateY(0px)}to{transform:translateY(12px)}}</style>`)
+                    <style>@keyframes archerPU{from{transform:translateY(0px)}to{transform:translateY(14px)}}</style>`)
             },
             {
                 id: 'l-sit-to-handstand', name: 'L Sit to Handstand', side: 'right', level: 'locked',
                 desc: 'Pressing from an L-sit directly into a full handstand — one of the hardest presses in calisthenics skill work.',
                 svg: createSVGWrapper(`<line x1="15" y1="105" x2="85" y2="105" stroke="#38bdf8" stroke-width="2" opacity="0.5"/>
-                    <g style="animation:lSitToHSMotion 2.5s ease-in-out infinite alternate;transform-origin:50px 68px">
+                    <g style="animation:lSitToHSMotion 3s cubic-bezier(0.45,0.05,0.55,0.95) infinite alternate;transform-origin:50px 68px">
                         <line x1="14" y1="55" x2="50" y2="72" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="86" y1="55" x2="50" y2="72" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="50" y1="72" x2="50" y2="90" stroke="#22d3ee" stroke-width="2.2"/>
@@ -1504,7 +1528,7 @@
                         <line x1="44" y1="88" x2="36" y2="105" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="56" y1="88" x2="64" y2="105" stroke="#22d3ee" stroke-width="2.2"/>
                     </g>
-                    <style>@keyframes lSitToHSMotion{from{transform:translateY(-8px)}to{transform:translateY(6px)}}</style>`)
+                    <style>@keyframes lSitToHSMotion{from{transform:translateY(-10px) scale(0.97)}to{transform:translateY(8px) scale(1)}}</style>`)
             }
         ];
 
@@ -1566,25 +1590,152 @@
         requestAnimationFrame(() => requestAnimationFrame(drawCalLines));
         window.addEventListener('resize', drawCalLines);
 
-        /* —— Scroll Reveal —— */
+        /* —— Scroll Reveal (GSAP ScrollTrigger) —— */
         (function() {
-            const revealEls = document.querySelectorAll('.reveal');
             if (prefersReducedMotion) {
-                revealEls.forEach(el => el.classList.add('is-visible'));
+                document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-visible'));
                 return;
             }
-            if ('IntersectionObserver' in window) {
-                const io = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('is-visible');
-                            io.unobserve(entry.target);
+
+            function initGSAPAnimations() {
+                if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+                    // Fallback to IntersectionObserver
+                    const io = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('is-visible');
+                                io.unobserve(entry.target);
+                            }
+                        });
+                    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+                    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+                    return;
+                }
+
+                gsap.registerPlugin(ScrollTrigger);
+
+                // Section headers
+                document.querySelectorAll('.section-head').forEach(el => {
+                    gsap.fromTo(el,
+                        { opacity: 0, y: 36 },
+                        {
+                            opacity: 1, y: 0,
+                            duration: 0.85,
+                            ease: 'power3.out',
+                            scrollTrigger: {
+                                trigger: el,
+                                start: 'top 88%',
+                                toggleActions: 'play none none none'
+                            }
                         }
-                    });
-                }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-                revealEls.forEach(el => io.observe(el));
+                    );
+                });
+
+                // Stat cards — staggered
+                const statCards = document.querySelectorAll('.stat-card');
+                if (statCards.length) {
+                    gsap.fromTo(statCards,
+                        { opacity: 0, y: 40, scale: 0.95 },
+                        {
+                            opacity: 1, y: 0, scale: 1,
+                            duration: 0.7,
+                            ease: 'power3.out',
+                            stagger: 0.1,
+                            scrollTrigger: {
+                                trigger: statCards[0].closest('.stats') || statCards[0],
+                                start: 'top 88%',
+                                toggleActions: 'play none none none'
+                            }
+                        }
+                    );
+                }
+
+                // About block
+                const aboutBlock = document.querySelector('.about-block');
+                if (aboutBlock) {
+                    gsap.fromTo(aboutBlock,
+                        { opacity: 0, y: 36 },
+                        {
+                            opacity: 1, y: 0,
+                            duration: 0.85,
+                            ease: 'power3.out',
+                            scrollTrigger: {
+                                trigger: aboutBlock,
+                                start: 'top 86%',
+                                toggleActions: 'play none none none'
+                            }
+                        }
+                    );
+                }
+
+                // Project cards — staggered
+                const projectCards = document.querySelectorAll('.project-card');
+                if (projectCards.length) {
+                    gsap.fromTo(projectCards,
+                        { opacity: 0, y: 44, scale: 0.97 },
+                        {
+                            opacity: 1, y: 0, scale: 1,
+                            duration: 0.72,
+                            ease: 'power3.out',
+                            stagger: 0.1,
+                            scrollTrigger: {
+                                trigger: projectCards[0].closest('.projects-grid') || projectCards[0],
+                                start: 'top 88%',
+                                toggleActions: 'play none none none'
+                            }
+                        }
+                    );
+                }
+
+                // Calisthenics skill tree
+                const calTree = document.querySelector('.cal-tree');
+                if (calTree) {
+                    gsap.fromTo(calTree,
+                        { opacity: 0, y: 40 },
+                        {
+                            opacity: 1, y: 0,
+                            duration: 1,
+                            ease: 'power3.out',
+                            scrollTrigger: {
+                                trigger: calTree,
+                                start: 'top 85%',
+                                toggleActions: 'play none none none'
+                            }
+                        }
+                    );
+                }
+
+                // Contact box
+                const contactBox = document.querySelector('.contact-box');
+                if (contactBox) {
+                    gsap.fromTo(contactBox,
+                        { opacity: 0, y: 36 },
+                        {
+                            opacity: 1, y: 0,
+                            duration: 0.85,
+                            ease: 'power3.out',
+                            scrollTrigger: {
+                                trigger: contactBox,
+                                start: 'top 88%',
+                                toggleActions: 'play none none none'
+                            }
+                        }
+                    );
+                }
+
+                // Mark all .reveal as handled (prevent CSS transition double-fire)
+                document.querySelectorAll('.reveal').forEach(el => {
+                    el.style.opacity = '';
+                    el.style.transform = '';
+                    el.classList.add('is-visible');
+                });
+            }
+
+            // Wait for GSAP to be available (deferred scripts)
+            if (typeof gsap !== 'undefined') {
+                initGSAPAnimations();
             } else {
-                revealEls.forEach(el => el.classList.add('is-visible'));
+                window.addEventListener('load', initGSAPAnimations);
             }
         })();
 
@@ -1639,7 +1790,11 @@
 
         function openSkillModal(skill) {
             activeSkill = skill;
-            calModalFigure.innerHTML = skill.svg;
+            // Inject SVG fresh to restart CSS animations
+            calModalFigure.innerHTML = '';
+            requestAnimationFrame(() => {
+                calModalFigure.innerHTML = skill.svg;
+            });
             calModalTitle.textContent = skill.name;
             calModalDesc.textContent = skill.desc;
             updateModalLevel(skill);
