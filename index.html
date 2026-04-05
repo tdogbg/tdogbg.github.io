@@ -727,7 +727,6 @@
             color: var(--text-muted);
             white-space: nowrap;
             user-select: none;
-            border: none;
             background: rgba(8, 18, 28, 0.65);
             border: 1px solid var(--border);
         }
@@ -1291,7 +1290,7 @@
         const LEVELS = ['locked', 'beginner', 'intermediate', 'advanced', 'mastered'];
         const LEVEL_PIPS = { locked: 0, beginner: 1, intermediate: 2, advanced: 3, mastered: 4 };
 
-        function mkSVG(body) {
+        function createSVGWrapper(body) {
             return `<svg viewBox="0 0 100 120" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">${body}</svg>`;
         }
 
@@ -1299,8 +1298,8 @@
             {
                 id: 'muscle-ups', name: 'Muscle Ups', side: 'left', level: 'intermediate',
                 desc: 'Pull-up + dip combined into one explosive rep. Go from dead hang below the bar to locked out above it.',
-                svg: mkSVG(`<line x1="15" y1="28" x2="85" y2="28" stroke="#38bdf8" stroke-width="3"/>
-                    <g style="animation:mu 2s ease-in-out infinite alternate;transform-origin:50px 60px">
+                svg: createSVGWrapper(`<line x1="15" y1="28" x2="85" y2="28" stroke="#38bdf8" stroke-width="3"/>
+                    <g style="animation:muscleUpMotion 2s ease-in-out infinite alternate;transform-origin:50px 60px">
                         <circle cx="50" cy="44" r="8" stroke="#a855f7" stroke-width="2.2" fill="none"/>
                         <line x1="50" y1="52" x2="50" y2="82" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="50" y1="63" x2="32" y2="28" stroke="#22d3ee" stroke-width="2.2"/>
@@ -1308,13 +1307,13 @@
                         <line x1="50" y1="82" x2="40" y2="108" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="50" y1="82" x2="60" y2="108" stroke="#22d3ee" stroke-width="2.2"/>
                     </g>
-                    <style>@keyframes mu{from{transform:translateY(10px)}to{transform:translateY(-14px)}}</style>`)
+                    <style>@keyframes muscleUpMotion{from{transform:translateY(10px)}to{transform:translateY(-14px)}}</style>`)
             },
             {
                 id: 'handstand', name: 'Handstand', side: 'left', level: 'beginner',
                 desc: 'Full inversion balancing on your hands. Requires wrist strength, shoulder stability, and serious core tension.',
-                svg: mkSVG(`<line x1="18" y1="115" x2="82" y2="115" stroke="#38bdf8" stroke-width="2" opacity="0.5"/>
-                    <g style="animation:hs 3s ease-in-out infinite alternate;transform-origin:50px 60px">
+                svg: createSVGWrapper(`<line x1="18" y1="115" x2="82" y2="115" stroke="#38bdf8" stroke-width="2" opacity="0.5"/>
+                    <g style="animation:handstandSway 3s ease-in-out infinite alternate;transform-origin:50px 60px">
                         <circle cx="50" cy="18" r="8" stroke="#a855f7" stroke-width="2.2" fill="none"/>
                         <line x1="50" y1="26" x2="50" y2="65" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="50" y1="44" x2="33" y2="60" stroke="#22d3ee" stroke-width="2.2"/>
@@ -1324,13 +1323,13 @@
                         <line x1="33" y1="60" x2="30" y2="115" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="67" y1="60" x2="70" y2="115" stroke="#22d3ee" stroke-width="2.2"/>
                     </g>
-                    <style>@keyframes hs{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}</style>`)
+                    <style>@keyframes handstandSway{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}</style>`)
             },
             {
                 id: 'handstand-pushup', name: 'Handstand Push Up', side: 'left', level: 'locked',
                 desc: 'A push-up while in a full handstand. Combines vertical pressing strength with perfect balance.',
-                svg: mkSVG(`<line x1="18" y1="115" x2="82" y2="115" stroke="#38bdf8" stroke-width="2" opacity="0.5"/>
-                    <g style="animation:hpu 1.8s ease-in-out infinite alternate;transform-origin:50px 70px">
+                svg: createSVGWrapper(`<line x1="18" y1="115" x2="82" y2="115" stroke="#38bdf8" stroke-width="2" opacity="0.5"/>
+                    <g style="animation:handstandPushUpMotion 1.8s ease-in-out infinite alternate;transform-origin:50px 70px">
                         <circle cx="50" cy="14" r="8" stroke="#a855f7" stroke-width="2.2" fill="none"/>
                         <line x1="50" y1="22" x2="50" y2="60" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="50" y1="40" x2="32" y2="62" stroke="#22d3ee" stroke-width="2.2"/>
@@ -1340,12 +1339,12 @@
                         <line x1="32" y1="62" x2="30" y2="115" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="68" y1="62" x2="70" y2="115" stroke="#22d3ee" stroke-width="2.2"/>
                     </g>
-                    <style>@keyframes hpu{from{transform:translateY(0)}to{transform:translateY(18px)}}</style>`)
+                    <style>@keyframes handstandPushUpMotion{from{transform:translateY(0)}to{transform:translateY(18px)}}</style>`)
             },
             {
                 id: 'planche', name: 'Planche', side: 'left', level: 'locked',
                 desc: 'Body held horizontal off the ground, arms straight. Pure scapular depression and straight-arm strength.',
-                svg: mkSVG(`<g style="animation:pl 2.5s ease-in-out infinite alternate;transform-origin:50px 60px">
+                svg: createSVGWrapper(`<g style="animation:plancheSway 2.5s ease-in-out infinite alternate;transform-origin:50px 60px">
                         <circle cx="50" cy="55" r="8" stroke="#a855f7" stroke-width="2.2" fill="none"/>
                         <line x1="50" y1="63" x2="50" y2="70" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="25" y1="70" x2="75" y2="70" stroke="#22d3ee" stroke-width="2.2"/>
@@ -1356,13 +1355,13 @@
                         <line x1="18" y1="63" x2="18" y2="95" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="82" y1="63" x2="82" y2="95" stroke="#22d3ee" stroke-width="2.2"/>
                     </g>
-                    <style>@keyframes pl{from{transform:rotate(-2deg)}to{transform:rotate(2deg)}}</style>`)
+                    <style>@keyframes plancheSway{from{transform:rotate(-2deg)}to{transform:rotate(2deg)}}</style>`)
             },
             {
                 id: 'front-lever', name: 'Front Lever', side: 'left', level: 'locked',
                 desc: 'Body held perfectly horizontal while hanging from a bar, arms straight up. Insane lat and core demand.',
-                svg: mkSVG(`<line x1="15" y1="20" x2="85" y2="20" stroke="#38bdf8" stroke-width="3"/>
-                    <g style="animation:fl 2.5s ease-in-out infinite alternate;transform-origin:50px 50px">
+                svg: createSVGWrapper(`<line x1="15" y1="20" x2="85" y2="20" stroke="#38bdf8" stroke-width="3"/>
+                    <g style="animation:frontLeverSway 2.5s ease-in-out infinite alternate;transform-origin:50px 50px">
                         <line x1="50" y1="20" x2="50" y2="42" stroke="#22d3ee" stroke-width="2.2"/>
                         <circle cx="50" cy="50" r="8" stroke="#a855f7" stroke-width="2.2" fill="none"/>
                         <line x1="50" y1="58" x2="50" y2="68" stroke="#22d3ee" stroke-width="2.2"/>
@@ -1370,26 +1369,26 @@
                         <line x1="20" y1="65" x2="14" y2="65" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="80" y1="65" x2="86" y2="65" stroke="#22d3ee" stroke-width="2.2"/>
                     </g>
-                    <style>@keyframes fl{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}</style>`)
+                    <style>@keyframes frontLeverSway{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}</style>`)
             },
             {
                 id: 'elbow-lever', name: 'Elbow Lever', side: 'left', level: 'locked',
                 desc: 'Balance your entire body horizontally on one or two elbows pressed into your abs. A flex of balance and core stiffness.',
-                svg: mkSVG(`<line x1="18" y1="100" x2="82" y2="100" stroke="#38bdf8" stroke-width="2" opacity="0.5"/>
-                    <g style="animation:el 3s ease-in-out infinite alternate;transform-origin:50px 65px">
+                svg: createSVGWrapper(`<line x1="18" y1="100" x2="82" y2="100" stroke="#38bdf8" stroke-width="2" opacity="0.5"/>
+                    <g style="animation:elbowLeverBalance 3s ease-in-out infinite alternate;transform-origin:50px 65px">
                         <circle cx="75" cy="55" r="8" stroke="#a855f7" stroke-width="2.2" fill="none"/>
                         <line x1="75" y1="63" x2="75" y2="72" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="20" y1="72" x2="80" y2="72" stroke="#22d3ee" stroke-width="2.5"/>
                         <line x1="38" y1="72" x2="35" y2="100" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="20" y1="72" x2="14" y2="72" stroke="#22d3ee" stroke-width="2.2"/>
                     </g>
-                    <style>@keyframes el{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}</style>`)
+                    <style>@keyframes elbowLeverBalance{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}</style>`)
             },
             {
                 id: 'pull-ups', name: 'Pull Ups', side: 'right', level: 'advanced',
                 desc: 'The foundation of bar work. Full dead hang to chin above bar. Builds the lats and biceps for everything else.',
-                svg: mkSVG(`<line x1="15" y1="22" x2="85" y2="22" stroke="#38bdf8" stroke-width="3"/>
-                    <g style="animation:pu 2s ease-in-out infinite alternate;transform-origin:50px 65px">
+                svg: createSVGWrapper(`<line x1="15" y1="22" x2="85" y2="22" stroke="#38bdf8" stroke-width="3"/>
+                    <g style="animation:pullUpMotion 2s ease-in-out infinite alternate;transform-origin:50px 65px">
                         <circle cx="50" cy="40" r="8" stroke="#a855f7" stroke-width="2.2" fill="none"/>
                         <line x1="50" y1="48" x2="50" y2="78" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="50" y1="58" x2="34" y2="22" stroke="#22d3ee" stroke-width="2.2"/>
@@ -1397,14 +1396,14 @@
                         <line x1="50" y1="78" x2="40" y2="105" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="50" y1="78" x2="60" y2="105" stroke="#22d3ee" stroke-width="2.2"/>
                     </g>
-                    <style>@keyframes pu{from{transform:translateY(16px)}to{transform:translateY(-4px)}}</style>`)
+                    <style>@keyframes pullUpMotion{from{transform:translateY(16px)}to{transform:translateY(-4px)}}</style>`)
             },
             {
                 id: 'dips', name: 'Dips', side: 'right', level: 'advanced',
                 desc: 'Between parallel bars, lower and press. The go-to pushing movement for chest and triceps in calisthenics.',
-                svg: mkSVG(`<line x1="22" y1="30" x2="22" y2="90" stroke="#38bdf8" stroke-width="3"/>
+                svg: createSVGWrapper(`<line x1="22" y1="30" x2="22" y2="90" stroke="#38bdf8" stroke-width="3"/>
                     <line x1="78" y1="30" x2="78" y2="90" stroke="#38bdf8" stroke-width="3"/>
-                    <g style="animation:dp 2s ease-in-out infinite alternate;transform-origin:50px 55px">
+                    <g style="animation:dipMotion 2s ease-in-out infinite alternate;transform-origin:50px 55px">
                         <circle cx="50" cy="38" r="8" stroke="#a855f7" stroke-width="2.2" fill="none"/>
                         <line x1="50" y1="46" x2="50" y2="76" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="50" y1="56" x2="22" y2="56" stroke="#22d3ee" stroke-width="2.2"/>
@@ -1412,13 +1411,13 @@
                         <line x1="50" y1="76" x2="40" y2="104" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="50" y1="76" x2="60" y2="104" stroke="#22d3ee" stroke-width="2.2"/>
                     </g>
-                    <style>@keyframes dp{from{transform:translateY(12px)}to{transform:translateY(-6px)}}</style>`)
+                    <style>@keyframes dipMotion{from{transform:translateY(12px)}to{transform:translateY(-6px)}}</style>`)
             },
             {
                 id: 'l-sits', name: 'L Sits', side: 'right', level: 'intermediate',
                 desc: 'Legs held parallel to the ground while suspended between bars or on parallettes. Hip flexors and core on fire.',
-                svg: mkSVG(`<line x1="18" y1="75" x2="82" y2="75" stroke="#38bdf8" stroke-width="2" opacity="0.4"/>
-                    <g style="animation:ls 3s ease-in-out infinite alternate;transform-origin:50px 58px">
+                svg: createSVGWrapper(`<line x1="18" y1="75" x2="82" y2="75" stroke="#38bdf8" stroke-width="2" opacity="0.4"/>
+                    <g style="animation:lSitBalance 3s ease-in-out infinite alternate;transform-origin:50px 58px">
                         <circle cx="50" cy="35" r="8" stroke="#a855f7" stroke-width="2.2" fill="none"/>
                         <line x1="50" y1="43" x2="50" y2="65" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="50" y1="53" x2="34" y2="75" stroke="#22d3ee" stroke-width="2.2"/>
@@ -1428,13 +1427,13 @@
                         <line x1="22" y1="65" x2="22" y2="90" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="80" y1="65" x2="80" y2="90" stroke="#22d3ee" stroke-width="2.2"/>
                     </g>
-                    <style>@keyframes ls{from{transform:rotate(-2deg)}to{transform:rotate(2deg)}}</style>`)
+                    <style>@keyframes lSitBalance{from{transform:rotate(-2deg)}to{transform:rotate(2deg)}}</style>`)
             },
             {
                 id: 'human-flag', name: 'Human Flag', side: 'right', level: 'locked',
                 desc: 'Body held horizontally from a vertical pole, arms gripping above and below. The most visually insane move in calisthenics.',
-                svg: mkSVG(`<line x1="35" y1="10" x2="35" y2="110" stroke="#38bdf8" stroke-width="3"/>
-                    <g style="animation:hf 3s ease-in-out infinite alternate;transform-origin:35px 58px">
+                svg: createSVGWrapper(`<line x1="35" y1="10" x2="35" y2="110" stroke="#38bdf8" stroke-width="3"/>
+                    <g style="animation:humanFlagSway 3s ease-in-out infinite alternate;transform-origin:35px 58px">
                         <circle cx="60" cy="50" r="8" stroke="#a855f7" stroke-width="2.2" fill="none"/>
                         <line x1="35" y1="40" x2="50" y2="50" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="35" y1="68" x2="50" y2="58" stroke="#22d3ee" stroke-width="2.2"/>
@@ -1442,13 +1441,13 @@
                         <line x1="50" y1="58" x2="68" y2="54" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="68" y1="54" x2="90" y2="54" stroke="#22d3ee" stroke-width="2.5"/>
                     </g>
-                    <style>@keyframes hf{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}</style>`)
+                    <style>@keyframes humanFlagSway{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}</style>`)
             },
             {
                 id: 'archer-push-ups', name: 'Archer Push Ups', side: 'right', level: 'beginner',
                 desc: 'Wide push-up where one arm extends fully to the side while the other does the work. Unilateral chest and tricep builder.',
-                svg: mkSVG(`<line x1="10" y1="90" x2="90" y2="90" stroke="#38bdf8" stroke-width="2" opacity="0.4"/>
-                    <g style="animation:ap 2s ease-in-out infinite alternate;transform-origin:50px 65px">
+                svg: createSVGWrapper(`<line x1="10" y1="90" x2="90" y2="90" stroke="#38bdf8" stroke-width="2" opacity="0.4"/>
+                    <g style="animation:archerPushUpMotion 2s ease-in-out infinite alternate;transform-origin:50px 65px">
                         <circle cx="50" cy="42" r="8" stroke="#a855f7" stroke-width="2.2" fill="none"/>
                         <line x1="50" y1="50" x2="50" y2="78" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="50" y1="60" x2="28" y2="74" stroke="#22d3ee" stroke-width="2.2"/>
@@ -1458,13 +1457,13 @@
                         <line x1="50" y1="78" x2="40" y2="90" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="50" y1="78" x2="60" y2="90" stroke="#22d3ee" stroke-width="2.2"/>
                     </g>
-                    <style>@keyframes ap{from{transform:translateY(0)}to{transform:translateY(10px)}}</style>`)
+                    <style>@keyframes archerPushUpMotion{from{transform:translateY(0)}to{transform:translateY(10px)}}</style>`)
             },
             {
                 id: 'l-sit-to-handstand', name: 'L Sit to Handstand', side: 'right', level: 'locked',
                 desc: 'Pressing from an L-sit directly into a full handstand — one of the hardest presses in calisthenics skill work.',
-                svg: mkSVG(`<line x1="18" y1="105" x2="82" y2="105" stroke="#38bdf8" stroke-width="2" opacity="0.5"/>
-                    <g style="animation:lsh 2.5s ease-in-out infinite alternate;transform-origin:50px 60px">
+                svg: createSVGWrapper(`<line x1="18" y1="105" x2="82" y2="105" stroke="#38bdf8" stroke-width="2" opacity="0.5"/>
+                    <g style="animation:lSitToHandstandSway 2.5s ease-in-out infinite alternate;transform-origin:50px 60px">
                         <circle cx="50" cy="26" r="8" stroke="#a855f7" stroke-width="2.2" fill="none"/>
                         <line x1="50" y1="34" x2="50" y2="70" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="50" y1="52" x2="32" y2="68" stroke="#22d3ee" stroke-width="2.2"/>
@@ -1474,7 +1473,7 @@
                         <line x1="32" y1="68" x2="28" y2="105" stroke="#22d3ee" stroke-width="2.2"/>
                         <line x1="68" y1="68" x2="72" y2="105" stroke="#22d3ee" stroke-width="2.2"/>
                     </g>
-                    <style>@keyframes lsh{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}</style>`)
+                    <style>@keyframes lSitToHandstandSway{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}</style>`)
             }
         ];
 
