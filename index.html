@@ -1228,6 +1228,7 @@
         }
         [data-theme="light"] .section-head-ghost { opacity: 0.07; }
         .subtitle-word { display: inline-block; }
+        .subtitle-dot { display: inline; }
 
         /* ————————————————————————————————
            MAC WINDOW BARS ON PROJECT CARDS
@@ -2153,8 +2154,14 @@
                 // Split subtitle words for per-word animation
                 document.querySelectorAll('.section-head p').forEach(p => {
                     const parts = p.textContent.split('·');
+                    if (parts.length < 2) {
+                        // No separator — just wrap the whole text as one word
+                        const trimmed = p.textContent.trim();
+                        p.innerHTML = `<span class="subtitle-word" style="opacity:0;transform:translateY(10px)">${trimmed}</span>`;
+                        return;
+                    }
                     p.innerHTML = parts.map((w, i) =>
-                        `<span class="subtitle-word" style="opacity:0;transform:translateY(10px)">${w.trim()}</span>${i < parts.length - 1 ? ' <span style="color:var(--cyan-dim);opacity:0"> · </span> ' : ''}`
+                        `<span class="subtitle-word" style="opacity:0;transform:translateY(10px)">${w.trim()}</span>${i < parts.length - 1 ? ' <span class="subtitle-dot" style="color:var(--cyan-dim);opacity:0"> · </span> ' : ''}`
                     ).join('');
                 });
 
@@ -2348,7 +2355,7 @@
                             }
                         );
                         // Also animate the separator dots
-                        el.querySelectorAll('p > span:not(.subtitle-word)').forEach(dot => {
+                        el.querySelectorAll('.subtitle-dot').forEach(dot => {
                             gsap.fromTo(dot, { opacity: 0 }, { opacity: 1, duration: 0.5, delay: 0.6,
                                 scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none reverse' }
                             });
